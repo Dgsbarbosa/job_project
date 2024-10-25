@@ -1,6 +1,22 @@
-.env
-myenv
-modelo.png
-Projeto Final Harvard.docx
-Site de Empregos - Versão 1.pdf
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__/
 db.sqlite3
+/media
+/staticfiles
+
+# Environment Variables #
+.env
+
+# Secrets #
+*_secret.txt
+
+# IDEs #
+.vscode/
+.idea/
+
+# Virtual Environments #
+venv/
+myenv/
