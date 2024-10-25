@@ -1,0 +1,124 @@
+{% extends "user/layout.html" %}
+
+{% block body %}
+
+
+{% if messages %}
+<div class="messages">
+    {% for message in messages%}
+
+    <div class="alert alert-danger" role="alert">
+        <div class="message">{{ message }}</div> <div class="close-alert" onclick="closeMessage(this)">x</div> 
+    </div>  
+   
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<div class="cont">
+
+    <div class="form sign-in">
+
+        <h2>Bem-vindo</h2>
+
+        <form action="{% url 'user:login_view' %}" method="POST">
+            {% csrf_token %}
+            <label>
+                <span>Email</span>
+                <input type="email" autocomplete="email" name="email" required/>
+            </label>
+            <label>
+                <span>Senha</span>
+
+                <div class="password-container">
+                    <input type="password" class="password" name="password" autocomplete="current-password" required />
+                    <i class="fa-regular fa-eye toggle-password"></i>
+                    <i class="fa-regular fa-eye-slash toggle-password-slash" hidden></i>
+                </div>
+            </label>
+            <p class="forgot-pass">Esqueceu a senha? <a href="" class="text-muted">Redefinir Senha</a></p>
+
+            <button type="submit" class="submit">Entrar</button>
+            
+        </form>
+
+    </div>
+
+    <div class="sub-cont">
+        <div class="img">
+            <div class="img__text m--up">
+
+                <h3>Não tem uma conta? <br> Cadastre-se!<h3>
+            </div>
+            <div class="img__text m--in">
+
+                <h3>Se já tem uma conta, entre.<h3>
+            </div>
+            <div class="img__btn">
+                <span class="m--up">Cadastro</span>
+                <span class="m--in">Entre</span>
+            </div>
+
+        </div>
+
+        <div class="form sign-up">
+            <h2>Crie sua conta</h2>
+            <form action="{% url 'user:register' %}" method="POST">
+                {% csrf_token %}
+
+                <div class="name">
+                    <label>
+                        <span>Nome</span>
+                        <input type="text" name="name" required />
+                    </label>
+                    <label>
+                        <span>Sobrenome</span>
+                        <input type="text" name="lastname" required />
+                    </label>
+                </div>
+                <label>
+                    <span>Email</span>
+                    <input type="email" name="email" autocomplete="email" required />
+                </label>
+
+                <div class="password">
+
+                    <label>
+                        <span>Senha</span>
+
+                        <div class="password-container">
+                            <input type="password" class="password" name="password" autocomplete="new-password"
+                                required />
+                            <i class="fa-regular fa-eye toggle-password"></i>
+                            <i class="fa-regular fa-eye-slash toggle-password-slash" hidden></i>
+                        </div>
+
+                    </label>
+
+                    <label>
+                        <span>Confirme a Senha</span>
+                        <div class="password-container">
+                            <input type="password" class="password2" name="password2" autocomplete="new-password"
+                                required />
+                            <i class="fa-regular fa-eye toggle-password"></i>
+                            <i class="fa-regular fa-eye-slash toggle-password-slash" hidden></i>
+                        </div>
+                    </label>
+
+                </div>
+                <button type="submit" class="submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+    
+</div>
+<div class="div-button-back">
+        <a href="javascript:history.back()">
+            <input type="text" class="btn btn-outline-primary btn-back" value="Voltar">
+        </a>
+    </div>
+
+
+    
+{%endblock%}

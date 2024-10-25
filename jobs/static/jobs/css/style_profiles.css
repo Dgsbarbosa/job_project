@@ -1,0 +1,94 @@
+
+/*     border: 1px solid black; */
+.div-profiles{
+    display: flex;
+    flex-direction: column;    
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;    
+    min-height: 70%;
+}
+
+.div-button-profiles{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    gap:  30px;    
+}
+
+.div-button-profiles input{
+    width: 200px;
+}
+
+.worker-profile, .company-profile{
+    width: 80%;
+    padding: 30px;
+    border-radius: 10px ;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgb(243, 243, 243);
+
+}
+
+.worker-profile,.company-profile{
+    margin-top: 30px;
+
+}
+.worker-profile p, .company-profile p{
+    font-weight: bold;
+    margin-bottom: 0;
+
+}
+
+.buttons-company{
+    
+    text-align: center;
+    margin-bottom: 30px;
+}
+.buttons-company .row{
+    display: flex;
+   
+    row-gap: 10px;
+
+}
+
+.buttons-company .col-md-6{
+    display: flex;
+    
+}
+
+
+.company h2{
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.card-div-item{
+    margin-bottom: 10px;
+    border: 1px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    background-color: white;
+
+}
+.span-description{
+    margin-left: 10px;
+}
+
+.candidate-person-sumary, .candidate-professional-sumary, .company-sumary{
+    min-height: 100px;
+}
+
+.div-button-edit-profile a{
+    display: flex;
+    justify-content: center;   
+
+   text-decoration: none;
+}
+
+
+
+.div-button-edit-profile input{
+    width: 50%;
+
+}

@@ -1,0 +1,96 @@
+{% extends "jobs/layout.html" %}
+
+{%block title%}Jobs{%endblock%}
+
+{%block body%}
+
+
+<div class="div-options-loggedIn" hidden>
+    <ul class="options-loggedIn">
+        <a href="">
+            <li class="options-loggedIn-item">Vagas <br>Compátiveis</li>
+        </a>
+        <a href="">
+            <li class="options-loggedIn-item">Vagas <br>Salvas</li>
+        </a>
+        <a href="">
+            <li class="options-loggedIn-item">Cadastrar <br>Curriculo</li>
+        </a>
+        <a href="">
+            <li class="options-loggedIn-item">Gerador de <br>Curriculo</li>
+        </a>
+        <a href="">
+            <li class="options-loggedIn-item">Cursos e <br>Certificações</li>
+        </a>
+        <a href="">
+            <li class="options-loggedIn-item">Blog</li>
+        </a>
+    </ul>
+</div>
+
+<div class="div-form-search container">
+
+    <form action="" method="POST" class="row">
+        {% csrf_token %}
+        <div class="form-search-item col-sm-4">
+            <label for="country">País</label>
+            <input type="text" name="country" id="country">
+        </div>
+        <div class="form-search-item col-sm-4">
+            <label for="state">Estado</label>
+            <input type="text" name="state" id="state">
+        </div>
+        <div class="form-search-item col-sm-4">
+            <label for="city">Cidade</label>
+            <input type="text" name="city" id="city">
+        </div>
+        <div class="form-search-item col-sm-4">
+            <label for="cargo">Cargo</label>
+            <input type="text" name="cargo" id="cargo">
+        </div>
+        <div class="form-search-item col-sm-4">
+            <label for="contract-type">Tipo de Contrato</label>
+            <input type="text" name="contract-type" id="contract-type">
+        </div>
+        <div class="form-search-item  col-sm-4">
+            <button class="btn btn-outline-success " >Buscar</button>
+        </div>
+    </form>
+</div>
+
+<div class="vacancy-list">
+    <table>
+        <thead>
+            <tr class="vacancy-list-tr">
+                <th class="vacancy-list-name">Nome da Vaga</th>
+                <th class="vacancy-list-location">País/Estado/Cidade</th>
+                <th class="vacancy-list-type">Tipo de Contrato</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr class="vacancy-list-tr">
+                <td class="vacancy-list-data "> Data</td>
+            </tr>
+
+
+            <tr class="vacancy-list-tr  vacancy-list-tr-description">
+                <td class="vacancy-list-name">Vaga 1</td>
+                <td class="vacancy-list-location">Brasil/São Paulo/Bauru</td>
+                <td class="vacancy-list-type">CLT</td>
+            </tr>
+
+
+            <tr class="vacancy-list-tr vacancy-list-tr-description ">
+                <td class="vacancy-list-name">Vaga 1</td>
+                <td class="vacancy-list-location">Brasil/São Paulo/Bauru</td>
+                <td class="vacancy-list-type">CLT</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</div>
+
+{%endblock%}

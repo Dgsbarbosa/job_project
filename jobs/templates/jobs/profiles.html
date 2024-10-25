@@ -1,0 +1,204 @@
+{% extends 'jobs/layout.html' %}
+
+
+{% block title%} Perfis{% endblock %}
+
+{% block body %}
+
+<div class="div-profiles">
+
+    <h2>Perfis</h2>
+    <div class="container">
+        <div class="div-button-profiles row ">
+
+            <input type="button" class="btn btn-outline-primary col-md-6" id="show-worker-profile" value="Trabalhador">
+            <input type="button" class="btn btn-outline-primary col-md-6" id="show-company-profile" value="Empresa">
+        </div>
+
+    </div>
+
+
+
+    <div class="worker-profile container" hidden>
+
+        {% if candidate_profile%}
+        <h2>Perfil: Trabalhador</h2>
+
+        <div class="candidate-name row card-div-item">
+
+            <div class=" name col-md-6">
+                <p>Nome:</p>
+                <span class="span-description">{{ candidate_profile.user.first_name|capfirst}}</span>
+            </div>
+            <div class="candidate-lastname col-md-6">
+                <p>Sobrenome:</p>
+                <span class="span-description"> {{candidate_profile.user.last_name|capfirst}}</span>
+            </div>
+
+        </div>
+
+        <div class="location row card-div-item">
+
+            <div class="candidate-city col-md-4">
+                <p>Cidade:</p>
+                <span class="span-description">{{ candidate_profile.city|capfirst}}</span>
+            </div>
+
+            <div class="candidate-state col-md-4">
+                <p>Estado:</p>
+                <span class="span-description">{{ candidate_profile.state|capfirst}}</span>
+            </div>
+
+            <div class="candidate-county col-md-4">
+                <p>País: </p>
+                <span class="span-description">{{ candidate_profile.country|capfirst}}</span>
+            </div>
+        </div>
+
+
+        <div class="candidate-person-sumary row card-div-item">
+            <p>Resumo Profissional: </p>
+            <span class="span-description">{{ candidate_profile.professional_sumary|capfirst}}</span>
+        </div>
+
+        <div class="candidate-professional-sumary row card-div-item">
+            <p>Resumo Pessoal: </p>
+            <span class="span-description">{{ candidate_profile.personal_sumary|capfirst}}</span>
+        </div>
+
+        <div class="row div-button-edit-profile">
+            <a href="{% url 'jobs:edit_profile_candidate' candidate_profile.id %}">
+
+                <input type="button" class="btn btn-outline-warning " value="Edit">
+
+            </a>
+        </div>
+
+        {% else %}
+
+        <div class="row div-button-edit-profile">
+
+            <a href="{% url 'jobs:register_profile' %} " class="div-button-edit-profile">
+                <input type="button" class="btn btn-outline-success" value="Cadastrar Perfil">
+
+            </a>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="company-profile container" hidden>
+
+        {% if count_company_profile > 1 %}
+
+        <div class="buttons-company container">
+            <div class="row">
+
+                <h6>Foram encontradas  <b>{{ company_profile.count }}</b> empresas </h6>
+                {% for company in company_profile %}
+
+
+                <div class="col-md-6 d-flex">
+                    <input type="button" class="btn btn-outline-info button-company flex-grow-1"
+                        id="button-company-{{ company.id }}" value="{{ company|capfirst }}">
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+
+
+
+        <div class="company">
+
+            <h2 hidden>Perfil: Empresa</h2>
+
+            {% for company in company_profile %}
+            <div id="company-{{ company.id }}" hidden>
+                <div class="company-name row card-div-item">
+                    <p>Nome da Empresa: </p>
+                    <span class="span-description">{{ company.company_name|capfirst}} </span>
+                </div>
+
+                <div class="location row card-div-item">
+                    <div class="company-city col-md-4">
+                        <p>Cidade: </p>
+                        <span class="span-description">{{ company.city|capfirst}}</span>
+                    </div>
+                    <div class="company-estate col-md-4">
+                        <p>Estado: </p>
+                        <span class="span-description">{{ company.state|capfirst}}</span>
+                    </div>
+                    <div class="company-country col-md-4">
+                        <p>País:</p>
+                        <span class="span-description">{{ company.country|capfirst}}</span>
+                    </div>
+                </div>
+                <div class="company-sumary row card-div-item">
+                    <p>Resumo da Empresa: </p>
+                    <span class="span-description">{{ company.resume_company|capfirst}}</span>
+                </div>
+                <div class=" div-button-edit-profile row">
+                    <input type="button" class="btn btn-outline-warning .edit-profile" value="Edit">
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        {% elif count_company_profile == 1 %}
+
+
+        <div class="company-name row card-div-item">
+            <p>Nome da Empresa: </p>
+            <span class="span-description">{{ company_profile.company_name|capfirst}} </span>
+        </div>
+
+        <div class="location row card-div-item">
+            <div class="company-city col-md-4">
+                <p>Cidade: </p>
+                <span class="span-description">{{ company_profile.city|capfirst}}</span>
+            </div>
+            <div class="company-estate col-md-4">
+                <p>Estado: </p>
+                <span class="span-description">{{ company_profile.state|capfirst}}</span>
+            </div>
+            <div class="company-country col-md-4">
+                <p>País:</p>
+                <span class="span-description">{{ company_profile.country|capfirst}}</span>
+            </div>
+        </div>
+
+        <div class="company-sumary row card-div-item">
+            <p>Resumo da Empresa: </p>
+            <span class="span-description">{{ company_profile.resume_company|capfirst}}</span>
+        </div>
+
+        <div class=" div-button-edit-profile row">
+            <input type="button" class="btn btn-outline-warning .edit-profile" value="Edit">
+        </div>
+
+
+        {% else %}
+
+        <div class="div-button-edit-profile row">
+
+            <a href="{% url 'jobs:register_company' %}" class="div-button-edit-profile">
+
+                <input type="button" class="btn btn-outline-success .edit-company" value="Cadastrar Empresa">
+
+            </a>
+
+        </div>
+        {% endif %}
+
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}

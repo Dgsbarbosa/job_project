@@ -1,0 +1,128 @@
+/* border: 1px solid rgb(0, 0, 0); */
+
+body{
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+}
+.navbar-brand {
+    padding-left: 20px;
+}
+.nav-buttons{
+    display: flex;
+    align-items: center;
+
+}
+.name-user-nav span{
+
+display: block;
+text-align: center;
+font-size: 11px;
+margin-right: 10px;
+}
+
+
+
+
+.div-nav-list ul {
+    justify-content: center;
+    flex-grow: 1;
+}
+
+
+/* Option under nav */
+
+.div-options-loggedIn {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 30px;
+
+}
+
+.options-loggedIn {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    padding: 0 20px 0 20px;
+    align-items: center;
+}
+
+.options-loggedIn-item {
+    list-style: none;
+    text-align: center;
+    flex: 1;
+    padding: 10px;
+    /* border: 1px solid rgb(3, 255, 24); */
+
+}
+
+/* Search Form */
+
+.div-form-search {
+    display: flex;
+    margin-top: 20px;
+    width: 90%;
+}
+
+.div-form-search form {
+    width: 100%;
+    align-items: flex-end;
+
+}
+
+.form-search-item {
+
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.div-form-search input{
+
+    border-radius: 5px;
+
+}
+
+/* Lista de vagas */
+.vacancy-list{
+    display: flex;
+    padding: 10px;
+}
+.vacancy-list table{
+    width: 100%;
+    margin-top: 20px;
+    border-spacing: 0 10px;
+    border-collapse: separate;
+    
+}
+.vacancy-list thead{
+    width: 100%;
+
+}
+.vacancy-list-tr{
+    width: 100%;
+    margin: 10px;
+    justify-content: space-around;
+    /* border: 1px solid rgb(3, 255, 24); */
+
+}
+
+.vacancy-list-data {
+    font-weight: bold;
+}
+.vacancy-list-name, .vacancy-list-data{
+padding-left: 20px;
+}
+
+.vacancy-list-location, .vacancy-list-type{
+    text-align: center;
+
+}
+
+.vacancy-list-tr-description td{
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+}
+
+

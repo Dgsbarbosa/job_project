@@ -1,0 +1,39 @@
+/* border: 1px solid black; */
+.edit_profile{
+    padding: 20px;
+}
+
+.information div{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+
+}
+
+.information div select{
+    max-width:min-content;
+    height: 30px;
+    
+}
+.information div select option{
+    
+    
+
+    
+}
+
+.information-button{
+    justify-content: center;
+    
+}
+
+
+.edit_profile h2{
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.personal-sumary, .professional-sumary{
+    padding: 0 20px 0 10px;
+}
+
