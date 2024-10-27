@@ -32,6 +32,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
         button.addEventListener("click", () => showCompany(button_id))
     })
 
+    var phones = document.querySelectorAll(".phone");
+    phones.forEach(phone => {
+        phone.addEventListener("input", handlePhone)
+    })
+
+
+
 });
 
 function populateCoutriesSelect() {
@@ -42,7 +49,7 @@ function populateCoutriesSelect() {
             const countrySelect = document.querySelector(".select-country");
             data.forEach(country => {
                 let option = document.createElement("option");
-                option.value = `${country.iso2}:${country.name}`;
+                option.value = `${country.iso2}:${country.name}:${country.phonecode}`;
                 option.text = country.name;
                 countrySelect.appendChild(option)
             });
@@ -80,6 +87,7 @@ function populateStates(countryCode) {
         })
 }
 
+var phoneCodeChoice = ""
 function populateCities(countryCode, stateCode) {
     fetch(`/get_cities/${countryCode}/${stateCode}`)
         .then(response => response.json())
@@ -126,13 +134,20 @@ document.querySelector(".select-country").addEventListener("change", function ()
 
         document.querySelector(".select-city").disabled = true;
 
+        phoneCodeChoice = phoneCountryCode(countryCodeSplit[2])
+
+
+
     } else {
         document.querySelector(".select-state").disabled = true;
 
         document.querySelector(".select-city").disabled = true;
 
     }
+
+
 })
+
 
 
 document.querySelector(".select-state").addEventListener("change", function () {
@@ -153,13 +168,15 @@ document.querySelector(".select-state").addEventListener("change", function () {
         populateCities(countryCode, stateCode)
 
     }
+
+
 })
+
 
 function closeMessage(element) {
     var alertBox = element.parentElement;
     alertBox.remove();
 }
-
 
 function showCompany(button_id) {
 
@@ -167,14 +184,74 @@ function showCompany(button_id) {
     let h2_companies = document.querySelectorAll(".company > h2");
 
     div_companies.forEach(div => div.hidden = true);
-    
-    
+
+
     let button_id_split = button_id.split("-");
     let id = `${button_id_split[1]}-${button_id_split[2]}`;
-    
+
     h2_companies.forEach(h2 => h2.hidden = false);
     company = document.querySelector(`#${id}`);
     company.hidden = false;
 
 
+}
+
+
+function phoneCountryCode(phoneCode) {
+    var phones = document.querySelectorAll(".phone");
+
+    phones.forEach(phone => {
+        var cleaned = phoneCode.replace(/-.*$/, "").replace(/[^0-9]/g, "");
+        phone.value = `+${cleaned}`;
+
+        
+    })
+}
+
+function phoneCountryCodeCleaned(phoneCode) {
+    
+    var cleaned = phoneCode.replace(/-.*$/, "").replace(/[^0-9]/g, "");
+    
+    return cleaned
+}
+const handlePhone = (event) => {   
+
+    let input = event.target;
+    input.value = phoneMask(input.value)
+}
+
+const phoneMask = (value) => {
+    if (!value) return "";
+    let phoneCode = document.querySelector(".select-country").value;
+
+    // Extrai o código do país
+    let phoneCodeSplit = phoneCountryCodeCleaned(phoneCode.split(":")[2]);
+
+    // Remove todos os caracteres não numéricos do valor
+    value = value.replace(/\D/g, '');
+
+    // Adiciona o código de país se ele não estiver presente no início
+    if (!value.startsWith(phoneCodeSplit)) {
+        value = `${phoneCodeSplit}${value}`;
+    }
+
+    // Formatação inicial: +ddi(ddd)
+    value = `+${value}`;
+    value = value.replace(new RegExp(`(\\+${phoneCodeSplit})(\\d{2})(\\d)`), "$1($2) $3");
+
+    // Limitar ao formato de 8 ou 9 dígitos finais
+    if (value.match(/\d{9}$/)) {
+        // Formato com 9 dígitos (9 9999-9999)
+        value = value.replace(/(\d{1})(\d{4})(\d{4})$/, "$1 $2-$3");
+    } else {
+        // Formato com 8 dígitos (9999-9999)
+        value = value.replace(/(\d{4})(\d{4})$/, "$1-$2");
+    }
+
+    // Limite o comprimento para evitar qualquer caractere extra
+    if (value.length > `+${phoneCodeSplit} (00) 0 0000-0000`.length) {
+        value = value.slice(0, `+${phoneCodeSplit} (00) 0 0000-0000`.length);
+    }
+
+    return value;
 }

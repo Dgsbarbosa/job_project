@@ -14,11 +14,13 @@
 </head>
 
 <body>
+    
     <div id="ads-top">
 
     </div>
 
     <div id="group-body">
+
         <div id="ads-left">
 
         </div>
@@ -36,7 +38,7 @@
                     <div class="collapse navbar-collapse div-nav-list" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link " aria-current="page" href="#">Vagas</a>
+                                <a class="nav-link " aria-current="page" href="{% url 'jobs:index' %}">Vagas</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'jobs:register_vacancy' %}">Cadastrar Vaga</a>
@@ -86,6 +88,14 @@
                 <div class="alert alert-danger" role="alert">
                     <div class="message">{{ message }}</div> <div class="close-alert" onclick="closeMessage(this)">x</div> 
                 </div>
+                {% elif message.tags == "info" %}
+                <div class="alert alert-info" role="alert">
+                    <div class="message">{{ message }}</div> <div class="close-alert" onclick="closeMessage(this)">x</div> 
+                </div>
+                {% elif message.tags == "warning" %}
+                <div class="alert alert-warning" role="alert">
+                    <div class="message">{{ message }}</div> <div class="close-alert" onclick="closeMessage(this)">x</div> 
+                </div>
                 {% endif %}
                 {% endfor%}
             </div>
@@ -102,7 +112,10 @@
         <div id="ads-rigth">
 
         </div>
+
     </div>
+
+
     <script src="{% static 'jobs/js/script.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

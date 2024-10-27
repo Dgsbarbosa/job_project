@@ -13,5 +13,6 @@ urlpatterns = [
     path("get_countries/",views.get_countries,name="get_countries"),
     path("get_states/<str:country_code>",views.get_states,name="get_states"),
     path("get_cities/<str:country_code>/<str:state_code>",views.get_cities,name="get_cities"),
+    path("edit_company/<int:company_id>", views.edit_company, name="edit_company")
     
 ]

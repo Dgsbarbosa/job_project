@@ -9,8 +9,15 @@ class Location(models.Model):
 
     class Meta:
         abstract = True
-        
-class CandidateProfile(Location):
+
+class Contact(models.Model):
+    phone1 = models.CharField(max_length=25, null=True, blank=True)
+    phone2 = models.CharField(max_length=25, null=True, blank=True)    
+    email = models.EmailField(null=True, blank=True)
+    
+    class Meta:
+        abstract = True
+class CandidateProfile(Contact,Location):
     
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     personal_sumary = models.TextField(null=True, blank=True)
@@ -20,7 +27,7 @@ class CandidateProfile(Location):
     def __str__(self) :
         return f'{self.user.first_name} {self.user.last_name}'
 
-class CompanyProfile(Location):
+class CompanyProfile(Contact,Location):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name="companies")    
     company_name = models.CharField(max_length=150)
     resume_company = models.TextField()
@@ -29,12 +36,12 @@ class CompanyProfile(Location):
     def __str__(self):
         return f'{self.company_name}'
     
-class Vacancies(Location):
-    TYPES_CONTRACT_CHOICES = {
-        "clt":"CLT",
-        "temporario":"Temporario",
-        "freelance":"Freelance"
-    }
+class Vacancies(Contact,Location):
+    TYPES_CONTRACT_CHOICES = [
+        ("clt", "CLT"),
+        ("temporario", "Temporário"),
+        ("freelance", "Freelance")
+    ]
     
     company = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name="vacancies")
     title = models.CharField(max_length=150)    

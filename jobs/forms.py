@@ -11,14 +11,13 @@ class VacanciesForm(ModelForm):
         labels = {
             "company": "Nome da Empresa"
         }
-
-        def __init__(self,*args, **kwargs):
+        widgets = {
+            'contract_type':forms.Select(attrs={'class':"form-select select-type-contract"}),
+            'phone1': forms.TextInput(attrs={"class":"phone","placeholder":"3333-3333"}),
+            'phone2': forms.TextInput(attrs={"class":"phone","placeholder":"9 9999-9999"})
             
-            super(VacanciesForm,self).__init__(*args,**kwargs)
-            print(self.user)
-            if hasattr(self,'user'):
-                
-                self.fields['company'].queryset = CompanyProfile.objects.filter(user_id=self.user.id)
+        }
+  
 
 class CandidateProfileForm(ModelForm):
     class Meta:
@@ -28,4 +27,4 @@ class CandidateProfileForm(ModelForm):
 class CompanyProfileForm(ModelForm):
     class Meta:
         model = CompanyProfile
-        exclude = ["id","user","city","state","country","created_at"]
+        exclude = ["id","user","city","state","country","company_name","created_at"]

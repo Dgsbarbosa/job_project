@@ -39,14 +39,16 @@ def register(request):
             
             return redirect("jobs:index")
         except:
-   
+            messages.error(request,"Não foi possivel realizar o login. Tente novamente")
             pass
  
     return render(request,"user/register.html")
 
 def login_view(request):
     
+    
     if request.method == "POST":
+        print(request)
                 
         email = request.POST['email']
         password = request.POST['password']
@@ -54,13 +56,20 @@ def login_view(request):
         user = authenticate(request, email=email, password=password)
         
         if user is not None:
-            login(request, user)
-
-            return redirect("jobs:index")
+            try:
+                login(request, user)
+            
+                return redirect("jobs:index")
+            except:
+                messages.error(request,"Não foi possivel realizar o login. Tente novamente.")
+                return redirect("user:login_view")
         
         else:
             messages.error(request,"Email e/ou Senha Invalida")
-            return render (request, 'user/register.html',)
+            return redirect("user:login_view")
+            
+            
+    return render (request, 'user/register.html',)
 
 def logout_view(request):
     

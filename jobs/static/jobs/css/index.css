@@ -1,0 +1,203 @@
+/* border: 1px solid rgb(0, 0, 0); */
+
+
+.navbar-brand {
+    padding-left: 20px;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+
+}
+
+.name-user-nav span {
+
+    display: block;
+    text-align: center;
+    font-size: 11px;
+    margin-right: 10px;
+}
+
+.div-nav-list ul {
+    justify-content: center;
+    flex-grow: 1;
+}
+
+
+/* Option under nav */
+
+.div-options-loggedIn {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 30px;
+
+}
+
+.options-loggedIn {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    padding: 0 20px 0 20px;
+    align-items: center;
+}
+
+.options-loggedIn-item {
+    list-style: none;
+    text-align: center;
+    flex: 1;
+    padding: 10px;
+}
+
+/* Search Form */
+
+.div-form-search {
+    display: flex;
+    margin-top: 20px;
+    width: 90%;
+    border-radius: 5px;
+    background-color: blanchedalmond;
+    padding: 10px 0 10px 10px;
+
+}
+
+.div-form-search form {
+    width: 100%;
+    align-items: flex-end;
+    row-gap: 20px;
+}
+
+.form-search-item {
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+.form-search-item select {
+
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+.div-form-search input {
+
+    border-radius: 5px;
+    padding: 5px;
+    border: none;
+
+}
+
+/* Lista de vagas */
+/* border: 1px solid rgb(0, 0, 0); */
+.vacancy-list {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.vacancy-list table {
+    width: 100%;
+    padding: 300px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgb(0, 0, 0, 0.1);
+    overflow: hidden;
+
+}
+
+.vacancy-list thead th {
+    padding: 15px;
+    background-color: #f8f8f8;
+    color: #333;
+    font-weight: bold;
+    text-align: left;
+}
+
+.date-vacancy td {
+    padding: 30px 10px 10px 10px;
+    /* background-color: #f0f4f8; */
+    color: #555;
+    font-weight: bold;
+    /* border-bottom: 2px solid #e2e8f0; */
+
+}
+
+.button-view-all-vacancy {
+    text-align: center;
+    padding: 30px 0 30px 0;
+
+}
+
+.vacancy-list tbody tr {
+    background-color: #fff;
+
+}
+
+
+.vacancy-list-tr-description td {
+    padding: 15px;
+    border-bottom: 1px solid #e2e8f0;
+
+}
+
+
+.vacancy-list-tr-description:hover {
+    background-color: #f9fafb;
+
+}
+
+.vacancy-title a {
+    text-decoration: none;
+}
+
+.vacancy-title:hover {
+    padding-left: 30px;
+    transform: scale(1.05);
+}
+
+.vacancy-title:hover a {
+
+    text-decoration: underline;
+    /* transform: scale(1.05); */
+}
+
+.vacancy-list-data {
+    font-weight: bold;
+    padding-left: 30px;
+    color: #333;
+}
+
+.tr-titles td {
+    padding: 10px 0 0px 0;
+}
+
+.tr-titles td:first-child {
+    /* border: 1px solid rgb(0, 0, 0); */
+    padding-left: 15px;
+
+}
+
+.vacancy-list-location,
+.vacancy-list-type {
+    text-align: center;
+
+}
+
+.alert-vacancy td {
+
+    text-align: center;
+    color: #4caf50;
+    font-weight: bold;
+    border: none;
+}
+
+.message-no-vacancy {
+    text-align: center;
+    padding: 30px;
+}

@@ -1,9 +1,161 @@
 {% extends 'jobs/layout.html' %}
 
-{%block body%}
-<div class="register_vacancy">
-    
-    {{ form.as_p}}
+{%block title%} Cadastro de Vaga {% endblock %}
+
+{% block body%}
+
+
+
+<div class="register_vacancy container">
+
+    {% if companies %}
+    <form action="{% url 'jobs:register_vacancy' %}" method="POST">
+
+        {% csrf_token %}
+
+        <h2>Cadastro de Vaga </h2>
+
+        <div class="container">
+
+            <div class=" information row">
+
+                <div class="col-md-12">
+                    <label for="company_name">Titulo da Vaga:</label>
+                    {{ form.title }}
+                </div>
+
+
+
+            </div>
+
+            <div class=" information row">
+
+                <div class="col-md-8">
+                    <label for="company_name">Nome da Empresa:</label>
+                    <select name="company" id="company" required>
+                        <option value="" selected>-------</option>
+
+                        {% for company in companies %}
+                        <option value="{{ company.id }}" >{{ company }}</option>
+
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="{{ form.contract_type.id_for_label }}">Tipo de contrato:</label>
+                    
+                        {{ form.contract_type }}                  
+                    
+                </div>
+
+            </div>
+
+            <div class="information row">
+
+                <div class="col-md-4">
+                    <label for="country">País da vaga:</label>
+                    <select name="country" class="select-country" id="country" required>
+                        <option value="">Selecione um país</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="{{ form.state.id_for_label }}">Estado da vaga:</label>
+                    <select name="state" class="select-state" id="state"  required>
+                        <option value="" disabled selected >Aguardando País</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="{{ form.country.id_for_label }}">Cidade da vaga:</label>
+                    <select name="city" class="select-city" id="city" required>
+                        <option value="" disabled selected>Aguardando País</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="contract-type information row">
+
+                
+                
+            </div>
+
+            <div class="contact information row">
+                <div class="col-md-3">
+                    <label for="{{ form.contract_type.id_for_label }}">Telefone:</label>
+                    
+                        {{ form.phone1 }}                  
+                    
+                </div>
+                <div class="col-md-3">
+                    <label for="{{ form.contract_type.id_for_label }}">Celular:</label>
+                    
+                        {{ form.phone2 }}                  
+                    
+                </div> <div class="col-md-6">
+                    <label for="{{ form.contract_type.id_for_label }}">Email:</label>
+                    
+                        {{ form.email }}                  
+                    
+                </div>
+            </div>
+
+            <div class="descript-vacation information row">
+
+                <div class="col-md-12">
+                    <label for="{{ form.personal_sumary.id_for_label }}">Descrição da Vaga:</label>
+                    
+                        {{ form.descript }}
+                    
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+        <div class="row information information-button">
+
+            <div class="col-md-4">
+                <a href="javascript:history.back()">
+                    <input type="text" class="btn btn-outline-primary btn-back" value="Voltar">
+                </a>
+            </div>
+            <div class="col-md-4">
+                <input type="submit" class="btn btn-outline-success">
+            </div>
+        </div>
+    </form>
+
+    {% else %}
+
+    <div class="buttons-register-company container">
+
+        <div class="row">
+            <h2>Cadastre uma empresa para continuar </h2>
+        </div>
+
+
+
+        <div class="row ">
+            <div class="col-md-4 ">
+                <a href="javascript:history.back()" class="btn btn-outline-primary btn-back btn-block ">
+                    Voltar
+                </a>
+            </div>
+            <div class="col-md-4 ">
+                <a href="{% url 'jobs:register_company' %}" class="btn btn-outline-success btn-block  ">
+                    Cadastrar Empresa
+                </a>
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
 </div>
 
-{%endblock%}
+
+{% endblock %}
