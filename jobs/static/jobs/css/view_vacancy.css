@@ -1,0 +1,43 @@
+/* border: 1px solid black; */
+
+.div-button-save-vacancy{
+    margin-bottom: 30px;    
+}
+.view_vacancy{
+    margin-top: 30px;
+    padding: 30px;
+}
+
+.vacancy-descript{
+    text-align: justify;
+}
+
+.name-vacancy h3{
+    margin-bottom: 0;
+}
+.name-vacancy p{
+    margin-bottom: 0;
+}
+
+.div-buttons-vacancy{
+    width: 100%;
+    margin: 0;
+   padding: 0;
+    
+}
+
+.div-buttons-vacancy .row{
+    display: flex;
+    justify-content: center;
+
+}
+.div-buttons-vacancy input{
+    width: 50%;
+}
+
+
+/* Saved vacancy */
+/* border: 1px solid black; */
+
+
+

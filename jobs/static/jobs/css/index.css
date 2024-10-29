@@ -56,16 +56,13 @@
 
 .div-form-search {
     display: flex;
-    margin-top: 20px;
-    width: 90%;
-    border-radius: 5px;
-    background-color: blanchedalmond;
-    padding: 10px 0 10px 10px;
+    justify-content: center;   
+    margin-top: 50px;
 
 }
 
 .div-form-search form {
-    width: 100%;
+    width: 80%;
     align-items: flex-end;
     row-gap: 20px;
 }
@@ -77,20 +74,9 @@
 
 }
 
-.form-search-item select {
 
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-}
 
-.div-form-search input {
 
-    border-radius: 5px;
-    padding: 5px;
-    border: none;
-
-}
 
 /* Lista de vagas */
 /* border: 1px solid rgb(0, 0, 0); */
@@ -143,7 +129,6 @@
 .vacancy-list-tr-description td {
     padding: 15px;
     border-bottom: 1px solid #e2e8f0;
-
 }
 
 
@@ -157,8 +142,7 @@
 }
 
 .vacancy-title:hover {
-    padding-left: 30px;
-    transform: scale(1.05);
+    padding-left: 20px;
 }
 
 .vacancy-title:hover a {

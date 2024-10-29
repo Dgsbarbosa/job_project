@@ -16,21 +16,21 @@
 
         <div class="">
 
-            <div class=" information row">
-                <div class="col-md-4">
+            <div class=" form-information row">
+                <div class="col-md-6">
                     <label for="first_name">Nome:</label>
                     <input type="text" id="first_name" value="{{request.user.first_name|capfirst}}"
                         readonly>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="last_name">Sobrenome:</label>
                     <input type="text" id="last_name" value="{{request.user.last_name|capfirst}}" readonly>
                 </div>
 
             </div>
 
-            <div class="information row">
+            <div class="form-information row">
 
                 <div class="col-md-4">
                     <label for="country">País:</label>
@@ -55,7 +55,7 @@
 
 
 
-            <div class="personal-sumary information">
+            <div class="personal-sumary form-information">
 
                 <label for="{{ form.personal_sumary.id_for_label }}">Resumo Pessoal:</label>
                 <div class="row">
@@ -65,7 +65,7 @@
             </div>
 
 
-            <div class="professional-sumary information">
+            <div class="professional-sumary form-information">
                 <label for="{{ form.professional_sumary.id_for_label }}">Resumo Professional:</label>
                 <div class="row">
 
@@ -74,7 +74,7 @@
             </div>
 
         </div>
-        <div class="row information information-button">
+        <div class="row form-information form-information-button">
 
             <div class="col-md-4">
                 <a href="javascript:history.back()">

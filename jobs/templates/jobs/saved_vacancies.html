@@ -1,0 +1,101 @@
+{% extends "jobs/layout.html" %}
+
+{%block title%}Vagas Salvas{%endblock%}
+
+{%block body%}
+
+
+<div class="saved-list container">
+    <table class="">
+        <thead>
+            
+            <tr class="tr-button-view-all-vacancy">
+                <td class="button-view-all-vacancy" colspan="4">
+
+                    <a href="{% url 'jobs:index' %}">
+                        <input type="text" class="btn btn-outline-primary" value="Ver todas as vagas">
+                    </a>
+                </td>
+
+            </tr>
+            <tr>
+                <th class="" colspan="1">Vagas Salvas</th>
+                <th colspan="3">Total de vagas: {{ vacancies_count }}</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for saved in saved_vacancies %}
+            <tr class="saved-list-tr-description">
+
+                <td class="saved-title">
+                    <a href="{% url 'jobs:view_vacancy' saved.vacancy.id%}">
+
+                        {{ saved.vacancy.title|capfirst}}
+                    </a>
+
+                </td>
+
+                <td class="saved-list-location">
+                    {{ saved.vacancy.country }} / {{ saved.vacancy.state }} / {{ saved.vacancy.city }}
+                </td>
+                <td class="saved-list-type"> {{ saved.vacancy.contract_type|capfirst}}</td>
+                <td>
+                    <div class="">
+                        <button
+                            class="btn {% if saved %}btn-success{% else %}btn-outline-success{% endif %} btn-sm save-toggle"
+                            data-id="{{ saved.vacancy.id }}">
+                            {% if saved %}
+                            Desmarcar Vaga
+                            {% else %}
+                            Salvar Vaga
+                            {% endif %}
+                        </button>
+                    </div>
+                </td>
+
+
+            </tr>
+
+
+
+
+
+            <tr class="div-ads-video">
+                <td>
+
+                    <div class="video-ad">
+
+                    </div>
+
+                </td>
+            </tr>
+            {% empty %}
+
+            <tr class=" .alert-vacancy vacancy-list-tr">
+
+                <td class="message message-no-vacancy alert alert-info" colspan="3">
+                    Não há vagas para:
+                    <div>
+
+                        {% for chave, valor in return_search.items %}
+                        <strong>{{ chave|capfirst }}</strong>: {{ valor|upper }},
+                        {% endfor %}
+                    </div>
+                </td>
+
+            </tr>
+
+
+            {% endfor %}
+
+
+
+        </tbody>
+    </table>
+
+</div>
+
+{%endblock%}

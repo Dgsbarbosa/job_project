@@ -13,8 +13,9 @@ class VacanciesForm(ModelForm):
         }
         widgets = {
             'contract_type':forms.Select(attrs={'class':"form-select select-type-contract"}),
-            'phone1': forms.TextInput(attrs={"class":"phone","placeholder":"3333-3333"}),
-            'phone2': forms.TextInput(attrs={"class":"phone","placeholder":"9 9999-9999"})
+            'phone1': forms.TextInput(attrs={"class":"phone","placeholder":"3333-3333","id":"phone1","hidden":True}),
+            'phone2': forms.TextInput(attrs={"class":"phone","placeholder":"9 9999-9999","id":"phone2","hidden":True}),
+            'email': forms.TextInput(attrs={"placeholder":"exemplo@exemplo.com","required":True})
             
         }
   
@@ -27,4 +28,6 @@ class CandidateProfileForm(ModelForm):
 class CompanyProfileForm(ModelForm):
     class Meta:
         model = CompanyProfile
-        exclude = ["id","user","city","state","country","company_name","created_at"]
+        exclude = ["id","user","city","state","country","created_at"]
+        
+        

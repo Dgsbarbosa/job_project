@@ -1,13 +1,17 @@
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.http import HttpResponse,JsonResponse
+from django.shortcuts import redirect, render,get_list_or_404, get_object_or_404
 from .forms import VacanciesForm, CandidateProfileForm, CompanyProfileForm
 from django.contrib.auth.decorators import login_required
-from .models import CompanyProfile, CandidateProfile,Vacancies
+from django.views.decorators.http import require_POST
+from .models import CompanyProfile, CandidateProfile, Vacancies, SaveVacancy
 import requests
 from django.http import JsonResponse
 from django.conf import settings
 from django.contrib import messages
 from collections import OrderedDict, defaultdict
+from . import utils
+from user.models import CustomUser
+
 
 # Create your views here.
 
@@ -56,20 +60,20 @@ def get_cities(request, country_code, state_code):
 
 
 def index(request):
-    
+
     vacancies_grouped_by_date = defaultdict(list)
-    
+
     return_search = ""
     button_view_vacancies = False
     if request.method == "POST":
-        
+
         filters = {}
-        country = request.POST.get("country","")
-        state = request.POST.get("state","")
-        city = request.POST.get("city","")
-        position = request.POST.get("position","")
-        contract_type = request.POST.get("contract-type","")
-        
+        country = request.POST.get("country", "")
+        state = request.POST.get("state", "")
+        city = request.POST.get("city", "")
+        position = request.POST.get("position", "")
+        contract_type = request.POST.get("contract-type", "")
+
         if country:
             filters["country"] = country
         if state:
@@ -80,56 +84,76 @@ def index(request):
             filters["title__icontains"] = position
         if contract_type:
             filters["contract_type"] = contract_type
-        
-        
+
         for vacancy in Vacancies.objects.filter(**filters):
             date = vacancy.created_at.date()
-            vacancies_grouped_by_date[date].append(vacancy)           
-        
+            vacancies_grouped_by_date[date].append(vacancy)
+
         if not vacancies_grouped_by_date.items():
-            return_search = filters 
-            
-            for chave,valor in return_search.items():
-                
+            return_search = filters
+
+            for chave, valor in return_search.items():
+
                 if ":" in valor:
                     return_search[chave] = valor.split(":")[1]
-        
+
         button_view_vacancies = True
         
-        
+
     else:
-        
+
         for vacancy in Vacancies.objects.all():
-            date = vacancy.created_at.date() 
-            
+            date = vacancy.created_at.date()
+
             vacancies_grouped_by_date[date].append(vacancy)
 
     for date, vacancies in vacancies_grouped_by_date.items():
-        
-        vacancies.sort(key=lambda v: v.created_at,reverse=True)
+
+        vacancies.sort(key=lambda v: v.created_at, reverse=True)
         for vacancy in vacancies:
-            country = vacancy.country  
-            country = country.split(":")[1] 
-            vacancy.country = country 
-            
-            state = vacancy.state 
+            country = vacancy.country
+            country = country.split(":")[1]
+            vacancy.country = country
+
+            state = vacancy.state
             state = state.split(":")[1]
             vacancy.state = state
-                
-        
-    vacancies_grouped_by_date = OrderedDict(sorted(vacancies_grouped_by_date.items(),reverse=True))
-    
+
+    vacancies_grouped_by_date = OrderedDict(
+        sorted(vacancies_grouped_by_date.items(), reverse=True))
+
     vacancies_count = sum(len(v) for v in vacancies_grouped_by_date.values())
     context = {
-        "vacancies_grouped_by_date":vacancies_grouped_by_date,
-        "return_search":return_search,
-        "button_view_vacancies":button_view_vacancies,
-        "vacancies_count":vacancies_count
+        "vacancies_grouped_by_date": vacancies_grouped_by_date,
+        "return_search": return_search,
+        "button_view_vacancies": button_view_vacancies,
+        "vacancies_count": vacancies_count
 
     }
     return render(request, "jobs/index.html", context)
 
 
+def view_vacancy(request, vacancy_id):
+
+    vacancy = Vacancies.objects.get(pk=vacancy_id)
+    saved_vacancy = SaveVacancy.objects.filter(user=request.user, vacancy=vacancy.id)
+    
+    country = vacancy.country
+    country = country.split(":")[1]
+    vacancy.country = country
+    state = vacancy.state
+    state = state.split(":")[1]
+    vacancy.state = state
+
+    
+    context = {
+        "vacancy": vacancy,
+        "saved_vacancy":saved_vacancy
+    }
+    return render(request, "jobs/view_vacancy.html", context)
+
+
+@login_required(login_url="auth/register")
 def register_profile(request):
 
     if request.method == "POST":
@@ -165,6 +189,7 @@ def register_profile(request):
     return render(request, "jobs/register_profile.html", context)
 
 
+@login_required(login_url="auth/register")
 def register_company(request):
 
     if request.method == "POST":
@@ -193,6 +218,7 @@ def register_company(request):
 
     else:
         form = CompanyProfileForm()
+
     context = {
         "form": form
     }
@@ -205,40 +231,88 @@ def register_vacancy(request):
     companies = CompanyProfile.objects.filter(user=request.user)
     if request.method == 'POST':
         form = VacanciesForm(request.POST)
-        
+
         if form.is_valid():
-            
+
             try:
                 vacancy = form.save(commit=False)
                 vacancy.company_id = request.POST['company']
                 vacancy.country = request.POST['country']
                 vacancy.state = request.POST['state']
                 vacancy.city = request.POST['city']
-                
+
                 if len(vacancy.phone1) < 10:
                     vacancy.phone1 = ""
                 if len(vacancy.phone2) < 10:
-                    vacancy.phone2 = ""    
-                
+                    vacancy.phone2 = ""
+
                 vacancy.save()
-                
-                
-                messages.success(request,"Vaga cadastrada com suceso.")
+
+                messages.success(request, "Vaga cadastrada com suceso.")
 
                 return redirect("jobs:index")
-            except:
-                
-                messages.error(request,"Não foi possivel cadastrar a vaga. Tente novemente")
+            except Exception as err:
+                print("Error:", err)
+                messages.error(
+                    request, "Não foi possivel cadastrar a vaga. Tente novemente")
     else:
         companies = CompanyProfile.objects.filter(user=request.user)
         form = VacanciesForm()
-        
 
     context = {
-        "companies":companies,
+        "companies": companies,
         'form': form
     }
     return render(request, "jobs/register_vacancy.html", context)
+
+
+@login_required(login_url="auth/register")
+def edit_vacancy(request, vacancy_id):
+    vacancy = Vacancies.objects.get(pk=vacancy_id)
+    if request.method == "POST":
+        
+        form = VacanciesForm(request.POST, instance=vacancy)
+        
+        print(form)
+        if form.is_valid():
+            
+            vacancy_form = form.save(commit=False)
+
+            vacancy_form.save()
+
+            messages.success(request,"Vaga editada com sucesso")
+
+        else:
+            messages.error(request,f"Error: Não foi possível editar. Tente novamente. ")
+            
+        return redirect("jobs:view_vacancy", vacancy_id)
+
+    else:
+        
+        
+        form = VacanciesForm(instance=vacancy)
+        
+        vacancy_country_name = vacancy.country
+        vacancy_country_name = vacancy_country_name.split(":")[1]
+        vacancy_state_name = vacancy.state
+        vacancy_state_name = vacancy_state_name.split(":")[1]
+        
+        if form["phone1"].value():
+            form.fields["phone1"].widget.attrs['hidden'] = False
+            
+        if form["phone2"].value():
+            form.fields["phone2"].widget.attrs['hidden'] = False
+
+        
+        
+        
+        context = {
+            "form": form,
+            "vacancy": vacancy,
+            "vacancy_country_name": vacancy_country_name,
+            "vacancy_state_name": vacancy_state_name
+        }
+        return render(request, "jobs/edit_vacancy.html", context)
 
 
 @login_required(login_url="auth/register")
@@ -250,10 +324,11 @@ def profiles(request):
         candidate_profile = CandidateProfile.objects.get(user=request.user)
 
     except CandidateProfile.DoesNotExist:
-        messages.warning(request,"Cadastre um perfil")
+        messages.warning(request, "Cadastre um perfil")
         candidate_profile = None
     except:
-        messages.error(request, f"Não foi possivel carregar o Perfil do Candidato" )
+        messages.error(
+            request, f"Não foi possivel carregar o Perfil do Candidato")
 
     try:
         count_company_profile = CompanyProfile.objects.filter(
@@ -324,7 +399,7 @@ def edit_profile_candidate(request, candidate_id):
 def edit_company(request, company_id):
 
     company = CompanyProfile.objects.get(pk=company_id)
-    
+
     try:
         company_country_split = company.country.split(":")[1]
     except:
@@ -333,7 +408,7 @@ def edit_company(request, company_id):
         company_state_split = company.state.split(":")[1]
     except:
         company_state_split = company.state
-        
+
     if request.method == "POST":
 
         form = CompanyProfileForm(request.POST, instance=company)
@@ -346,18 +421,100 @@ def edit_company(request, company_id):
                 company_profile.city = request.POST['city']
 
                 company_profile.save()
-                messages.success(request,f"Empresa atualizada com sucesso")
-                
+                messages.success(request, f"Empresa atualizada com sucesso")
+
                 return redirect("jobs:profiles")
             except Exception as err:
-                messages.error(request,f"Não foi possivel atualizar a empresa. Tente novamente ")
-                
+                messages.error(
+                    request, f"Não foi possivel atualizar a empresa. Tente novamente ")
+
     form = CompanyProfileForm(instance=company)
 
     context = {
         "form": form,
         "company": company,
         "company_country_split": company_country_split,
-        "company_state_split":company_state_split
+        "company_state_split": company_state_split
     }
     return render(request, "jobs/edit_company.html", context)
+
+@login_required(login_url="auth/register")
+def my_vacancies(request):
+    
+    user = CustomUser.objects.get(id=request.user.id)
+    vacancies_grouped_by_date = defaultdict(list)
+    return_search = ""
+    button_view_vacancies = ""
+    
+    for vacancy in Vacancies.objects.filter(company_id=user.id):
+            date = vacancy.created_at.date()
+
+            vacancies_grouped_by_date[date].append(vacancy)
+
+    for date, vacancies in vacancies_grouped_by_date.items():
+
+        vacancies.sort(key=lambda v: v.created_at, reverse=True)
+        for vacancy in vacancies:
+            country = vacancy.country
+            country = country.split(":")[1]
+            vacancy.country = country
+
+            state = vacancy.state
+            state = state.split(":")[1]
+            vacancy.state = state
+
+    vacancies_grouped_by_date = OrderedDict(
+        sorted(vacancies_grouped_by_date.items(), reverse=True))
+
+    vacancies_count = sum(len(v) for v in vacancies_grouped_by_date.values())
+    context = {
+        "vacancies_grouped_by_date": vacancies_grouped_by_date,
+        "return_search": return_search,
+        "button_view_vacancies": button_view_vacancies,
+        "vacancies_count": vacancies_count
+
+    }
+    return render(request,"jobs/my_vacancies.html", context)
+
+
+
+@login_required(login_url="auth/register")
+@require_POST
+def save_vacancy(request, vacancy_id):
+    
+    vacancy = get_object_or_404(Vacancies, id=vacancy_id)
+
+    saved_vacancy, created = SaveVacancy.objects.get_or_create(user=request.user, vacancy=vacancy)
+    
+    if created:
+        status = "saved"
+        
+        
+    else:
+        saved_vacancy.delete()
+        status = "unsaved"
+        
+        
+    return  JsonResponse({'status':status})
+
+@login_required(login_url="auth/register")
+def saved_vacancies(request):
+    
+    saved_vacancies = SaveVacancy.objects.filter(user=request.user).select_related("vacancy").order_by("-saved_at")
+    vacancies_count = saved_vacancies.count()
+    
+    for saved in saved_vacancies:
+        print(saved.vacancy)
+        country = saved.vacancy.country
+        country = country.split(":")[1]
+        saved.vacancy.country = country
+        state = saved.vacancy.state
+        state = state.split(":")[1]
+        saved.vacancy.state = state
+    
+    context = {
+        "saved_vacancies":saved_vacancies,
+        "vacancies_count":vacancies_count,
+       
+    }
+    return render(request,"jobs/saved_vacancies.html",context)

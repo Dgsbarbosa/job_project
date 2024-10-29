@@ -18,7 +18,6 @@
     </div>
 
 
-
     <div class="worker-profile container" hidden>
 
         {% if candidate_profile%}
@@ -27,11 +26,11 @@
         <div class="candidate-name row card-div-item">
 
             <div class=" name col-md-6">
-                <p>Nome:</p>
+                <h6>Nome:</h6>
                 <span class="span-description">{{ candidate_profile.user.first_name|capfirst}}</span>
             </div>
             <div class="candidate-lastname col-md-6">
-                <p>Sobrenome:</p>
+                <h6>Sobrenome:</h6>
                 <span class="span-description"> {{candidate_profile.user.last_name|capfirst}}</span>
             </div>
 
@@ -40,29 +39,29 @@
         <div class="location row card-div-item">
 
             <div class="candidate-city col-md-4">
-                <p>Cidade:</p>
+                <h6>Cidade:</h6>
                 <span class="span-description">{{ candidate_profile.city|capfirst}}</span>
             </div>
 
             <div class="candidate-state col-md-4">
-                <p>Estado:</p>
+                <h6>Estado:</h6>
                 <span class="span-description">{{ candidate_profile.state|capfirst}}</span>
             </div>
 
             <div class="candidate-county col-md-4">
-                <p>País: </p>
+                <h6>País: </h6>
                 <span class="span-description">{{ candidate_profile.country|capfirst}}</span>
             </div>
         </div>
 
 
         <div class="candidate-person-sumary row card-div-item">
-            <p>Resumo Profissional: </p>
+            <h6>Resumo Profissional: </h6>
             <span class="span-description">{{ candidate_profile.professional_sumary|capfirst}}</span>
         </div>
 
         <div class="candidate-professional-sumary row card-div-item">
-            <p>Resumo Pessoal: </p>
+            <h6>Resumo Pessoal: </h6>
             <span class="span-description">{{ candidate_profile.personal_sumary|capfirst}}</span>
         </div>
 
@@ -76,10 +75,10 @@
 
         {% else %}
 
-        <div class="row div-button-edit-profile">
+        <div class="row ">
 
             <a href="{% url 'jobs:register_profile' %} " class="div-button-edit-profile">
-                <input type="button" class="btn btn-outline-success" value="Cadastrar Perfil">
+                <input type="button" class="btn btn-outline-success col-md-12" value="Cadastrar Perfil">
 
             </a>
         </div>
@@ -128,29 +127,29 @@
             {% for company in company_profile %}
             <div id="company-{{ company.id }}" hidden>
                 <div class="company-name row card-div-item">
-                    <p>Nome da Empresa: </p>
+                    <h6>Nome da Empresa: </h6>
                     <span class="span-description">{{ company.company_name|capfirst}} </span>
                 </div>
 
                 <div class="location row card-div-item">
                     <div class="company-country col-md-4">
-                        <p>País:</p>
+                        <h6>País:</h6>
                         <span class="span-description">{{ company.country|capfirst}}</span>
                     </div>
                     <div class="company-estate col-md-4">
-                        <p>Estado: </p>
+                        <h6>Estado: </h6>
                         <span class="span-description">{{ company.state|capfirst}}</span>
                     </div>
                     <div class="company-city col-md-4">
-                        <p>Cidade: </p>
+                        <h6>Cidade: </h6>
                         <span class="span-description">{{ company.city|capfirst}}</span>
                     </div>
                   
                    
                 </div>
                 <div class="company-sumary row card-div-item">
-                    <p>Resumo da Empresa: </p>
-                    <span class="span-description">{{ company.resume_company|capfirst}}</span>
+                    <h6>Resumo da Empresa: </h6>
+                    <h6 class="span-description">{{ company.resume_company|linebreaks|capfirst }}</h6>
                 </div>
                 <div class=" div-button-edit-profile row">
                     <a href="{% url 'jobs:edit_company' company.id %}">
@@ -168,28 +167,30 @@
 
 
         <div class="company-name row card-div-item">
-            <p>Nome da Empresa: </p>
-            <span class="span-description">{{ company_profile.company_name|capfirst}} </span>
+            <h6>Nome da Empresa: </h6>
+            <p class="span-description">{{ company_profile.company_name|capfirst}} </p>
         </div>
 
         <div class="location row card-div-item">
-            <div class="company-city col-md-4">
-                <p>Cidade: </p>
-                <span class="span-description">{{ company_profile.city|capfirst}}</span>
-            </div>
-            <div class="company-estate col-md-4">
-                <p>Estado: </p>
-                <span class="span-description">{{ company_profile.state|capfirst}}</span>
-            </div>
             <div class="company-country col-md-4">
-                <p>País:</p>
-                <span class="span-description">{{ company_profile.country|capfirst}}</span>
+                <h6>País:</h6>
+                <p class="span-description">{{ company_profile.country|capfirst}}</p>
             </div>
+          
+            <div class="company-estate col-md-4">
+                <h6>Estado: </h6>
+                <p class="span-description">{{ company_profile.state|capfirst}}</p>
+            </div>
+            <div class="company-city col-md-4">
+                <h6>Cidade: </h6>
+                <p class="span-description">{{ company_profile.city|capfirst}}</p>
+            </div>
+            
         </div>
 
         <div class="company-sumary row card-div-item">
-            <p>Resumo da Empresa: </p>
-            <span class="span-description">{{ company_profile.resume_company|capfirst}}</span>
+            <h6>Resumo da Empresa: </h6>
+            <p class="span-description">{{ company_profile.resume_company|linebreaks|capfirst }}</p>
         </div>
 
         <div class=" div-button-edit-profile row">

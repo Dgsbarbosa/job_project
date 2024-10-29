@@ -38,7 +38,42 @@ document.addEventListener("DOMContentLoaded", (event) => {
     })
 
 
+    const phone1 = document.querySelectorAll("#phone1");
+    const phone2 = document.querySelectorAll("#phone2");
 
+    const save_buttons = document.querySelectorAll(".save-toggle");
+
+    
+
+    save_buttons.forEach(button => {
+        button.addEventListener("click", function () {
+            const vacancy_id = button.getAttribute("data-id");
+            const csrf_token = getCSRFToken();
+
+            fetch(`/save_vacancy/${vacancy_id}`, {
+                method: 'POST',
+                headers: {
+                    "X-CSRFToken": csrf_token,
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'saved') {
+                        button.classList.remove('btn-outline-success');
+                        button.classList.add('btn-success');
+                        button.textContent = 'Desmarcar Vaga';
+                    } else {
+                        button.classList.remove('btn-success');
+                        button.classList.add('btn-outline-success');
+                        button.textContent = 'Salvar Vaga';
+                    }
+                    window.location.reload();
+                })
+                .catch(error => console.error('Erro:', error));
+        })
+
+    });
 });
 
 function populateCoutriesSelect() {
@@ -204,17 +239,17 @@ function phoneCountryCode(phoneCode) {
         var cleaned = phoneCode.replace(/-.*$/, "").replace(/[^0-9]/g, "");
         phone.value = `+${cleaned}`;
 
-        
+
     })
 }
 
 function phoneCountryCodeCleaned(phoneCode) {
-    
+
     var cleaned = phoneCode.replace(/-.*$/, "").replace(/[^0-9]/g, "");
-    
+
     return cleaned
 }
-const handlePhone = (event) => {   
+const handlePhone = (event) => {
 
     let input = event.target;
     input.value = phoneMask(input.value)
@@ -254,4 +289,44 @@ const phoneMask = (value) => {
     }
 
     return value;
+}
+
+
+document.querySelector("#add-phone1").addEventListener("change", function (event) {
+
+    if (this.checked) {
+
+        phone1.hidden = false;
+
+    } else {
+        phone1.hidden = true;
+
+    }
+
+})
+
+document.querySelector("#add-phone2").addEventListener("change", function (event) {
+    if (this.checked) {
+
+        phone2.hidden = false;
+
+    } else {
+        phone2.hidden = true;
+
+    }
+
+})
+
+function getCSRFToken() {
+    let csrfToken = null;
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'csrftoken') {
+            csrfToken = value;
+            break;
+        }
+    }
+    return csrfToken;
+
 }

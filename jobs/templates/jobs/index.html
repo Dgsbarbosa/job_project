@@ -79,8 +79,8 @@
     <table class="">
         <thead>
             <tr>
-                <th class="vacancy-list-name" colspan="">Últimas vagas publicadas</th>
-                <th colspan="">Total de vagas: {{ vacancies_count }}</th>
+                <th class="vacancy-list-name" colspan="1">Últimas vagas publicadas</th>
+                <th colspan="1">Total de vagas: {{ vacancies_count }}</th>
             </tr>
 
         </thead>
@@ -117,7 +117,7 @@
             <tr class="vacancy-list-tr-description ">
 
                 <td class="vacancy-title">
-                    <a href="">
+                    <a href="{% url 'jobs:view_vacancy' vacancy.id%}">
 
                         {{ vacancy.title|capfirst}}
                     </a>
@@ -143,6 +143,7 @@
 
                 </td>
             </tr>
+            
             {% empty %}
 
             <tr class=" .alert-vacancy vacancy-list-tr">

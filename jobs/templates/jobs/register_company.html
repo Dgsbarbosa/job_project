@@ -16,7 +16,7 @@
 
         <div class="">
 
-            <div class=" information row">
+            <div class=" form-information row">
                 <div class="col-md-12">
                     <label for="first_name">Nome da Empresa:</label>
                     {{ form.company_name}}
@@ -26,7 +26,7 @@
 
             </div>
 
-            <div class="information row">
+            <div class="form-information row">
 
                 <div class="col-md-4">
                     <label for="country">País:</label>
@@ -51,7 +51,7 @@
 
 
 
-            <div class="personal-sumary information">
+            <div class="personal-sumary form-information">
 
                 <label for="{{ form.personal_sumary.id_for_label }}">Resumo da empresa:</label>
                 <div class="row">
@@ -64,7 +64,7 @@
         
 
         </div>
-        <div class="row information information-button">
+        <div class="row form-information form-information-button">
 
             <div class="col-md-4">
                 <a href="javascript:history.back()">
@@ -72,7 +72,7 @@
                 </a>
             </div>
             <div class="col-md-4">
-                <input type="submit" class="btn btn-outline-success">
+                <input type="submit" class="btn btn-outline-success" value="Salvar">
             </div>
         </div>
     </form>

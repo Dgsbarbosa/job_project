@@ -7,6 +7,8 @@
     justify-content: center;
     align-items: center;    
     min-height: 70%;
+    padding: 30px;
+
 }
 
 .div-button-profiles{
@@ -21,7 +23,7 @@
 }
 
 .worker-profile, .company-profile{
-    width: 80%;
+    
     padding: 30px;
     border-radius: 10px ;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
@@ -33,7 +35,7 @@
     margin-top: 30px;
 
 }
-.worker-profile p, .company-profile p{
+.worker-profile p, .company-profile h6{
     font-weight: bold;
     margin-bottom: 0;
 
@@ -89,7 +91,12 @@
 
 
 
-.div-button-edit-profile input{
-    width: 50%;
+.div-button-edit-profile {
+    text-align: center;
+
+}
+
+.div-button-edit-profile .btn-outline-warning {
+    width: 150px;
 
 }

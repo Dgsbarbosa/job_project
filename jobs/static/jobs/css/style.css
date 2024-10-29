@@ -2,6 +2,9 @@
 @import "register_vacancy.css";
 @import "style_profiles.css";
 @import "register_profile.css";
+@import "view_vacancy.css";
+@import "saved_vacancies.css";
+@import "forms.css";
 /* border: 1px solid rgb(255, 0, 0);   */
 
 body{
@@ -23,28 +26,28 @@ body{
 
 #ads-left, #ads-rigth{
     width: 160px;
+    height: 90vh;
     background-color: #f9f9f9;
     padding: 10px;
     box-sizing: border-box;
+
 }
 #group-body{
     display: flex;
     height: calc(100vh-90px);
 }
 
-#ads-left{
-    width: 15%;
-    /* display: none; */
-}
 
+label{
+    font-weight: bold;
+}
 #body {
     flex: 1;
     padding: 20px;
     background-color: #fff;
     overflow-y: auto;
-}
-#ads-rigth{
-    width: 15%;
+    align-items: center;
+    justify-content: center;
 }
 
 .messages{
@@ -53,23 +56,18 @@ body{
    align-items: center;
     padding-top: 30px;
     width: 100%;
-
-
 }
 
 .messages .alert{
     min-width: 70%;
     width: auto;
     display: flex;
-    justify-content: space-between;
-
-   
+    justify-content: space-between;  
 
 }
 
 .messages .alert .close-alert{
     cursor: pointer;
-    font-weight: bold;
-   
+    font-weight: bold;  
 
 }

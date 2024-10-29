@@ -1,6 +1,8 @@
 /* border: 1px solid black; */
 .register_vacancy{
     margin-top: 30px;
+    display: flex;
+    justify-content: center;
 }
 
 .register_vacancy h2 {
@@ -27,22 +29,21 @@
 
 }
 .buttons-register-company .row a{
-
     width: 80%;   
 
 }
 
 .buttons-register-company h2{
-    margin-bottom: 30px;
-   
+    margin-bottom: 30px;  
 
 }
 
 
-.select-type-contract{
-    width: auto;
-    
-    font-size: 15px;
-    padding: 2px 30px 2px 10px;
-    
+.add-phone input{
+    margin-right: 10px;
+
+}
+
+.add-phone label{
+    font-weight: normal;
 }

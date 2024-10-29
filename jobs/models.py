@@ -17,6 +17,7 @@ class Contact(models.Model):
     
     class Meta:
         abstract = True
+        
 class CandidateProfile(Contact,Location):
     
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
@@ -51,3 +52,11 @@ class Vacancies(Contact,Location):
     
     def __str__(self):
         return f'Company: {self.company.company_name} - Title: {self.title}'
+    
+class SaveVacancy(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="saved_vacancies")
+    vacancy = models.ForeignKey(Vacancies,on_delete=models.CASCADE,related_name="saved_by_user")
+    saved_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'{self.user} - {self.vacancy.title}'

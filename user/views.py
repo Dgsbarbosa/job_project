@@ -5,6 +5,7 @@ from django.urls import reverse
 from .models import CustomUser
 from . import utils
 from django.contrib.auth import authenticate, login, logout
+
 # Create your views here.
 
 def register(request):
@@ -17,13 +18,13 @@ def register(request):
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
         
-        # check_email = utils.check_email(email)   
+        check_email = utils.check_email(email)   
             
         # check_password_messages = utils.check_password(password, password2)
         
-        # if check_email:
-        #     messages.error(request,"O email ja esta cadastrado")
-        #     return redirect("user:register")
+        if check_email:
+            messages.error(request,"O email ja esta cadastrado")
+            return redirect("user:register")
         
         # if check_password_messages:
         #     for password_message in check_password_messages: 

@@ -1,0 +1,101 @@
+{% extends "jobs/layout.html" %}
+
+{%block title%}Minhas Vagas{%endblock%}
+
+{%block body%}
+
+
+<div class="vacancy-list container">
+    <table class="">
+        <thead>
+            <tr class="tr-button-view-all-vacancy">
+                <td class="button-view-all-vacancy" colspan="3">
+
+                    <a href="{% url 'jobs:index' %}">
+                        <input type="text" class="btn btn-outline-primary" value="Ver todas as vagas">
+                    </a>
+                </td>
+
+            </tr>
+            <tr>
+                <th class="vacancy-list-name" colspan="">Últimas vagas publicadas</th>
+                <th colspan="">Total de vagas: {{ vacancies_count }}</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+       
+
+            {% for date, vancancies in vacancies_grouped_by_date.items %}
+
+            <tr class="date-vacancy">
+                <td class="" colspan="3">
+                    Data da Publicação: {{ date.day }}/{{ date.month }}/{{ date.year }}
+                </td>
+            </tr>
+
+            <!-- <tr class="tr-titles">
+                <td><strong>Vaga</strong></td>
+                <td class="vacancy-list-location"><strong>Local</strong></td>
+                <td class="vacancy-list-type"><strong>Tipo de Contrato</strong></td>
+            </tr> -->
+
+            {% for vacancy in vancancies %}
+            <tr class="vacancy-list-tr-description ">
+
+                <td class="vacancy-title">
+                    <a href="{% url 'jobs:view_vacancy' vacancy.id%}">
+
+                        {{ vacancy.title|capfirst}}
+                    </a>
+                </td>
+                <td class="vacancy-list-location">{{ vacancy.country }} / {{ vacancy.state }} / {{ vacancy.city }}
+                </td>
+                <td class="vacancy-list-type"> {{ vacancy.contract_type|capfirst}}</td>
+
+
+            </tr>
+
+         
+
+
+            {% endfor %}
+
+            <tr class="div-ads-video">
+                <td>
+
+                    <div class="video-ad" >
+
+                    </div>
+
+                </td>
+            </tr>
+            {% empty %}
+
+            <tr class=" .alert-vacancy vacancy-list-tr">
+
+                <td class="message message-no-vacancy alert alert-info" colspan="3">
+                    Não há vagas para:
+                    <div>
+
+                        {% for chave, valor in return_search.items %}
+                        <strong>{{ chave|capfirst }}</strong>: {{ valor|upper }}
+                        {% endfor %}
+                    </div>
+                </td>
+
+            </tr>
+
+
+            {% endfor %}
+
+
+
+        </tbody>
+    </table>
+
+</div>
+
+{%endblock%}
