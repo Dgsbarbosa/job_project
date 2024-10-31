@@ -80,7 +80,7 @@
         <thead>
             <tr>
                 <th class="vacancy-list-name" colspan="1">Últimas vagas publicadas</th>
-                <th colspan="1">Total de vagas: {{ vacancies_count }}</th>
+                <th colspan="3">Total de vagas: {{ vacancies_count }}</th>
             </tr>
 
         </thead>
@@ -127,9 +127,7 @@
                 <td class="vacancy-list-type"> {{ vacancy.contract_type|capfirst}}</td>
 
 
-            </tr>
-
-         
+            </tr>      
 
 
             {% endfor %}

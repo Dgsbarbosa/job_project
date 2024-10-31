@@ -3,8 +3,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // template profiles.html
     const button_show_worker = document.querySelector("#show-worker-profile");
     const button_show_company = document.querySelector("#show-company-profile");
+
     const div_worker_profile = document.querySelector(".worker-profile");
     const div_company_profile = document.querySelector(".company-profile");
+
     const countrySelect = document.querySelector(".select-country");
 
     if (button_show_worker && button_show_company && div_worker_profile && div_company_profile) {
@@ -32,19 +34,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
         button.addEventListener("click", () => showCompany(button_id))
     })
 
+
+    
+    const phone1 = document.querySelectorAll("#phone1");
+    const phone2 = document.querySelectorAll("#phone2");
     var phones = document.querySelectorAll(".phone");
     phones.forEach(phone => {
         phone.addEventListener("input", handlePhone)
     })
 
 
-    const phone1 = document.querySelectorAll("#phone1");
-    const phone2 = document.querySelectorAll("#phone2");
-
     const save_buttons = document.querySelectorAll(".save-toggle");
-
     
-
     save_buttons.forEach(button => {
         button.addEventListener("click", function () {
             const vacancy_id = button.getAttribute("data-id");
@@ -74,6 +75,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
         })
 
     });
+
+
+    // Register Vacancy
+
+    const select_company = document.querySelector("#company");
+    select_company.addEventListener("click", () => {
+
+        select_company.addEventListener("change", selectCountryVacancy);
+    })
+
+    
 });
 
 function populateCoutriesSelect() {
@@ -82,10 +94,12 @@ function populateCoutriesSelect() {
         .then(data => {
 
             const countrySelect = document.querySelector(".select-country");
+
             data.forEach(country => {
                 let option = document.createElement("option");
                 option.value = `${country.iso2}:${country.name}:${country.phonecode}`;
                 option.text = country.name;
+                
                 countrySelect.appendChild(option)
             });
         })
@@ -122,6 +136,8 @@ function populateStates(countryCode) {
         })
 }
 
+
+
 var phoneCodeChoice = ""
 function populateCities(countryCode, stateCode) {
     fetch(`/get_cities/${countryCode}/${stateCode}`)
@@ -152,7 +168,8 @@ function populateCities(countryCode, stateCode) {
             }
             citySelect.disabled = false;
         })
-};
+    };
+
 
 document.querySelector(".select-country").addEventListener("change", function () {
 
@@ -167,9 +184,13 @@ document.querySelector(".select-country").addEventListener("change", function ()
 
         populateStates(countryCode);
 
-        document.querySelector(".select-city").disabled = true;
+        // phone1.value = ""
+        // phone2.value = ""
 
+
+        document.querySelector(".select-city").disabled = true;    
         phoneCodeChoice = phoneCountryCode(countryCodeSplit[2])
+
 
 
 
@@ -214,7 +235,7 @@ function closeMessage(element) {
 }
 
 function showCompany(button_id) {
-
+    
     let div_companies = document.querySelectorAll(".company > div");
     let h2_companies = document.querySelectorAll(".company > h2");
 
@@ -223,7 +244,7 @@ function showCompany(button_id) {
 
     let button_id_split = button_id.split("-");
     let id = `${button_id_split[1]}-${button_id_split[2]}`;
-
+    
     h2_companies.forEach(h2 => h2.hidden = false);
     company = document.querySelector(`#${id}`);
     company.hidden = false;
@@ -298,8 +319,14 @@ document.querySelector("#add-phone1").addEventListener("change", function (event
 
         phone1.hidden = false;
 
+        phoneCodeChoice = phoneCountryCode(countryCodeSplit[2])
+        
+
     } else {
         phone1.hidden = true;
+
+        phone1.value = "" 
+
 
     }
 
@@ -309,9 +336,12 @@ document.querySelector("#add-phone2").addEventListener("change", function (event
     if (this.checked) {
 
         phone2.hidden = false;
+        phoneCodeChoice = phoneCountryCode(countryCodeSplit[2])
+
 
     } else {
         phone2.hidden = true;
+        phone2.value = ""
 
     }
 
@@ -328,5 +358,43 @@ function getCSRFToken() {
         }
     }
     return csrfToken;
+
+}
+
+
+// Register Vacancy
+function selectCountryVacancy(){
+
+    const select_company = document.querySelector("#company");
+    const selectedOption = select_company.options[select_company.selectedIndex];
+
+    const country = selectedOption.dataset.country;
+    const [countryCode, countryName, countryPhoneCode] = country.split(":");
+    
+    const state = selectedOption.dataset.state;
+    const [stateCode, stateName] = state.split(":");
+    const city = selectedOption.dataset.city;
+
+    const select_country = document.querySelector("#country");
+    const option_country = document.createElement("option");
+    option_country.value = country;
+    option_country.innerHTML = countryName;
+    option_country.selected = true;
+    select_country.appendChild(option_country);
+
+    const select_state = document.querySelector("#state");
+    const option_state = document.createElement("option");
+    option_state.value = state;
+    option_state.innerHTML = stateName;
+    option_state.selected = true;
+    select_state.appendChild(option_state);
+    
+    const select_city = document.querySelector("#city");
+    const option_city = document.createElement("option");
+    option_city.value = city;
+    option_city.innerHTML = city;
+    option_city.selected = true;
+    select_city.appendChild(option_city);
+
 
 }

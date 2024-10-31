@@ -1,102 +1,114 @@
-
-/*     border: 1px solid black; */
-.div-profiles{
+/* border: 1px solid black; */
+.div-profiles {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
     margin-top: 20px;
     justify-content: center;
-    align-items: center;    
+    align-items: center;
     min-height: 70%;
     padding: 30px;
 
 }
 
-.div-button-profiles{
-    display: flex;
-    justify-content: center;
-    align-items:center;
-    gap:  30px;    
+.div-profiles h2 {
+
+    margin-bottom: 30px;
 }
 
-.div-button-profiles input{
+.div-button-profiles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.div-button-profiles input {
     width: 200px;
 }
 
-.worker-profile, .company-profile{
-    
+.profile {
+    margin-top: 50px;
+    width: 90%;
+    border-radius: 5px;
+    background-color: blanchedalmond;
     padding: 30px;
-    border-radius: 10px ;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-    background-color: rgb(243, 243, 243);
-
 }
 
-.worker-profile,.company-profile{
-    margin-top: 30px;
 
-}
-.worker-profile p, .company-profile h6{
-    font-weight: bold;
-    margin-bottom: 0;
-
-}
-
-.buttons-company{
-    
+.profile-header a {
     text-align: center;
-    margin-bottom: 30px;
+
 }
-.buttons-company .row{
-    display: flex;
-   
+
+.profile-header a input {
+
+    width: 100%;
+    text-wrap: wrap;
+}
+
+.profile-item {
+    margin-bottom: 20px;
+
+}
+
+.profile-item input,
+.profile-item textarea {
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+
+}
+
+.profile-item h6 {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.profile-item textarea {
+    min-height: 200px;
+}
+
+.div-button-edit-profile {
+
+    text-align: center;
     row-gap: 10px;
 
 }
 
-.buttons-company .col-md-6{
+.div-button-edit-profile a input,
+.div-button-edit-profile div a input {
+    width: 50%;
+
+}
+
+.div-button-edit-profile div a input,
+.profile-item .profile-item-button {
+    border: 1px solid;
+    text-wrap: wrap;
+
+}
+
+
+/* Edit profile */
+/* border: 1px solid black; */
+
+.div-profile-item-alert {
     display: flex;
-    
-}
-
-
-.company h2{
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.card-div-item{
-    margin-bottom: 10px;
-    border: 1px;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    border-radius: 8px;
-    background-color: white;
-
-}
-.span-description{
-    margin-left: 10px;
-}
-
-.candidate-person-sumary, .candidate-professional-sumary, .company-sumary{
-    min-height: 100px;
-}
-
-.div-button-edit-profile a{
-    display: flex;
-    justify-content: center;   
-
-   text-decoration: none;
-   margin-bottom: 30px;
-}
-
-
-
-.div-button-edit-profile {
+    justify-content: center;
     text-align: center;
 
 }
 
-.div-button-edit-profile .btn-outline-warning {
-    width: 150px;
+.profile-item-alert {
+    width: 90%;
+    font-weight: bold;
+}
+
+
+/* Companies Profiles */
+/* border: 1px solid black; */
+
+.buttons-profiles-companies {
 
 }

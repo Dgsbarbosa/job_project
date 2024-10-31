@@ -1,14 +1,13 @@
 /* border: 1px solid black; */
 
-
-
-.saved-list {
+.saved-list, .vacancy-list{
     display: flex;
     justify-content: center;
     padding: 20px;
+
 }
 
-.saved-list table {
+.saved-list table, .vacancy-list table {
     width: 100%;
     padding: 300px;
     border-collapse: collapse;
@@ -19,7 +18,7 @@
 
 }
 
-.saved-list thead th {
+.saved-list thead th, .vacancy-list thead th {
     padding: 15px;
     background-color: #f8f8f8;
     color: #333;
@@ -35,31 +34,28 @@
 
 }
 
-.saved-list tbody tr {
+.saved-list tbody tr, .vacancy-list tbody tr {
     background-color: #fff;
 
 }
 
 
-.saved-list-tr-description td {
+.saved-list-tr-description td, .vacancy-list-tr-description td {
     padding: 15px;
     border-bottom: 1px solid #e2e8f0;
 
 }
 
 
-.saved-list-tr-description:hover {
+.saved-list-tr-description:hover, .vacancy-list-tr-description:hover {
     background-color: #f9fafb;
 
 }
 
-.saved-title a {
+.saved-title a, .vacancy-title a {
     text-decoration: none;
 }
 
-.saved-title:hover {
-    padding-left: 22px;
-}
 
 .saved-title:hover a {
 

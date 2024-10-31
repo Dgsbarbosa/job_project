@@ -4,7 +4,7 @@
 
 
 {% block body %}
-<div class="edit_profile container">
+<div class="div-profiles container">
 
     <form action="{% url 'jobs:edit_company' company.id %}" method="POST">
 
@@ -14,61 +14,61 @@
 
         <div class="">
 
-            <div class=" information row">
-                <div class="col-md-4">
-                    <label for="company_name">Nome da Empresa:</label>
+            <div class=" row">
+                <div class="profile-item col-md-12">
+                    <h6>Nome da Empresa</h6>
                     {{ form.company_name|capfirst }}
                 </div>
 
-
-
             </div>
 
-            <div class="information row">
+            <div class="row">
 
-                <div class="col-md-4">
+                <div class="profile-item  col-md-4">
                     <label for="country">País:</label>
                     <select name="country" class="select-country" id="country">
                         <option value="{{company.country}}">{{company_country_split }}</option>
                     </select>
                 </div>
 
-                <div class="col-md-4">
+                <div class="profile-item col-md-4">
                     <label for="{{ form.state.id_for_label }}">Estado:</label>
                     <select name="state" class="select-state" id="state">
                         <option value="{{ company.state }}" selected>{{ company_state_split }}</option>
                     </select>
                 </div>
 
-                <div class="col-md-4">
+                <div class="profile-item col-md-4">
                     <label for="{{ form.city.id_for_label }}">Cidade:</label>
                     <select name="city" class="select-city" id="city">
-                        <option value="{{ company.city }}"  selected>{{ company.city }}</option>
+                        <option value="{{ company.city }}" selected>{{ company.city }}</option>
                     </select>
                 </div>
             </div>
 
 
 
-            <div class="personal-sumary information">
-
-                <label for="{{ form.personal_sumary.id_for_label }}">Resumo da Empresa:</label>
-                <div class="row">
-
-                    {{ form.resume_company }}
-                </div>
+            <div class="profile-item col-md-12 ">
+                <h6>Resumo da Empresa: </h6>
+                <textarea class="" readonly>{{ company.resume_company|linebreaksbr|capfirst }} 
+    
+                </textarea>
             </div>
 
         </div>
-        <div class="row information information-button">
+        <div class=" div-button-edit-profile row ">
 
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <a href="javascript:history.back()">
                     <input type="text" class="btn btn-outline-primary btn-back" value="Voltar">
                 </a>
             </div>
-            <div class="col-md-4">
-                <input type="submit" class="btn btn-outline-success">
+            <div class="col-md-6">
+                <a href="">
+
+                    <input type="submit" class="btn btn-outline-success">
+                </a>
+
             </div>
         </div>
     </form>

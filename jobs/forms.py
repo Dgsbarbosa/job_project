@@ -12,9 +12,9 @@ class VacanciesForm(ModelForm):
             "company": "Nome da Empresa"
         }
         widgets = {
-            'contract_type':forms.Select(attrs={'class':"form-select select-type-contract"}),
-            'phone1': forms.TextInput(attrs={"class":"phone","placeholder":"3333-3333","id":"phone1","hidden":True}),
-            'phone2': forms.TextInput(attrs={"class":"phone","placeholder":"9 9999-9999","id":"phone2","hidden":True}),
+            'contract_type':forms.Select(attrs={'class':""}),
+            'phone1': forms.TextInput(attrs={"class":"phone","placeholder":"(33) 3333-3333","id":"phone1","hidden":True}),
+            'phone2': forms.TextInput(attrs={"class":"phone","placeholder":"(99)9 9999-9999","id":"phone2","hidden":True}),
             'email': forms.TextInput(attrs={"placeholder":"exemplo@exemplo.com","required":True})
             
         }

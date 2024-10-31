@@ -24,5 +24,7 @@ urlpatterns = [
     path("save_vacancy/<int:vacancy_id>", views.save_vacancy, name="save_vacancy"),
     path("saved_vacancies",views.saved_vacancies,name="saved_vacancies"),
     
+    path("active_vacancy/<int:vacancy_id>", views.active_vacancy, name="active_vacancy")
+    
     
 ]

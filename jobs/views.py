@@ -241,12 +241,14 @@ def register_vacancy(request):
                 vacancy.state = request.POST['state']
                 vacancy.city = request.POST['city']
 
-                if len(vacancy.phone1) < 10:
+                if vacancy.phone1 and len(vacancy.phone1) < 10:
                     vacancy.phone1 = ""
-                if len(vacancy.phone2) < 10:
+                if vacancy.phone2 and len(vacancy.phone2) < 10:
                     vacancy.phone2 = ""
 
                 vacancy.save()
+                
+                
 
                 messages.success(request, "Vaga cadastrada com suceso.")
 
@@ -336,10 +338,29 @@ def profiles(request):
 
         if count_company_profile > 1:
             company_profile = CompanyProfile.objects.filter(user=request.user)
+            
+            for company in company_profile:
+                
+                country = company.country
+                state = company.state
+                
+                country = country.split(":")[1]
+                company.country = country
+                state = state.split(":")[1]
+                company.state = state
+            
 
         elif count_company_profile == 1:
             company_profile = CompanyProfile.objects.get(user=request.user)
-
+            
+            country = company_profile.country
+            state = company_profile.state
+            
+            country = country.split(":")[1]
+            company_profile.country = country
+            state = state.split(":")[1]
+            company_profile.state = state
+        
     except:
         company_profile = None
         messages.error(
@@ -441,17 +462,17 @@ def edit_company(request, company_id):
 @login_required(login_url="auth/register")
 def my_vacancies(request):
     
-    user = CustomUser.objects.get(id=request.user.id)
-    vacancies_grouped_by_date = defaultdict(list)
-    return_search = ""
-    button_view_vacancies = ""
+    companies = CompanyProfile.objects.filter(user_id=request.user).all()
+
+    vacancies_grouped_by_company = defaultdict(list)
     
-    for vacancy in Vacancies.objects.filter(company_id=user.id):
-            date = vacancy.created_at.date()
+    for company in companies:
+        for vacancy in Vacancies.objects.filter(company_id=company.id):
+                
+                company_name = company.company_name
+                vacancies_grouped_by_company[company_name].append(vacancy)
 
-            vacancies_grouped_by_date[date].append(vacancy)
-
-    for date, vacancies in vacancies_grouped_by_date.items():
+    for date, vacancies in vacancies_grouped_by_company.items():
 
         vacancies.sort(key=lambda v: v.created_at, reverse=True)
         for vacancy in vacancies:
@@ -463,17 +484,15 @@ def my_vacancies(request):
             state = state.split(":")[1]
             vacancy.state = state
 
-    vacancies_grouped_by_date = OrderedDict(
-        sorted(vacancies_grouped_by_date.items(), reverse=True))
+    vacancies_grouped_by_company = OrderedDict(
+        sorted(vacancies_grouped_by_company.items(), reverse=True))
 
-    vacancies_count = sum(len(v) for v in vacancies_grouped_by_date.values())
+    vacancies_count = sum(len(v) for v in vacancies_grouped_by_company.values())
     context = {
-        "vacancies_grouped_by_date": vacancies_grouped_by_date,
-        "return_search": return_search,
-        "button_view_vacancies": button_view_vacancies,
+        "vacancies_grouped_by_company": vacancies_grouped_by_company,       
         "vacancies_count": vacancies_count
-
     }
+    
     return render(request,"jobs/my_vacancies.html", context)
 
 
@@ -518,3 +537,9 @@ def saved_vacancies(request):
        
     }
     return render(request,"jobs/saved_vacancies.html",context)
+
+
+@login_required(login_url="auth/register")
+def active_vacancy(request, vacancy_id):
+    print(vacancy_id)
+    return HttpResponse(f"teste {vacancy_id}")

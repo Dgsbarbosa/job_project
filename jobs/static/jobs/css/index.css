@@ -62,7 +62,7 @@
 }
 
 .div-form-search form {
-    width: 80%;
+    width: 90%;
     align-items: flex-end;
     row-gap: 20px;
 }
@@ -74,10 +74,6 @@
 
 }
 
-
-
-
-
 /* Lista de vagas */
 /* border: 1px solid rgb(0, 0, 0); */
 .vacancy-list {
@@ -85,6 +81,7 @@
     justify-content: center;
     padding: 20px;
 }
+
 
 .vacancy-list table {
     width: 100%;
@@ -97,20 +94,23 @@
 
 }
 
+
 .vacancy-list thead th {
     padding: 15px;
     background-color: #f8f8f8;
     color: #333;
     font-weight: bold;
     text-align: left;
+
+
 }
 
 .date-vacancy td {
-    padding: 30px 10px 10px 10px;
-    /* background-color: #f0f4f8; */
+    padding: 20px 10px 10px 10px;
+    background-color: #f0f4f8;
     color: #555;
     font-weight: bold;
-    /* border-bottom: 2px solid #e2e8f0; */
+    border-bottom: 2px solid #e2e8f0;
 
 }
 
@@ -141,10 +141,6 @@
     text-decoration: none;
 }
 
-.vacancy-title:hover {
-    padding-left: 20px;
-}
-
 .vacancy-title:hover a {
 
     text-decoration: underline;
@@ -162,12 +158,10 @@
 }
 
 .tr-titles td:first-child {
-    /* border: 1px solid rgb(0, 0, 0); */
     padding-left: 15px;
-
 }
 
-.vacancy-list-location,
+
 .vacancy-list-type {
     text-align: center;
 

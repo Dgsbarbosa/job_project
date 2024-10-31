@@ -32,9 +32,8 @@
                     <label for="company_name">Nome da Empresa:</label>
                     <select name="company" id="company" required>
                         <option value="" selected>-------</option>
-
                         {% for company in companies %}
-                        <option value="{{ company.id }}">{{ company }}</option>
+                        <option value="{{ company.id }}" data-country="{{company.country}}" data-state="{{company.state}}" data-city="{{company.city}}">{{ company }}</option>
 
                         {% endfor %}
                     </select>
@@ -45,6 +44,9 @@
 
                     {{ form.contract_type }}
 
+                </div>
+                <div class="col-md-12">
+                    <a href="{% url 'jobs:register_company' %}"><input type="button" class="btn btn-outline-success" value="Cadastar Empresa" ></a>
                 </div>
 
             </div>
@@ -72,11 +74,9 @@
                 </div>
             </div>
 
+            <div class="form-information form-information-contacts row">
 
-
-            <div class="form-information row">
-
-                <div class="col-md-4">
+                <div class="col-md-4 form-contact-phone">
                     <label for="{{ form.contract_type.id_for_label }}">Telefone 1:</label>
                     {{ form.phone1 }}
                     <div class=" add-phone d-flex flex-row">
@@ -90,10 +90,9 @@
 
                     </div>
 
-
                 </div>
 
-                <div class="col-md-4" id="">
+                <div class="col-md-4 form-contact-phone" id="">
                     <label for="{{ form.contract_type.id_for_label }}">Telefone 2:</label>
 
                     {{ form.phone2 }}
@@ -111,7 +110,7 @@
                     </div>
 
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12 form-contact-email">
                     <label for="{{ form.contract_type.id_for_label }}">Email:</label>
 
                     {{ form.email }}

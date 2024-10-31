@@ -4,7 +4,7 @@
 {% block title%} Editar Trabalhador {% endblock %}
 
 {% block body %}
-<div class="edit_profile container">
+<div class="div-profiles ">
 
     <form action="{% url 'jobs:edit_profile_candidate' candidate.id %}" method="POST">
 
@@ -14,73 +14,83 @@
 
         <div class="">
 
-            <div class=" information row">
-                <div class="col-md-4">
+            <div class="row">
+                <div class="profile-item col-md-6">
                     <label for="first_name">Nome:</label>
-                    <input type="text" id="first_name" value="{{candidate.user.first_name|capfirst}}"
-                        readonly>
+                    <input type="text" id="first_name" value="{{candidate.user.first_name|capfirst}}" readonly>
                 </div>
 
-                <div class="col-md-4">
+                <div class="profile-item col-md-6">
                     <label for="last_name">Sobrenome:</label>
                     <input type="text" id="last_name" value="{{candidate.user.last_name|capfirst}}" readonly>
                 </div>
 
             </div>
 
-            <div class="information row">
-                <h6 class="alert alert-info text-muted">Para alterar a localização, primeiro escolha o país.</h6>
-                <div class="col-md-4 ">
+            <div class="div-profile-item-alert row">
+                <h6 class="alert alert-info profile-item-alert text-muted  ">Para alterar a localização, primeiro
+                    escolha o país.</h6>
+            </div>
+
+            <div class=" row">
+                <div class="profile-item col-md-4 ">
                     <label for="country">País:</label>
                     <select name="country" class="select-country" id="country" required>
                         <option value="{{ candidate.country }}" selected>{{ candidate_country_name }}</option>
                     </select>
                 </div>
 
-                <div class="col-md-4">
-                    <label for="{{ form.state.id_for_label }}" >Estado:</label>
+                <div class="profile-item col-md-4">
+                    <label for="{{ form.state.id_for_label }}">Estado:</label>
                     <select name="state" class="select-state" id="state" required>
-                        <option value="{{candidate.state}}"  selected>{{ candidate_state_name }}</option>
+                        <option value="{{candidate.state}}" selected>{{ candidate_state_name }}</option>
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="profile-item col-md-4">
                     <label for="{{ form.country.id_for_label }}">Cidade:</label>
                     <select name="city" class="select-city" id="city" required>
-                        <option  value=" {{ candidate.city }}"  selected >{{ candidate.city }}</option>
+                        <option value=" {{ candidate.city }}" selected>{{ candidate.city }}</option>
                     </select>
                 </div>
             </div>
 
 
 
-            <div class="personal-sumary information">
+            <div class="row">
 
-                <label for="{{ form.personal_sumary.id_for_label }}">Resumo Pessoal:</label>
-                <div class="row">
+                <div class="profile-item">
+                    <label for="{{ form.personal_sumary.id_for_label }}">Resumo Pessoal:</label>
 
                     {{ form.personal_sumary }}
+
                 </div>
+
             </div>
 
+            <div class="row">
 
-            <div class="professional-sumary information">
-                <label for="{{ form.professional_sumary.id_for_label }}">Resumo Professional:</label>
-                <div class="row">
+                <div class="profile-item">
+                    <label for="{{ form.professional_sumary.id_for_label }}">Resumo Professional:</label>
 
                     {{ form.professional_sumary }}
+
                 </div>
             </div>
 
         </div>
-        <div class="row information information-button">
 
-            <div class="col-md-4">
+        <div class="div-button-edit-profile profile-item row ">
+
+            <div class="col-md-6">
                 <a href="javascript:history.back()">
                     <input type="text" class="btn btn-outline-primary btn-back" value="Voltar">
                 </a>
             </div>
-            <div class="col-md-4">
-                <input type="submit" class="btn btn-outline-success" value="Salvar">
+            <div class="col-md-6">
+                <a href="">
+
+                    <input type="submit" class="btn btn-outline-success" value="Salvar">
+                </a>
 
             </div>
         </div>

@@ -14,7 +14,7 @@ class Contact(models.Model):
     phone1 = models.CharField(max_length=25, null=True, blank=True)
     phone2 = models.CharField(max_length=25, null=True, blank=True)    
     email = models.EmailField(null=True, blank=True)
-    
+  
     class Meta:
         abstract = True
         
@@ -32,6 +32,7 @@ class CompanyProfile(Contact,Location):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name="companies")    
     company_name = models.CharField(max_length=150)
     resume_company = models.TextField()
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -48,6 +49,8 @@ class Vacancies(Contact,Location):
     title = models.CharField(max_length=150)    
     descript = models.TextField()
     contract_type = models.CharField(max_length=150, choices=TYPES_CONTRACT_CHOICES)
+    is_active = models.BooleanField(default=True)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

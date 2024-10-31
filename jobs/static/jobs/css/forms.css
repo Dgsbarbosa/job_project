@@ -30,9 +30,23 @@ form input, form select, form textarea{
 
 .form-location{
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     
 }
+
+
+.form-information .form-contact-phone{
+margin-bottom: 0;
+padding-bottom: 0;
+row-gap: 0;
+
+}
+
+.form-contact-email{
+margin-top: 0;
+
+}
+
 
 .form-information-button{
     justify-content: center;
