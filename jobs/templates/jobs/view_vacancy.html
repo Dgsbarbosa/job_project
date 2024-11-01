@@ -7,18 +7,7 @@
 
 
 <div class="view_vacancy container">
-
-    <div class="div-button-save-vacancy">
-        <button id="" 
-                class="btn {% if saved_vacancy %}btn-success{% else %}btn-outline-success{% endif %} save-toggle" 
-                data-id="{{ vacancy.id }}">
-            {% if saved_vacancy %}
-                Desmarcar Vaga
-            {% else %}
-                Salvar Vaga
-            {% endif %}
-        </button>
-    </div>
+    
     
     <div class="candidate-name row ">
 
@@ -76,9 +65,10 @@
 
 
 </div>
-<div class="container div-buttons-vacancy">
 
-    <div class="row">
+<div class="div-buttons-vacancy row">
+
+   
         <div class="col-md-4">
             <a href="javascript:history.back()">
                 <input type="button" class="btn btn-outline-primary " value="Voltar">
@@ -92,14 +82,24 @@
             </a>
         </div>
 
+        
+
         {% endif %}
-    </div>
+        <div class="div-button-save-vacancy col-md-4">
+            <button id="" 
+                    class="btn {% if saved_vacancy %}btn-success{% else %}btn-outline-success{% endif %} save-toggle" 
+                    data-id="{{ vacancy.id }}">
+                {% if saved_vacancy %}
+                    Desmarcar Vaga
+                {% else %}
+                    Salvar Vaga
+                {% endif %}
+            </button>
+        </div>
 
-    <div class="row">
+    
 
-
-    </div>
-
+   
 
 </div>
 

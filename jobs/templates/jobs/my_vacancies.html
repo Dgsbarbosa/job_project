@@ -32,27 +32,37 @@
 
             <tr class="date-vacancy">
                 <td class="" colspan="4">
-                    Data da Publicação: {{ company }}
+                    Empresa: {{ company }}
                 </td>
             </tr>
   
             {% for vacancy in vancancies %}
             <tr class="vacancy-list-tr-description ">
 
-                <td class="vacancy-title">
+                <td class="vacancy-title" >
+
+                    {% if vacancy.is_active%}
                     <a href="{% url 'jobs:view_vacancy' vacancy.id%}">
 
                         {{ vacancy.title|capfirst}}
                     </a>
+                    {% else %}
+                    {{ vacancy.title|capfirst}} [Encerrada]
+
+                    {% endif %}
+
                 </td>
-                <td class="vacancy-list-location">{{ vacancy.country }} / {{ vacancy.state }} / {{ vacancy.city }}
+
+                <td class="vacancy-list-location" colspan="">{{ vacancy.country }} / <br> {{ vacancy.state }} / {{ vacancy.city }}
                 </td>
-                <td class="vacancy-list-type"> {{ vacancy.contract_type|capfirst}}</td>
-                <td>
+
+                <td class="vacancy-list-type" colspan=""> {{ vacancy.contract_type|capfirst}}</td>
+
+                <td colspan="">
                     <div class="">
                         <button
                             class="btn {% if vacancy.is_active == True %}btn-outline-danger{% else %}btn-outline-success{% endif %} btn-sm active-vacancy"
-                            data-id="{{ vacancy.id }}">
+                            data-id="{{ vacancy.id }}" onclick="activeVacancy(event)">
                             {% if vacancy.is_active == True %}
                             Fechar Vaga
                             {% else %}

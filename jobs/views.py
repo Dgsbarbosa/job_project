@@ -240,7 +240,7 @@ def register_vacancy(request):
                 vacancy.country = request.POST['country']
                 vacancy.state = request.POST['state']
                 vacancy.city = request.POST['city']
-
+                vacancy.is_active = True
                 if vacancy.phone1 and len(vacancy.phone1) < 10:
                     vacancy.phone1 = ""
                 if vacancy.phone2 and len(vacancy.phone2) < 10:
@@ -523,7 +523,6 @@ def saved_vacancies(request):
     vacancies_count = saved_vacancies.count()
     
     for saved in saved_vacancies:
-        print(saved.vacancy)
         country = saved.vacancy.country
         country = country.split(":")[1]
         saved.vacancy.country = country
@@ -541,5 +540,23 @@ def saved_vacancies(request):
 
 @login_required(login_url="auth/register")
 def active_vacancy(request, vacancy_id):
-    print(vacancy_id)
-    return HttpResponse(f"teste {vacancy_id}")
+    
+    vacancy = Vacancies.objects.get(id=vacancy_id)
+    
+    
+    try:
+        if vacancy.is_active:
+            vacancy.is_active = False
+
+        else:
+            vacancy.is_active = True
+        
+        vacancy.save()
+        messages.success(request, "Alterado com sucesso")
+        message = {"message":"success"}
+    except:
+        
+        messages.error(request,"Não foi possivel alterar a vaga. Tente novamente")
+        message = {"message":"error"}
+
+    return JsonResponse(message)

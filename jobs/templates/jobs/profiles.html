@@ -113,13 +113,13 @@
 
             <div class="row">
 
-                <h5 class="profile-item col-md-12">Foram encontradas <b>{{ company_profile.count }}</b> empresas </h5>
+                <h5 class="profile-item col-md-12 text-center mt-5">Foram encontradas <b>{{ company_profile.count }}</b> empresas </h5>
 
                 {% for company in company_profile %}
 
 
                 <div class="profile-item col-md-4 ">
-                    <input type="button" class="btn btn-outline-info profile-item-button button-company"
+                    <input type="button" class="btn btn-outline-success profile-item-button button-company"
                         id="button-company-{{ company.id }}" value="{{ company|capfirst }}">
                 </div>
 
@@ -202,7 +202,8 @@
 
         <div class="profile-item col-md-12 ">
             <h6>Resumo da Empresa: </h6>
-            <textarea class=""  readonly>{{ company_profile.resume_company|linebreaksbr|capfirst }} 
+            <textarea class=""  readonly>
+                {{ company_profile.resume_company|linebreaksbr }} 
 
             </textarea>
         </div>
@@ -213,6 +214,8 @@
             </a>
         </div>
 
+        {% else %}
+            <h3 class="alert alert-info text-center"> Cadastre até 2 empresas</h3>
         {% endif %}
 
     </div>

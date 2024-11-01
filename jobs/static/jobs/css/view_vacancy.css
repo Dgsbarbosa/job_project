@@ -1,8 +1,6 @@
 /* border: 1px solid black; */
 
-.div-button-save-vacancy{
-    margin-bottom: 30px;    
-}
+
 .view_vacancy{
     margin-top: 30px;
     padding: 30px;
@@ -30,8 +28,13 @@
     display: flex;
     justify-content: center;
 
+/* border: 1px solid black; */
+
+
+
+
 }
-.div-buttons-vacancy input{
+.div-buttons-vacancy input, .div-buttons-vacancy button{
     width: 50%;
 }
 

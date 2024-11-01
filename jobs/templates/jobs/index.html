@@ -114,20 +114,32 @@
             </tr> -->
 
             {% for vacancy in vancancies %}
+
             <tr class="vacancy-list-tr-description ">
 
                 <td class="vacancy-title">
+                    {%if vacancy.is_active == True %}
+
                     <a href="{% url 'jobs:view_vacancy' vacancy.id%}">
 
                         {{ vacancy.title|capfirst}}
                     </a>
+
+                    {%else%}
+                    
+
+                        {{ vacancy.title|capfirst}} [Encerrada]
+
+                    
+                    {% endif%}
                 </td>
+                
                 <td class="vacancy-list-location">{{ vacancy.country }} / {{ vacancy.state }} / {{ vacancy.city }}
                 </td>
                 <td class="vacancy-list-type"> {{ vacancy.contract_type|capfirst}}</td>
 
 
-            </tr>      
+            </tr>
 
 
             {% endfor %}
@@ -135,13 +147,13 @@
             <tr class="div-ads-video">
                 <td>
 
-                    <div class="video-ad" >
+                    <div class="video-ad">
 
                     </div>
 
                 </td>
             </tr>
-            
+
             {% empty %}
 
             <tr class=" .alert-vacancy vacancy-list-tr">

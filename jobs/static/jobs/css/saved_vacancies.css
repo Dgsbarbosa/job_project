@@ -52,8 +52,16 @@
 
 }
 
+.saved-title{
+    color: #000fff;
+    font-weight: bold;
+
+}
 .saved-title a, .vacancy-title a {
     text-decoration: none;
+    color: #000fff;
+    font-weight: bold;
+
 }
 
 

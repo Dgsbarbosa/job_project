@@ -14,9 +14,9 @@
 
         <h2>Editar Vaga </h2>
 
-        <div class="container">
+        <div class=" container">
 
-            <div class=" information row">
+            <div class=" form-information row">
 
                 <div class="col-md-12">
                     <label for="company_name">Titulo da Vaga:</label>
@@ -27,7 +27,7 @@
 
             </div>
 
-            <div class=" information row">
+            <div class=" form-information row">
 
                 <div class="col-md-8">
                     <label for="company_name">Nome da Empresa:</label>
@@ -50,10 +50,13 @@
                     {{ form.contract_type }}
 
                 </div>
+                <div class="col-md-12">
+                    <a href="{% url 'jobs:register_company' %}"><input type="button" class="btn btn-outline-success" value="Cadastar Empresa" ></a>
+                </div>
 
             </div>
 
-            <div class="information row">
+            <div class="form-location row">
 
                 <div class="col-md-4">
                     <label for="country">País da vaga:</label>
@@ -77,15 +80,9 @@
             </div>
 
 
-            <div class="contract-type information row">
+            <div class="contact form-information row">
 
-
-
-            </div>
-
-            <div class="contact information row">
-
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label for="{{ form.contract_type.id_for_label }}">Telefone 1:</label>
                     {{ form.phone1 }}
 
@@ -104,7 +101,7 @@
 
                 </div>
 
-                <div class="col-md-3" id="">
+                <div class="col-md-4 form-contact-phone"" id="">
                     <label for="{{ form.contract_type.id_for_label }}">Telefone 2:</label>
 
                     {{ form.phone2 }}
@@ -125,7 +122,7 @@
                     {% endif %}
 
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <label for="{{ form.contract_type.id_for_label }}">Email:</label>
 
                     {{ form.email }}
@@ -134,7 +131,7 @@
 
             </div>
 
-            <div class="descript-vacation information row">
+            <div class="descript-vacation form-information row">
 
                 <div class="col-md-12">
                     <label for="{{ form.personal_sumary.id_for_label }}">Descrição da Vaga:</label>
@@ -150,7 +147,7 @@
 
         </div>
 
-        <div class="row information information-button">
+        <div class="row form-information form-information-button">
 
             <div class="col-md-4">
                 <a href="javascript:history.back()">

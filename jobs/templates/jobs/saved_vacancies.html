@@ -31,12 +31,19 @@
             <tr class="saved-list-tr-description">
 
                 <td class="saved-title">
+                {% if saved.vacancy.is_active %}
+
                     <a href="{% url 'jobs:view_vacancy' saved.vacancy.id%}">
 
                         {{ saved.vacancy.title|capfirst}}
                     </a>
+                    {% else %}
+                    {{ saved.vacancy.title|capfirst}} [Encerrada]
 
+                    {% endif %}
                 </td>
+              
+
 
                 <td class="saved-list-location">
                     {{ saved.vacancy.country }} / {{ saved.vacancy.state }} / {{ saved.vacancy.city }}
