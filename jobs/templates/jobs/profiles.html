@@ -113,7 +113,7 @@
 
             <div class="row">
 
-                <h5 class="profile-item col-md-12 text-center mt-5">Foram encontradas <b>{{ company_profile.count }}</b> empresas </h5>
+                <h5 class="profile-item col-md-12 text-center mt-5">Foram encontradas <b>{{ company_profile.count }}</b> empresas ativas </h5>
 
                 {% for company in company_profile %}
 
@@ -157,7 +157,7 @@
                 </div>
                 <div class="profile-item col-md-12 ">
                     <h6>Resumo da Empresa: </h6>
-                    <textarea class="" value="" readonly>{{ company.resume_company|linebreaksbr|capfirst }}</textarea>
+                    <textarea class="" readonly>{{ company.resume_company|capfirst }}</textarea>
                 </div>
 
                 <div class=" div-button-edit-profile row">

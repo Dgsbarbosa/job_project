@@ -84,13 +84,8 @@
             <tr class=" .alert-vacancy vacancy-list-tr">
 
                 <td class="message message-no-vacancy alert alert-info" colspan="3">
-                    Não há vagas para:
-                    <div>
-
-                        {% for chave, valor in return_search.items %}
-                        <strong>{{ chave|capfirst }}</strong>: {{ valor|upper }},
-                        {% endfor %}
-                    </div>
+                    Nenhuma vaga salva.
+                    
                 </td>
 
             </tr>

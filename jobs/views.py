@@ -116,7 +116,6 @@ def index(request):
                     key = "tipo de contrato"
                     return_search[key] = filters["contract_type"]
 
-            print(return_search)
 
             for chave, valor in return_search.items():
 
@@ -125,7 +124,7 @@ def index(request):
 
         button_view_vacancies = True
         
-
+        
     else:
 
         for vacancy in Vacancies.objects.all():
@@ -302,12 +301,13 @@ def edit_vacancy(request, vacancy_id):
     if request.method == "POST":
         
         form = VacanciesForm(request.POST, instance=vacancy)
-        
-        print(form)
+        is_active = vacancy.is_active 
+
         if form.is_valid():
             
             vacancy_form = form.save(commit=False)
 
+            vacancy_form.is_active = is_active
             vacancy_form.save()
 
             messages.success(request,"Vaga editada com sucesso")
@@ -317,8 +317,7 @@ def edit_vacancy(request, vacancy_id):
             
         return redirect("jobs:view_vacancy", vacancy_id)
 
-    else:
-        
+    else:        
         
         form = VacanciesForm(instance=vacancy)
         
@@ -333,8 +332,7 @@ def edit_vacancy(request, vacancy_id):
         if form["phone2"].value():
             form.fields["phone2"].widget.attrs['hidden'] = False
 
-        
-        
+      
         
         context = {
             "form": form,
@@ -522,7 +520,6 @@ def my_vacancies(request):
     }
     
     return render(request,"jobs/my_vacancies.html", context)
-
 
 
 @login_required(login_url="auth/register")
