@@ -1,46 +1,36 @@
 /* border: 1px solid black; */
 
+.view-vacancy{
+border: 1px solid black;
+padding: 50px;
 
-.view_vacancy{
-    margin-top: 30px;
-    padding: 30px;
 }
 
-.vacancy-descript{
-    text-align: justify;
+.view-vacancy-card{
+/* border: 1px solid rgb(0, 240, 60); */
+border-radius: 8px;
+
+box-shadow: 0px 4px 8px rgb(0, 0, 0, 0.1);
 }
 
-.name-vacancy h3{
-    margin-bottom: 0;
+.view-vacancy .row{
+/* border: 1px solid rgb(255, 0, 0); */
+padding: 20px 50px;
+
+
 }
-.name-vacancy p{
-    margin-bottom: 0;
+.div-vacancy-title{
+    background-color: rgb(201, 201, 201);
+border-radius: 8px 8px 0px 0px;
+
 }
 
-.div-buttons-vacancy{
-    width: 100%;
-    margin: 0;
-   padding: 0;
-    
-}
-
-.div-buttons-vacancy .row{
+.view-vacancy-information {
     display: flex;
-    justify-content: center;
-
-/* border: 1px solid black; */
-
-
-
-
-}
-.div-buttons-vacancy input, .div-buttons-vacancy button{
-    width: 50%;
+    font-size: 20px;
+    row-gap: 10px;
 }
 
-
-/* Saved vacancy */
-/* border: 1px solid black; */
 
 
 

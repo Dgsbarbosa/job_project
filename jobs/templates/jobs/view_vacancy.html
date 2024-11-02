@@ -6,101 +6,142 @@
 
 
 
-<div class="view_vacancy container">
-    
-    
-    <div class="candidate-name row ">
+<div class="view-vacancy ">
 
-        <div class=" name-vacancy col-md-6">
-            <h3><strong>{{ vacancy.title|capfirst}} </strong></h3>
-            <p><small class="text-muted">Localização{{ vacancy.country}}/{{ vacancy.state }}/{{ vacancy.city }}</small></p>
-            <p>
-                <small class="text-muted">
-                    Data de Cadastro:
+    <div class="view-vacancy-card container">
+
+        <div class="div-vacancy-title row ">
+
+            <div class=" view-vacancy-date col-md-12 ">
+                <i class="fa-regular fa-clock "></i>
+                <small class="">
+                    Publicada em:
                     {{ vacancy.created_at.day }}/{{ vacancy.created_at.month }}/{{ vacancy.created_at.year }}
                 </small>
-            </p>
 
+            </div>
+            <div class=" col-md-12">
+
+                <h3><strong>{{ vacancy.title|capfirst}}</strong> </h3>
+                <h6><strong>{{vacancy.company}}</strong></h6>
+
+            </div>
         </div>
 
 
-    </div>
 
-    <div class="vacancy-descript  row">
-        <p>{{ vacancy.descript|linebreaks|capfirst }}</p>
-    </div>  
-    <hr>
-
-    <div class="vacancy-type-contract row ">
-        <p><strong>Tipo de Contrato:</strong> {{ vacancy.contract_type|capfirst}} </p>
-    </div>
-
-    <div class="vacancy-contact row ">
-        <div class="col-md-12">
-
-            <p><strong>Contato:</strong> {{ vacancy.email}} </p>
-
-        </div>
-        {%if vacancy.phone1 %}
-        <div class="col-md-12">
-
-            <p><strong>Telefone 1:</strong> {{ vacancy.phone1 }} </p>
-
-        </div>
-        {% endif %}
-        {%if vacancy.phone2 %}
-        <div class="col-md-12">
-
-            <p><strong>Telefone 2:</strong> {{ vacancy.phone2 }} </p>
-
-        </div>
-        {% endif %}
-    </div>
-
-    <div class="location  row">
-
-        <p><strong>Vaga para:</strong> {{ vacancy.country }} - {{ vacancy.state }} - {{ vacancy.city }}</p>
-
-    </div>
-
-
-</div>
-
-<div class="div-buttons-vacancy row">
-
-   
-        <div class="col-md-4">
-            <a href="javascript:history.back()">
-                <input type="button" class="btn btn-outline-primary " value="Voltar">
-            </a>
-        </div>
-        {% if vacancy.company.user == request.user %}
-
-        <div class="col-md-4">
-            <a href="{% url 'jobs:edit_vacancy' vacancy.id %}">
-                <input type="button" class="btn btn-outline-warning" value="Editar">
-            </a>
+        <div class="view-vacancy-information row">
+            <div class="view-vacation-location">
+                <i class="fa-solid fa-location-dot"></i>
+                <small class="text-muted">{{ vacancy.country}}/ {{ vacancy.state }}/ {{ vacancy.city }}</small>
+            </div>
+            <div class="view-vacancy-type">
+                <i class="fa-regular fa-id-badge"></i>
+                <small class="text-muted">{{ vacancy.contract_type|capfirst }}</small>
+            </div>
         </div>
 
-        
+        <hr>
 
-        {% endif %}
-        <div class="div-button-save-vacancy col-md-4">
-            <button id="" 
-                    class="btn {% if saved_vacancy %}btn-success{% else %}btn-outline-success{% endif %} save-toggle" 
+        <div class="vacancy-descript  row">
+            <h6>Descrição</h6>
+
+            <div class="col-md-6">
+                <p>{{ vacancy.descript|linebreaks|capfirst }}</p>
+            </div>
+        </div>
+
+
+        <div class="vacancy-contact row ">
+            <h6>Contatos</h6>
+            <div class="col-md-4">
+                <h6>Email: </h6>
+                <p> {{ vacancy.email}} </p>
+
+            </div>
+
+            {%if vacancy.phone1 %}
+            <div class="col-md-4">
+                <h6>Telefone 1:</h6>
+                <p> {{ vacancy.phone1 }} </p>
+
+            </div>
+            {% endif %}
+            {%if vacancy.phone2 %}
+            <div class="col-md-4">
+                <h6>Telefone 2:</h6>
+                <p> {{ vacancy.phone2 }} </p>
+
+            </div>
+            {% endif %}
+        </div>
+
+        <hr>
+
+        <div class="vacancy-informations row ">
+
+            <h6>Informações</h6>
+            <div class="col-md-12">
+                <p>Tipo de Contrato: {{ vacancy.contract_type|capfirst}} </p>
+            </div>
+
+            <div class="col-md-12">
+                <p>Vaga para: {{ vacancy.country }} - {{ vacancy.state }} - {{ vacancy.city }}</p>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="company-resume row">
+
+            <h6>Resumo da Empresa: </h6>
+            <p>{{ vacancy.company }}</p>
+            <br>
+            <p>{{ vacancy.company.resume_company }}</p>
+
+        </div>
+
+        <div class="div-buttons-vacancy row">
+
+
+            <div class="col-md-4">
+                <a href="javascript:history.back()">
+                    <input type="button" class="btn btn-outline-primary " value="Voltar">
+                </a>
+            </div>
+            {% if vacancy.company.user == request.user %}
+
+            <div class="col-md-4">
+                <a href="{% url 'jobs:edit_vacancy' vacancy.id %}">
+                    <input type="button" class="btn btn-outline-warning" value="Editar">
+                </a>
+            </div>
+
+
+
+            {% endif %}
+            <div class="div-button-save-vacancy col-md-4">
+                <button id=""
+                    class="btn {% if saved_vacancy %}btn-success{% else %}btn-outline-success{% endif %} save-toggle"
                     data-id="{{ vacancy.id }}">
-                {% if saved_vacancy %}
+                    {% if saved_vacancy %}
                     Desmarcar Vaga
-                {% else %}
+                    {% else %}
                     Salvar Vaga
-                {% endif %}
-            </button>
+                    {% endif %}
+                </button>
+            </div>
+
+
+
+
+
         </div>
-
-    
-
-   
+    </div>
 
 </div>
+
+
 
 {% endblock %}

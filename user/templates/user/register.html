@@ -8,15 +8,16 @@
     {% for message in messages%}
 
     <div class="alert alert-danger" role="alert">
-        <div class="message">{{ message }}</div> <div class="close-alert" onclick="closeMessage(this)">x</div> 
-    </div>  
-   
+        <div class="message">{{ message }}</div>
+        <div class="close-alert" onclick="closeMessage(this)">x</div>
+    </div>
+
     {% endfor %}
 </div>
 {% endif %}
 
 
-<div class="cont">
+<div class="cont container">
 
     <div class="form sign-in">
 
@@ -26,7 +27,7 @@
             {% csrf_token %}
             <label>
                 <span>Email</span>
-                <input type="email" autocomplete="email" name="email" required/>
+                <input type="email" autocomplete="email" name="email" required />
             </label>
             <label>
                 <span>Senha</span>
@@ -40,7 +41,7 @@
             <p class="forgot-pass">Esqueceu a senha? <a href="" class="text-muted">Redefinir Senha</a></p>
 
             <button type="submit" class="submit">Entrar</button>
-            
+
         </form>
 
     </div>
@@ -64,62 +65,100 @@
 
         <div class="form sign-up">
             <h2>Crie sua conta</h2>
-            <form action="{% url 'user:register' %}" method="POST">
+            <form action="{% url 'user:register' %}" method="POST" class="container">
                 {% csrf_token %}
 
-                <div class="name">
-                    <label>
-                        <span>Nome</span>
-                        <input type="text" name="name" required />
-                    </label>
-                    <label>
-                        <span>Sobrenome</span>
-                        <input type="text" name="lastname" required />
-                    </label>
-                </div>
-                <label>
-                    <span>Email</span>
-                    <input type="email" name="email" autocomplete="email" required />
-                </label>
+                <div class="name row">
+                    <div class="col-md-6">
 
-                <div class="password">
+                        <label>
+                            <span>Nome</span>
+                            <input type="text" name="name" required />
+                        </label>
+                    </div>
 
-                    <label>
-                        <span>Senha</span>
+                    <div class="col-md-6">
 
-                        <div class="password-container">
-                            <input type="password" class="password" name="password" autocomplete="new-password"
-                                required />
-                            <i class="fa-regular fa-eye toggle-password"></i>
-                            <i class="fa-regular fa-eye-slash toggle-password-slash" hidden></i>
-                        </div>
-
-                    </label>
-
-                    <label>
-                        <span>Confirme a Senha</span>
-                        <div class="password-container">
-                            <input type="password" class="password2" name="password2" autocomplete="new-password"
-                                required />
-                            <i class="fa-regular fa-eye toggle-password"></i>
-                            <i class="fa-regular fa-eye-slash toggle-password-slash" hidden></i>
-                        </div>
-                    </label>
+                        <label>
+                            <span>Sobrenome</span>
+                            <input type="text" name="lastname" required />
+                        </label>
+                    </div>
 
                 </div>
-                <button type="submit" class="submit">Sign Up</button>
+
+                <div class="  row">
+
+                    <div class=" div-email col-md-12">
+                        <label>
+                            <span>Email</span>
+                            <input type="email" name="email" autocomplete="email" required />
+                        </label>
+                    </div>
+                </div>
+
+                <div class="div-password row">
+
+                    <div class="col-md-6">
+
+                        <label>
+                            <span>Senha</span>
+
+                            <div class="password-container">
+                                <input type="password" class="password" name="password" autocomplete="new-password"
+                                    required />
+                                <i class="fa-regular fa-eye toggle-password"></i>
+                                <i class="fa-regular fa-eye-slash toggle-password-slash" hidden></i>
+                            </div>
+
+
+                        </label>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label>
+                            <span>Confirme a Senha</span>
+                            <div class="password-container">
+                                <input type="password" class="password2" name="password2" autocomplete="new-password"
+                                    required />
+                                <i class="fa-regular fa-eye toggle-password"></i>
+                                <i class="fa-regular fa-eye-slash toggle-password-slash" hidden></i>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="col-md-12 password-descript">
+                        <small class="text-muted ">
+                            A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, letras minúsculas,
+                            números e caracteres especiais. <br>Exemplo: <strong>Exemplo@123</strong>
+                        </small>
+                    </div>
+
+                </div>
+
+                <div class="div-button-back row">
+
+                    <div class="col-md-4 ">
+                        <a href="javascript:history.back()" class="">
+                            <input type="button" class=" submit btn-back" value="Voltar">
+                        </a>
+                    </div>
+
+                    <div class="col-md-4">
+                        <button type="submit" class="submit">Sign Up</button>
+                    </div>
+
+                </div>
+
             </form>
         </div>
     </div>
-    
+
 </div>
 
-<div class="div-button-back">
-        <a href="javascript:history.back()">
-            <input type="text" class="btn btn-outline-primary btn-back" value="Voltar">
-        </a>
-    </div>
 
 
-    
+
+
 {%endblock%}

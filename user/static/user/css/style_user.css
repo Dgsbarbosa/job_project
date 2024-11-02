@@ -42,7 +42,7 @@ body {
 }
 
 input,
-button {
+button, .btn-back {
     border: none;
     outline: none;
     background: none;
@@ -60,9 +60,10 @@ button {
     overflow: hidden;
     position: relative;    
     width: 900px;
-    height: 600px;
+    min-height:600px;    
     margin: 50px 100px 0px 100px;
     background: #fff;
+    display: inline-block;
     box-shadow: -10px -10px 15px rgba(255, 255, 255, 0.3), 10px 10px 15px rgba(70, 70, 70, 0.15), inset -10px -10px 15px rgba(255, 255, 255, 0.3), inset 10px 10px 15px rgba(70, 70, 70, 0.15);
 }
 
@@ -97,7 +98,7 @@ button {
     transform: translate3d(-640px, 0, 0);
 }
 
-button {
+button , .btn-back{
     display: block;
     margin: 0 auto;
     width: 260px;
@@ -336,10 +337,22 @@ input {
     padding-bottom: 5px;
 }
 .password-container input {
-    flex: 1; /* Faz o input ocupar o máximo de espaço possível */
+    flex: 1;
     border: none; 
     
 
+}
+
+.div-button-back{
+    justify-content: center;
+    margin-bottom: 30px;
+}
+.div-button-back .btn-back, .div-button-back .submit{
+    width: 100%;
+}
+
+.div-button-back a{
+    text-decoration: none;
 }
 
 .password-container i {
@@ -348,7 +361,18 @@ input {
     color: #cfcfcf; /* Cor do ícone */
 }
 
+.name, .div-email, .div-password{
+margin-top: 30px;
 
-.btn-back{margin-top: 30px;
-    width: 300px;
+}
+.div-email label{
+width: 100%;
+}
+
+.password-descript{
+/* border: 1px solid  black; */
+font-size: 15px;
+text-align: center;
+margin-top: 15px;
+
 }

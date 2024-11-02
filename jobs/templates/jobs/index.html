@@ -107,12 +107,7 @@
                 </td>
             </tr>
 
-            <!-- <tr class="tr-titles">
-                <td><strong>Vaga</strong></td>
-                <td class="vacancy-list-location"><strong>Local</strong></td>
-                <td class="vacancy-list-type"><strong>Tipo de Contrato</strong></td>
-            </tr> -->
-
+       
             {% for vacancy in vancancies %}
 
             <tr class="vacancy-list-tr-description ">
@@ -134,10 +129,9 @@
                     {% endif%}
                 </td>
                 
-                <td class="vacancy-list-location">{{ vacancy.country }} / {{ vacancy.state }} / {{ vacancy.city }}
+                <td class="vacancy-list-location">{{ vacancy.country }} / <br> {{ vacancy.state }} / {{ vacancy.city }}
                 </td>
                 <td class="vacancy-list-type"> {{ vacancy.contract_type|capfirst}}</td>
-
 
             </tr>
 
@@ -159,12 +153,16 @@
             <tr class=" .alert-vacancy vacancy-list-tr">
 
                 <td class="message message-no-vacancy alert alert-info" colspan="3">
-                    Não há vagas para:
-                    <div>
+                    <div class="div-messages-no-vacancies">
 
-                        {% for chave, valor in return_search.items %}
-                        <strong>{{ chave|capfirst }}</strong>: {{ valor|upper }},
-                        {% endfor %}
+                        <div>
+                    Não há vagas para:
+
+                            {% for chave, valor in return_search.items %}
+                            <div><strong>{{ chave|capfirst }}</strong>: {{ valor|upper }}</div>
+                            {% endfor %}
+                            
+                        </div>
                     </div>
                 </td>
 

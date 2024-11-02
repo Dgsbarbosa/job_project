@@ -52,7 +52,7 @@
 
 }
 
-.saved-title{
+.saved-title, .vacancy-title{
     color: #000fff;
     font-weight: bold;
 
@@ -79,7 +79,7 @@
 
 
 .saved-list-location,
-.saved-list-type {
-    text-align: center;
+.saved-list-type, .vacancy-list-location, .vacancy-list-type {
+    text-align: left;
 
 }

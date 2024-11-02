@@ -65,6 +65,7 @@ def index(request):
 
     return_search = ""
     button_view_vacancies = False
+    
     if request.method == "POST":
 
         filters = {}
@@ -90,7 +91,32 @@ def index(request):
             vacancies_grouped_by_date[date].append(vacancy)
 
         if not vacancies_grouped_by_date.items():
-            return_search = filters
+            
+            return_search = {}
+            # return_search = 
+            for key in filters.keys():
+                
+                if key == "country":
+                    key = "País"
+                    return_search[key] = filters["country"]
+                    
+                elif key == "state":
+                    key = "estado"
+                    return_search[key] = filters["state"]
+
+                elif key == "city":
+                    key = "cidade"
+                    return_search[key] = filters["city"]
+
+                elif key == "title__icontains":
+                    key = "cargo"
+                    return_search[key] = filters["title__icontains"]
+
+                elif key == "contract_type":
+                    key = "tipo de contrato"
+                    return_search[key] = filters["contract_type"]
+
+            print(return_search)
 
             for chave, valor in return_search.items():
 
@@ -136,8 +162,10 @@ def index(request):
 def view_vacancy(request, vacancy_id):
 
     vacancy = Vacancies.objects.get(pk=vacancy_id)
-    saved_vacancy = SaveVacancy.objects.filter(user=request.user, vacancy=vacancy.id)
-    
+    try:
+        saved_vacancy = SaveVacancy.objects.filter(user=request.user, vacancy=vacancy.id)
+    except:
+        saved_vacancy = None
     country = vacancy.country
     country = country.split(":")[1]
     vacancy.country = country
@@ -501,42 +529,46 @@ def my_vacancies(request):
 @require_POST
 def save_vacancy(request, vacancy_id):
     
-    vacancy = get_object_or_404(Vacancies, id=vacancy_id)
+    try:
+        vacancy = get_object_or_404(Vacancies, id=vacancy_id)
 
-    saved_vacancy, created = SaveVacancy.objects.get_or_create(user=request.user, vacancy=vacancy)
+        saved_vacancy, created = SaveVacancy.objects.get_or_create(user=request.user, vacancy=vacancy)
+        
+        if created:
+            status = "saved"
+            
+            
+        else:
+            saved_vacancy.delete()
+            status = "unsaved"
+            
+            
+        return  JsonResponse({'status':status})
+    except:
+        pass
     
-    if created:
-        status = "saved"
-        
-        
-    else:
-        saved_vacancy.delete()
-        status = "unsaved"
-        
-        
-    return  JsonResponse({'status':status})
-
 @login_required(login_url="auth/register")
 def saved_vacancies(request):
-    
-    saved_vacancies = SaveVacancy.objects.filter(user=request.user).select_related("vacancy").order_by("-saved_at")
-    vacancies_count = saved_vacancies.count()
-    
-    for saved in saved_vacancies:
-        country = saved.vacancy.country
-        country = country.split(":")[1]
-        saved.vacancy.country = country
-        state = saved.vacancy.state
-        state = state.split(":")[1]
-        saved.vacancy.state = state
-    
-    context = {
-        "saved_vacancies":saved_vacancies,
-        "vacancies_count":vacancies_count,
-       
-    }
-    return render(request,"jobs/saved_vacancies.html",context)
-
+    try:
+        saved_vacancies = SaveVacancy.objects.filter(user=request.user).select_related("vacancy").order_by("-saved_at")
+        vacancies_count = saved_vacancies.count()
+        
+        for saved in saved_vacancies:
+            country = saved.vacancy.country
+            country = country.split(":")[1]
+            saved.vacancy.country = country
+            state = saved.vacancy.state
+            state = state.split(":")[1]
+            saved.vacancy.state = state
+        
+        context = {
+            "saved_vacancies":saved_vacancies,
+            "vacancies_count":vacancies_count,
+        
+        }
+        return render(request,"jobs/saved_vacancies.html",context)
+    except:
+        pass
 
 @login_required(login_url="auth/register")
 def active_vacancy(request, vacancy_id):

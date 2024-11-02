@@ -27,7 +27,6 @@
         <tbody>
 
 
-
             {% for company, vancancies in vacancies_grouped_by_company.items %}
 
             <tr class="date-vacancy">
@@ -53,7 +52,7 @@
 
                 </td>
 
-                <td class="vacancy-list-location" colspan="">{{ vacancy.country }} / <br> {{ vacancy.state }} / {{ vacancy.city }}
+                <td class="vacancy-list-location">{{ vacancy.country }} / <br> {{ vacancy.state }} / {{ vacancy.city }}
                 </td>
 
                 <td class="vacancy-list-type" colspan=""> {{ vacancy.contract_type|capfirst}}</td>
