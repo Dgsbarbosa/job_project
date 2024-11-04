@@ -19,12 +19,25 @@
     </div>
 
     <div class="worker-profile profile container" hidden>
-
-        {% if candidate_profile%}
         <div class="profile-header row">
 
-            <h2 class=" col-md-12">Perfil: Trabalhador</h2>
+
+            <h2 class="col-md-6">Perfil: Trabalhador</h2>
+
+            {% if not candidate_profile%}
+            <a href="{% url 'jobs:register_profile' %} " class=" col-md-6">
+
+                <input type="button" class="btn btn-outline-success " value="Cadastrar Perfil">
+
+            </a>
+            {% endif %}
+
+
         </div>
+
+
+        {% if candidate_profile%}
+
 
         <div class=" row ">
 
@@ -58,7 +71,7 @@
                 <input class="" value="{{ candidate_profile.city|capfirst}}" readonly>
             </div>
         </div>
-        
+
         <div class="profile-item col-md-12 ">
             <h6>Resumo Pessoal: </h6>
             <textarea class="" readonly>{{ candidate_profile.personal_sumary|capfirst}}</textarea>
@@ -69,7 +82,7 @@
             <textarea class="" readonly>{{ candidate_profile.professional_sumary|capfirst}}</textarea>
         </div>
 
-        
+
 
         <div class="div-button-edit-profile row ">
             <a href="{% url 'jobs:edit_profile_candidate' candidate_profile.id %}">
@@ -81,23 +94,17 @@
 
         {% else %}
 
-        <div class="row div-register-button">
-
-            <a href="{% url 'jobs:register_profile' %} " class="div-button-edit-profile">
-                <input type="button" class="btn btn-outline-success col-md-12" value="Cadastrar Perfil">
-
-            </a>
-        </div>
+        <h3 class="alert alert-info text-center"> Cadastre seu perfil</h3>
 
         {% endif %}
 
     </div>
 
 
-    <div class="company-profile profile container" >
+    <div class="company-profile profile container">
 
         <div class=" profile-header row">
-            <h2 class="col-md-6">Perfis: Empresa</h2>
+            <h2 class="col-md-6">Perfil: Empresa</h2>
 
             <a href="{% url 'jobs:register_company' %}" class="col-md-6">
 
@@ -113,7 +120,8 @@
 
             <div class="row">
 
-                <h5 class="profile-item col-md-12 text-center mt-5">Foram encontradas <b>{{ company_profile.count }}</b> empresas ativas </h5>
+                <h5 class="profile-item col-md-12 text-center mt-5">Foram encontradas <b>{{ company_profile.count }}</b>
+                    empresas ativas </h5>
 
                 {% for company in company_profile %}
 
@@ -127,11 +135,10 @@
             </div>
         </div>
 
-        <div class="company" >
-           
+        <div class="company">
 
             {% for company in company_profile %}
-            
+
             <div id="company-{{ company.id }}" class="row" hidden>
 
                 <div class="profile-item col-md-12">
@@ -155,22 +162,110 @@
 
 
                 </div>
-                <div class="profile-item col-md-12 ">
+                <div class="profile-item col-md-12">
                     <h6>Resumo da Empresa: </h6>
                     <textarea class="" readonly>{{ company.resume_company|capfirst }}</textarea>
                 </div>
 
-                <div class=" div-button-edit-profile row">
-                    <a href="{% url 'jobs:edit_company' company.id %}">
+                <div class="div-buttons-company ">
+                    <div class="row">
 
-                        <input type="button" class="btn btn-outline-warning .edit-profile" value="Edit">
+                        <a href="{% url 'jobs:edit_company' company.id %}" class="col-md-4">
+                            <input type="button" class="btn btn-outline-primary btn-sm " value="Edit">
+                        </a>
 
-                    </a>
+                        <a href="{% url 'jobs:active_company' company.id %}" class="col-md-4">
+                            <input type="button" class="btn btn-outline-warning btn-sm " value="Desativar ">
+                        </a>
+
+                        <a href="" class="col-md-4">
+                            <input type="button" class="btn btn-outline-danger btn-sm delete-company" data-id="{{ company.id }}" data-name="{{ company.company_name }}" value="Deletar">
+                        </a>
+                    </div>
+
                 </div>
             </div>
             {% endfor %}
 
         </div>
+
+        <div class="buttons-profiles-companies container buttons-company">
+
+            <div class="row">
+
+                <h5 class="profile-item col-md-12 text-center mt-5">Foram encontradas <b>{{ company_profile_inactive.count }}</b>
+                    empresas inativas </h5>
+
+                {% for company in company_profile_inactive %}
+
+
+                <div class="profile-item col-md-4 ">
+                    <input type="button" class="btn btn-outline-success profile-item-button button-company"
+                        id="button-company-{{ company.id }}" value="{{ company|capfirst }}">
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="company">
+
+
+            {% for company in company_profile_inactive %}
+
+            <div id="company-{{ company.id }}" class="row" hidden>
+
+                <div class="profile-item col-md-12">
+                    <h6>Nome da Empresa: </h6>
+                    <input class="" value="{{ company.company_name|capfirst}}" readonly>
+                </div>
+
+                <div class="row ">
+                    <div class="profile-item col-md-4">
+                        <h6>País:</h6>
+                        <input class="" value="{{ company.country|capfirst}}" readonly>
+                    </div>
+                    <div class="profile-item col-md-4">
+                        <h6>Estado: </h6>
+                        <input class="" value="{{ company.state|capfirst}}" readonly>
+                    </div>
+                    <div class="profile-item col-md-4">
+                        <h6>Cidade: </h6>
+                        <input class="" value="{{ company.city|capfirst}}" readonly>
+                    </div>
+
+
+                </div>
+
+                <div class="profile-item col-md-12 ">
+                    <h6>Resumo da Empresa: </h6>
+                    <textarea class="" readonly>{{ company.resume_company|capfirst }}</textarea>
+                </div>
+
+                <div class="div-buttons-company ">
+                    <div class="row">
+
+                        <a href="{% url 'jobs:edit_company' company.id %}" class="col-md-4">
+                            <input type="button" class="btn btn-outline-primary btn-sm " value="Edit">
+                        </a>
+
+                        <a href="{% url 'jobs:active_company' company.id %}" class="col-md-4">
+                            <input type="button" class="btn btn-outline-warning btn-sm " value="Ativar ">
+                        </a>
+
+                        <a href="" class="col-md-4">
+                            <input type="button" class="btn btn-outline-danger btn-sm delete-company" data-id="{{ company.id }}" data-name="{{ company.company_name }}" value="Deletar">
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
 
         {% elif count_company_profile == 1 %}
 
@@ -202,20 +297,30 @@
 
         <div class="profile-item col-md-12 ">
             <h6>Resumo da Empresa: </h6>
-            <textarea class=""  readonly>
+            <textarea class="" readonly>
                 {{ company_profile.resume_company|linebreaksbr }} 
 
             </textarea>
         </div>
 
-        <div class="div-button-edit-profile row ">
-            <a href="{% url 'jobs:edit_company' company_profile.id %}">
-                <input type="button" class="btn btn-outline-warning .edit-profile" value="Edit">
-            </a>
-        </div>
+        <div class="div-buttons-company ">
+            <div class="row">
 
+                <a href="{% url 'jobs:edit_company' company_profile.id %}" class="col-md-4">
+                    <input type="button" class="btn btn-outline-primary btn-sm " value="Edit">
+                </a>
+
+                <a href="{% url 'jobs:active_company' company_profile.id %}" class="col-md-4">
+                    <input type="button" class="btn btn-outline-warning btn-sm " value="Desativar ">
+                </a>
+
+                <a href="" class="col-md-4">
+                    <input type="button" class="btn btn-outline-danger btn-sm delete-company" data-id="{{ company_profile.id }}" data-name="{{ company_profile.company_name }}" value="Deletar">
+                </a>
+            </div>
+        </div>    
         {% else %}
-            <h3 class="alert alert-info text-center"> Cadastre até 2 empresas</h3>
+        <h3 class="alert alert-info text-center"> Cadastre sua empresa</h3>
         {% endif %}
 
     </div>

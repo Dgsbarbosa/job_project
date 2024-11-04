@@ -39,6 +39,22 @@
 
 }
 
+.active-vacancies td, .disable-vacancies td{
+    text-align: center;
+    background-color: #000fff;
+    color: white;
+    padding: 20px;
+    font-size: 20px;
+    
+}
+
+.disable-vacancies td{
+    background-color: red;
+    color: yellow;
+}
+.vacancies-divise{
+    padding: 10px;
+}
 
 .saved-list-tr-description td, .vacancy-list-tr-description td {
     padding: 15px;

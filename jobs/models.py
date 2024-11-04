@@ -33,6 +33,7 @@ class CompanyProfile(Contact,Location):
     company_name = models.CharField(max_length=150)
     resume_company = models.TextField()
     is_active = models.BooleanField(default=True)
+    is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -50,6 +51,7 @@ class Vacancies(Contact,Location):
     descript = models.TextField()
     contract_type = models.CharField(max_length=150, choices=TYPES_CONTRACT_CHOICES)
     is_active = models.BooleanField(default=True)
+    show_company = models.BooleanField(default=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     

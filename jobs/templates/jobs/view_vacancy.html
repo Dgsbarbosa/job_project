@@ -103,12 +103,20 @@
         <div class="company-resume row">
 
             <h6 class="vacancy-title-section">Resumo da Empresa </h6>
+
+            {% if vacancy.show_company %}
+
             <div class="col-md-12">
                 <p class="company-resume-name">{{ vacancy.company }}</p>
                 
                 <p>{{ vacancy.company.resume_company|linebreaksbr|capfirst }}</p>
             </div>
 
+            {% else %}
+            <div class="alert alert-warning">
+                Empresa confidencial
+            </div>
+            {% endif %}
         </div>
 
         <div class="div-buttons-vacancy row">

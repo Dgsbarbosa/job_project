@@ -7,36 +7,50 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const div_worker_profile = document.querySelector(".worker-profile");
     const div_company_profile = document.querySelector(".company-profile");
 
-    const countrySelect = document.querySelector(".select-country");
+    const country_select = document.querySelector(".select-country");
+
+
+
 
     if (button_show_worker && button_show_company && div_worker_profile && div_company_profile) {
+
+
         button_show_worker.addEventListener("click", function () {
             div_company_profile.hidden = true;
             div_worker_profile.hidden = false;
+            if (button_show_company.classList.contains("btn-primary")) {
+                button_show_company.classList.replace("btn-primary", "btn-outline-primary");
+            }
+            if (button_show_worker.classList.contains("btn-outline-primary")) {
+                button_show_worker.classList.replace("btn-outline-primary", "btn-primary");
+            }
         });
 
         button_show_company.addEventListener("click", function () {
             div_worker_profile.hidden = true;
             div_company_profile.hidden = false;
+            if (button_show_worker.classList.contains("btn-primary")) {
+                button_show_worker.classList.replace("btn-primary", "btn-outline-primary");
+            }
+            if (button_show_company.classList.contains("btn-outline-primary")) {
+                button_show_company.classList.replace("btn-outline-primary", "btn-primary");
+            }
         });
-    } 
-    
+    }
+
 
     const id_country = document.querySelector("#country");
-    if (id_country){
+    if (id_country) {
 
         populateCoutriesSelect();
     }
-    
-
-
 
     button_company = document.querySelectorAll(".button-company");
 
 
     button_company.forEach(button => {
         const button_id = button.id;
-        button.addEventListener("click", (event) => showCompany(button_id,event))
+        button.addEventListener("click", (event) => showCompany(button_id, event))
     })
 
     const phone1 = document.querySelectorAll("#phone1");
@@ -82,13 +96,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     // Register Vacancy
     const select_company = document.querySelector("#company");
-    select_company.addEventListener("click", () => {
+    if (select_company) {
+        select_company.addEventListener("click", () => {
 
-        select_company.addEventListener("change", selectCountryVacancy);
-    });
-
+            select_company.addEventListener("change", selectCountryVacancy);
+        });
+    }
     // My vacancies
 
+    // Company Profile
+
+    setupDeleteCompanyButtons();
 
 });
 
@@ -237,15 +255,12 @@ function closeMessage(element) {
     alertBox.remove();
 }
 
-function showCompany(button_id,event) {
+function showCompany(button_id, event) {
 
     const button = event.target;
 
-    
-    let button_company = document.querySelectorAll(".button-company");
 
-    console.log(button);
-    console.log(button_company);
+    let button_company = document.querySelectorAll(".button-company");
 
 
     button_company.forEach(btn => {
@@ -259,7 +274,7 @@ function showCompany(button_id,event) {
         button.classList.replace("btn-outline-success", "btn-success");
     }
 
-    
+
     let div_companies = document.querySelectorAll(".company > div");
     let h2_companies = document.querySelectorAll(".company > h2");
 
@@ -438,8 +453,45 @@ function activeVacancy(event) {
             "Content-Type": "application/json"
         }
     })
-    .then(response => response.json())
-    .then(data => {
-        window.location.reload();
-    })
+        .then(response => response.json())
+        .then(data => {
+            window.location.reload();
+        })
+}
+
+function setupDeleteCompanyButtons() {
+    const deleteButtons = document.querySelectorAll(".delete-company");
+    deleteButtons.forEach(button =>
+        button.addEventListener("click", deleteCompany));
+
+}
+
+function deleteCompany(event) {
+    const companyId = event.target.dataset.id;
+    const companyName = event.target.dataset.name;
+
+    const confirm1 = prompt(`Deseja excluir a empresa ${companyName}? \nDigite: \ndelete ${companyName.toLowerCase()}`);
+
+    if (confirm1 === `delete ${companyName.toLowerCase()}`) {
+        const confirm2 = confirm("Não é possivel reverter essa opção. Continuar?");
+        if (confirm2 === true){
+            alert("deletar");
+        }else{
+            event.preventDefault();
+        }
+
+        
+    }else if (confirm1 === null ){
+
+        event.preventDefault();
+    }else {  
+
+        const errorConfirm = confirm("Para deletar a empresa digite o texto corretamente.\nClique em 'OK' para continuar ou Cancelar.");
+        if(errorConfirm === true){
+            deleteCompany(event); 
+        }else{
+            event.preventDefault();
+        }
+    }
+
 }

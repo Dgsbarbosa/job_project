@@ -219,6 +219,15 @@ def register_profile(request):
 @login_required(login_url="auth/register")
 def register_company(request):
 
+    companies = CompanyProfile.objects.filter(user=request.user,is_active=True,is_deleted=False)
+
+    if companies:
+        messages.error(request,"No momento só é possivel o cadastro de uma empresa.")
+        messages.error(request,"Aguarde as novas atualizações.")
+        
+        return redirect("jobs:profiles")
+    
+    
     if request.method == "POST":
 
         form = CompanyProfileForm(request.POST)
@@ -256,11 +265,12 @@ def register_company(request):
 @login_required(login_url="auth/register")
 def register_vacancy(request):
     companies = CompanyProfile.objects.filter(user=request.user)
+    
     if request.method == 'POST':
         form = VacanciesForm(request.POST)
 
         if form.is_valid():
-
+            
             try:
                 vacancy = form.save(commit=False)
                 vacancy.company_id = request.POST['company']
@@ -347,6 +357,7 @@ def edit_vacancy(request, vacancy_id):
 def profiles(request):
 
     company_profile = ""
+    company_profile_inactive = ""
 
     try:
         candidate_profile = CandidateProfile.objects.get(user=request.user)
@@ -363,8 +374,8 @@ def profiles(request):
             user=request.user).count()
 
         if count_company_profile > 1:
-            company_profile = CompanyProfile.objects.filter(user=request.user)
-            
+            company_profile = CompanyProfile.objects.filter(user=request.user, is_active=True,is_deleted=False)
+            company_profile_inactive = CompanyProfile.objects.filter(user=request.user, is_active=False,is_deleted=False)
             for company in company_profile:
                 
                 country = company.country
@@ -374,7 +385,16 @@ def profiles(request):
                 company.country = country
                 state = state.split(":")[1]
                 company.state = state
-            
+                
+            for company in company_profile_inactive:
+                
+                country = company.country
+                state = company.state
+                
+                country = country.split(":")[1]
+                company.country = country
+                state = state.split(":")[1]
+                company.state = state
 
         elif count_company_profile == 1:
             company_profile = CompanyProfile.objects.get(user=request.user)
@@ -395,6 +415,7 @@ def profiles(request):
     context = {
         'candidate_profile': candidate_profile,
         'company_profile': company_profile,
+        'company_profile_inactive':company_profile_inactive,
         'count_company_profile': count_company_profile
     }
     return render(request, "jobs/profiles.html", context)
@@ -490,15 +511,15 @@ def my_vacancies(request):
     
     companies = CompanyProfile.objects.filter(user_id=request.user).all()
 
-    vacancies_grouped_by_company = defaultdict(list)
+    vacancies_grouped_by_company_active = defaultdict(list)
     
     for company in companies:
-        for vacancy in Vacancies.objects.filter(company_id=company.id):
+        for vacancy in Vacancies.objects.filter(company_id=company.id,is_active=True):
                 
                 company_name = company.company_name
-                vacancies_grouped_by_company[company_name].append(vacancy)
+                vacancies_grouped_by_company_active[company_name].append(vacancy)
 
-    for date, vacancies in vacancies_grouped_by_company.items():
+    for date, vacancies in vacancies_grouped_by_company_active.items():
 
         vacancies.sort(key=lambda v: v.created_at, reverse=True)
         for vacancy in vacancies:
@@ -510,12 +531,39 @@ def my_vacancies(request):
             state = state.split(":")[1]
             vacancy.state = state
 
-    vacancies_grouped_by_company = OrderedDict(
-        sorted(vacancies_grouped_by_company.items(), reverse=True))
+    vacancies_grouped_by_company_active = OrderedDict(
+        sorted(vacancies_grouped_by_company_active.items(), reverse=True))
 
-    vacancies_count = sum(len(v) for v in vacancies_grouped_by_company.values())
+    vacancies_count = sum(len(v) for v in vacancies_grouped_by_company_active.values())
+    
+    vacancies_grouped_by_company_disable = defaultdict(list)
+    
+    for company in companies:
+        for vacancy in Vacancies.objects.filter(company_id=company.id,is_active=False):
+                
+                company_name = company.company_name
+                vacancies_grouped_by_company_disable[company_name].append(vacancy)
+
+    for date, vacancies in vacancies_grouped_by_company_disable.items():
+
+        vacancies.sort(key=lambda v: v.created_at, reverse=True)
+        for vacancy in vacancies:
+            country = vacancy.country
+            country = country.split(":")[1]
+            vacancy.country = country
+
+            state = vacancy.state
+            state = state.split(":")[1]
+            vacancy.state = state
+
+    vacancies_grouped_by_company_disable = OrderedDict(
+        sorted(vacancies_grouped_by_company_disable.items(), reverse=True))
+
+    vacancies_count = sum(len(v) for v in vacancies_grouped_by_company_disable.values())
+    
     context = {
-        "vacancies_grouped_by_company": vacancies_grouped_by_company,       
+        "vacancies_grouped_by_company_active": vacancies_grouped_by_company_active, 
+        "vacancies_grouped_by_company_disable":vacancies_grouped_by_company_disable,      
         "vacancies_count": vacancies_count
     }
     
@@ -589,3 +637,43 @@ def active_vacancy(request, vacancy_id):
         message = {"message":"error"}
 
     return JsonResponse(message)
+
+
+@login_required(login_url="auth/register")
+def delete_company(request,company_id):
+    
+    try:
+        company = CompanyProfile.objects.get(id=company_id)
+        company.is_deleted = True
+
+        company.save()
+        
+        messages.success(request,"Empresa deletada com sucesso.")
+        message = "success"
+    except:
+        messages.error(request,"Não foi possivel deletar a empresa.")
+        message = "error"
+    return JsonResponse({"message":message})
+
+
+@login_required(login_url="auth/register")
+def active_company(request,company_id):
+   
+    
+    company = CompanyProfile.objects.get(id=company_id)
+    if company.is_active:
+        company.is_active = False
+    else:
+        company.is_active = True
+    
+    company.save()
+    
+    return redirect("jobs:profiles")
+    
+
+
+
+
+
+
+

@@ -45,12 +45,21 @@
                     {{ form.contract_type }}
 
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <a href="{% url 'jobs:register_company' %}"><input type="button" class="btn btn-outline-success" value="Cadastar Empresa" ></a>
-                </div>
+                </div>              
 
             </div>
             
+            <div class="div-show-company  row">
+
+                
+                    <span class="col-md-6">Mostrar empresa na vaga?</span> 
+                
+                
+                    <span class="">{{ form.show_company}}</span>
+
+            </div>
             <div class=" form-location row">
 
                 <div class="col-md-4">

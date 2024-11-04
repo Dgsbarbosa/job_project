@@ -9,13 +9,15 @@ class VacanciesForm(ModelForm):
         exclude = ["id","created_at"]
         
         labels = {
-            "company": "Nome da Empresa"
+            "company": "Nome da Empresa",
+            "show_company": "Mostrar a empresa?"
         }
         widgets = {
             'contract_type':forms.Select(attrs={'class':""}),
             'phone1': forms.TextInput(attrs={"class":"phone","placeholder":"(33) 3333-3333","id":"phone1","hidden":True}),
-            'phone2': forms.TextInput(attrs={"class":"phone","placeholder":"(99)9 9999-9999","id":"phone2","hidden":True}),
-            'email': forms.TextInput(attrs={"placeholder":"exemplo@exemplo.com","required":True})
+            'phone2': forms.TextInput(attrs={"class":"phone","placeholder":"(99)9 9999-9999","id":"phone2",'hidden':True}),
+            'email': forms.TextInput(attrs={"placeholder":"exemplo@exemplo.com","required":True}),
+            'show_company': forms.CheckboxInput(attrs={"label":"Mostrar a empresa?"})
             
         }
   

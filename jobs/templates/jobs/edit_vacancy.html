@@ -50,12 +50,20 @@
                     {{ form.contract_type }}
 
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <a href="{% url 'jobs:register_company' %}"><input type="button" class="btn btn-outline-success" value="Cadastar Empresa" ></a>
                 </div>
 
             </div>
+            <div class="div-show-company  row">
 
+                
+                <span class="col-md-6">Mostrar empresa na vaga?</span> 
+            
+            
+                <span class="">{{ form.show_company}}</span>
+
+        </div>
             <div class="form-location row">
 
                 <div class="col-md-4">
@@ -155,7 +163,7 @@
                 </a>
             </div>
             <div class="col-md-4">
-                <input type="submit" class="btn btn-outline-success">
+                <input type="submit" class="btn btn-outline-success" value="Salvar">
             </div>
         </div>
     </form>
