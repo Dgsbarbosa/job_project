@@ -9,12 +9,13 @@
 .view-vacancy-card>div>div {
     padding-left: 50px;
     padding-right: 50px;
-
+    
 
 }
 
 .view-vacancy {
     padding: 50px;
+    position: relative;
 }
 
 

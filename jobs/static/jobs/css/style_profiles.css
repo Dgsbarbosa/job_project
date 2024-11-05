@@ -32,6 +32,7 @@
     border-radius: 5px;
     background-color: blanchedalmond;
     padding: 30px;
+    
 }
 
 .profile-header{
@@ -46,6 +47,21 @@
 
     /* width: 100%; */
     text-wrap: wrap;
+}
+
+.count-companies{
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.companies-active{
+    background-color: blue;
+    color: white;
+}
+.companies-deactived{
+    background-color: red;
+    color: yellow;
 }
 
 .profile-item {
@@ -95,6 +111,7 @@ min-height: 300px;
 
 .company{
     margin-top: 30px;
+    position: relative;
 }
 
 /* Edit profile */
@@ -112,3 +129,25 @@ min-height: 300px;
     font-weight: bold;
 }
 
+.deactivated-company{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%;
+    left: 20%;
+    top: 30%;
+    padding: 20px ;
+    color: white;
+    border: 5px solid red;
+    color: red;
+    background-color: rgb(255, 255, 0, 0.8);
+    text-wrap: wrap;
+    transform: rotate(-45deg);
+    border-radius: 15px;
+    /* font-size: 24px; */
+    font-weight: bold;
+    text-align: center;
+    z-index: 10;
+
+
+}

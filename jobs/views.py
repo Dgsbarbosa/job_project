@@ -2,7 +2,7 @@ from django.http import HttpResponse,JsonResponse
 from django.shortcuts import redirect, render,get_list_or_404, get_object_or_404
 from .forms import VacanciesForm, CandidateProfileForm, CompanyProfileForm
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST,require_http_methods
 from .models import CompanyProfile, CandidateProfile, Vacancies, SaveVacancy
 import requests
 from django.http import JsonResponse
@@ -165,6 +165,7 @@ def view_vacancy(request, vacancy_id):
         saved_vacancy = SaveVacancy.objects.filter(user=request.user, vacancy=vacancy.id)
     except:
         saved_vacancy = None
+        
     country = vacancy.country
     country = country.split(":")[1]
     vacancy.country = country
@@ -264,6 +265,7 @@ def register_company(request):
 
 @login_required(login_url="auth/register")
 def register_vacancy(request):
+    
     companies = CompanyProfile.objects.filter(user=request.user)
     
     if request.method == 'POST':
@@ -295,11 +297,13 @@ def register_vacancy(request):
                 messages.error(
                     request, "Não foi possivel cadastrar a vaga. Tente novemente")
     else:
-        companies = CompanyProfile.objects.filter(user=request.user)
+        companies_active = CompanyProfile.objects.filter(user=request.user,is_active=True, is_deleted=False).order_by("-is_active")
+        companies_deactive = CompanyProfile.objects.filter(user=request.user,is_active=False, is_deleted=False).order_by("-is_active")
         form = VacanciesForm()
 
     context = {
-        "companies": companies,
+        "companies_active": companies_active,
+        "companies_deactive":companies_deactive,
         'form': form
     }
     return render(request, "jobs/register_vacancy.html", context)
@@ -371,7 +375,7 @@ def profiles(request):
 
     try:
         count_company_profile = CompanyProfile.objects.filter(
-            user=request.user).count()
+            user=request.user, is_deleted=False).count()
 
         if count_company_profile > 1:
             company_profile = CompanyProfile.objects.filter(user=request.user, is_active=True,is_deleted=False)
@@ -397,8 +401,8 @@ def profiles(request):
                 company.state = state
 
         elif count_company_profile == 1:
-            company_profile = CompanyProfile.objects.get(user=request.user)
-            
+            company_profile = CompanyProfile.objects.get(user=request.user,is_deleted=False)
+                 
             country = company_profile.country
             state = company_profile.state
             
@@ -406,11 +410,13 @@ def profiles(request):
             company_profile.country = country
             state = state.split(":")[1]
             company_profile.state = state
-        
-    except:
+            
+    except Exception as error:
         company_profile = None
+        print(error)
         messages.error(
             request, "Não foi possivel carregar os Perfis de Empresas")
+
 
     context = {
         'candidate_profile': candidate_profile,
@@ -559,8 +565,10 @@ def my_vacancies(request):
     vacancies_grouped_by_company_disable = OrderedDict(
         sorted(vacancies_grouped_by_company_disable.items(), reverse=True))
 
-    vacancies_count = sum(len(v) for v in vacancies_grouped_by_company_disable.values())
+    vacancies_count_active = sum(len(v) for v in vacancies_grouped_by_company_active.values())
+    vacancies_count_deactive = sum(len(v) for v in vacancies_grouped_by_company_disable.values())
     
+    vacancies_count = vacancies_count_active + vacancies_count_deactive
     context = {
         "vacancies_grouped_by_company_active": vacancies_grouped_by_company_active, 
         "vacancies_grouped_by_company_disable":vacancies_grouped_by_company_disable,      
@@ -644,16 +652,23 @@ def delete_company(request,company_id):
     
     try:
         company = CompanyProfile.objects.get(id=company_id)
+        
+        if company.vacancies.exists():
+            for vancancy in company.vacancies.all():
+                vancancy.is_active = False
+                vancancy.save()
+                
         company.is_deleted = True
-
+        company.is_active = False
         company.save()
         
         messages.success(request,"Empresa deletada com sucesso.")
         message = "success"
     except:
         messages.error(request,"Não foi possivel deletar a empresa.")
-        message = "error"
-    return JsonResponse({"message":message})
+        message = "Error: não foi possivel deletar a empresa. Tente novamente."
+        
+    return JsonResponse({"message":message},status=200)
 
 
 @login_required(login_url="auth/register")
@@ -661,12 +676,27 @@ def active_company(request,company_id):
    
     
     company = CompanyProfile.objects.get(id=company_id)
+    
     if company.is_active:
         company.is_active = False
+        for vancancy in company.vacancies.all():
+            vancancy.is_active = False
+            vancancy.save()
+        
     else:
-        company.is_active = True
-    
+        
+        companies_active_count = CompanyProfile.objects.filter(user=request.user,is_active=True).count()
+        
+        if companies_active_count < 1:
+            print(companies_active_count)
+            company.is_active = True
+            
+        else:
+            messages.error(request,"No momento só é possivel uma empresa ativa por vez.")
+            messages.error(request,"Aguarde atualizações.")
+            
     company.save()
+    
     
     return redirect("jobs:profiles")
     

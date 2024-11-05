@@ -8,7 +8,7 @@
 
 <div class="register_vacancy container">
 
-    {% if companies %}
+    {% if companies_active or companies_deactive %}
     <form action="{% url 'jobs:register_vacancy' %}" method="POST">
 
         {% csrf_token %}
@@ -31,10 +31,25 @@
                 <div class="col-md-8">
                     <label for="company_name">Nome da Empresa:</label>
                     <select name="company" id="company" required>
+                      
+                        {% if companies_active %}
                         <option value="" selected>-------</option>
-                        {% for company in companies %}
-                        <option value="{{ company.id }}" data-country="{{company.country}}" data-state="{{company.state}}" data-city="{{company.city}}">{{ company }}</option>
+                        {% else %}
+                        <option value="" selected>Cadastre ou Ative uma empresa</option>
 
+                        {% endif %}
+
+                        {% for company in companies_active %}
+                        
+                        <option value="{{ company.id }}" data-country="{{company.country}}" data-state="{{company.state}}" data-city="{{company.city}}"   >{{ company }}</option>                   
+                        
+                       
+                        {% endfor %}
+                    {% for company in companies_deactive %}
+                        
+                    <option value="{{ company.id }}" data-country="{{company.country}}" data-state="{{company.state}}" data-city="{{company.city}}"  disabled >{{ company }} - Inativa</option>                   
+                        
+                       
                         {% endfor %}
                     </select>
                 </div>

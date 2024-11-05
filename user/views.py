@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import CustomUser
+from.form import CustomUserForm
 from . import utils
 from django.contrib.auth import authenticate, login, logout
 
@@ -45,6 +46,17 @@ def register(request):
  
     return render(request,"user/register.html")
 
+def edit_user(request):
+    user = request.user
+    if request.method == "POST":
+        print("post")
+        
+    form = CustomUserForm()
+    print(form)
+    context ={
+        
+    }
+    return render(request, "user/edit_user.html", context)
 def login_view(request):
     
     

@@ -24,17 +24,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
             if (button_show_worker.classList.contains("btn-outline-primary")) {
                 button_show_worker.classList.replace("btn-outline-primary", "btn-primary");
             }
+
         });
 
         button_show_company.addEventListener("click", function () {
+            // let div_companies = document.querySelectorAll(".company > div");
+            // div_companies.forEach(div => div.hidden = true);
             div_worker_profile.hidden = true;
             div_company_profile.hidden = false;
+
+
             if (button_show_worker.classList.contains("btn-primary")) {
                 button_show_worker.classList.replace("btn-primary", "btn-outline-primary");
             }
             if (button_show_company.classList.contains("btn-outline-primary")) {
                 button_show_company.classList.replace("btn-outline-primary", "btn-primary");
             }
+
         });
     }
 
@@ -46,6 +52,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
 
     button_company = document.querySelectorAll(".button-company");
+
 
 
     button_company.forEach(button => {
@@ -255,7 +262,7 @@ function closeMessage(element) {
     alertBox.remove();
 }
 
-function showCompany(button_id, event) {
+function showCompany(button_id, event = none) {
 
     const button = event.target;
 
@@ -287,7 +294,7 @@ function showCompany(button_id, event) {
     h2_companies.forEach(h2 => h2.hidden = false);
     company = document.querySelector(`#${id}`);
     company.hidden = false;
-
+    company.scrollIntoView({ behavior: "smooth", block: "center" });
 
 }
 
@@ -470,26 +477,50 @@ function deleteCompany(event) {
     const companyId = event.target.dataset.id;
     const companyName = event.target.dataset.name;
 
-    const confirm1 = prompt(`Deseja excluir a empresa ${companyName}? \nDigite: \ndelete ${companyName.toLowerCase()}`);
+    const confirm1 = prompt(`\nDeseja excluir a empresa ${companyName}?\n\nSuas vagas serão excluidas. \n\nDigite: \ndelete ${companyName.toLowerCase()}`);
+
 
     if (confirm1 === `delete ${companyName.toLowerCase()}`) {
-        const confirm2 = confirm("Não é possivel reverter essa opção. Continuar?");
-        if (confirm2 === true){
-            alert("deletar");
-        }else{
+        const confirm2 = confirm("\nNão é possivel reverter essa opção. Continuar?");
+        if (confirm2 === true) {
+            const csrfToken = getCSRFToken();
+            fetch(`/delete_company/${companyId}`, {
+                method: "DELETE",
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => {
+                    console.log(response);
+                    return response.json();
+                })
+                .then(data => {
+
+                    // alert(`A empresa ${companyName} foi excluida com sucesso.`);
+                    window.location.reload();
+
+
+                })
+                .catch(error => {
+                    window.location.reload();
+                })
+
+        } else {
             event.preventDefault();
         }
 
-        
-    }else if (confirm1 === null ){
+
+    }
+    else if (confirm1 === null) {
 
         event.preventDefault();
-    }else {  
+    } else {
 
-        const errorConfirm = confirm("Para deletar a empresa digite o texto corretamente.\nClique em 'OK' para continuar ou Cancelar.");
-        if(errorConfirm === true){
-            deleteCompany(event); 
-        }else{
+        const errorConfirm = confirm("\nPara deletar a empresa digite o texto corretamente.\nClique em 'OK' para continuar ou Cancelar.");
+        if (errorConfirm === true) {
+            deleteCompany(event);
+        } else {
             event.preventDefault();
         }
     }

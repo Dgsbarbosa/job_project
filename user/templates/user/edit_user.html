@@ -17,66 +17,11 @@
 {% endif %}
 
 
-<div class="cont container">
+<div class="div-edit-user container">       
 
-    <div class="form sign-in">
-
-        <h2>Bem-vindo</h2>
-
-        <form action="{% url 'user:login_view' %}" method="POST">
-            {% csrf_token %}
-            <label>
-                <span>Email</span>
-                <input type="email" autocomplete="email" name="email" required />
-            </label>
-            <label>
-                <span>Senha</span>
-
-                <div class="password-container">
-                    <input type="password" class="password" name="password" autocomplete="current-password" required />
-                    <i class="fa-regular fa-eye toggle-password"></i>
-                    <i class="fa-regular fa-eye-slash toggle-password-slash" hidden></i>
-                </div>
-            </label>
-            <p class="forgot-pass">Esqueceu a senha? <a href="" class="text-muted">Redefinir Senha</a></p>
-            
-            <button type="submit" class="submit">Entrar</button>
-
-            <div class="col-md-4 ">
-                <a href="javascript:history.back()" class="" style="text-decoration: none;">
-                    <input type="button" class=" submit btn-back"  value="Voltar">
-                </a>
-            </div>
-            <div class="col-md-4 ">
-                <a href="{% url 'jobs:index' %}" class="" style="text-decoration: none;">
-                    <input type="button" class=" submit btn-back"  value="Pagina Inicial">
-                </a>
-            </div>
-
-        </form>
-
-    </div>
-
-    <div class="sub-cont">
-        <div class="img">
-            <div class="img__text m--up">
-
-                <h3>Não tem uma conta? <br> Cadastre-se!<h3>
-            </div>
-            <div class="img__text m--in">
-
-                <h3>Se já tem uma conta, entre.<h3>
-            </div>
-            <div class="img__btn">
-                <span class="m--up">Cadastro</span>
-                <span class="m--in">Entre</span>
-            </div>
-
-        </div>
-
-        <div class="form sign-up">
-            <h2>Crie sua conta</h2>
-            <form action="{% url 'user:register' %}" method="POST" class="container">
+        <div class="form edit">
+            <h2>Edite sua conta</h2>
+            <form action="{% url 'user:edit_user' %}" method="POST" class="container">
                 {% csrf_token %}
 
                 <div class="name row">
@@ -149,7 +94,11 @@
                 </div>
 
                 <div class="div-button-back row">
-
+                    <div class="col-md-4 ">
+                        <a href="{% url 'jobs:index' %}" class="" style="text-decoration: none;">
+                            <input type="button" class=" submit btn-back"  value="Pagina Inicial">
+                        </a>
+                    </div>
                     <div class="col-md-4 ">
                         <a href="javascript:history.back()" class="">
                             <input type="button" class=" submit btn-back" value="Voltar">
@@ -157,14 +106,14 @@
                     </div>
 
                     <div class="col-md-4">
-                        <button type="submit" class="submit">Cadastrar</button>
+                        <button type="submit" class="submit">Salvar</button>
                     </div>
 
                 </div>
 
             </form>
         </div>
-    </div>
+   
 
 </div>
 

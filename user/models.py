@@ -31,7 +31,7 @@ class CustomUser(AbstractUser):
     # Adicionando novos campos ao modelo de usuário
     username = None
     email = models.EmailField(unique=True)
-
+    last_updated = models.DateTimeField(auto_now=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS=["first_name","last_name"]
     

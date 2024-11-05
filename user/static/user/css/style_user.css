@@ -55,7 +55,7 @@ button, .btn-back {
     text-align: center;
 }
 
-.cont {
+.cont, .div-edit-user {
     border-radius: 20px;
     overflow: hidden;
     position: relative;    
@@ -68,6 +68,8 @@ button, .btn-back {
     box-shadow: -10px -10px 15px rgba(255, 255, 255, 0.3), 10px 10px 15px rgba(70, 70, 70, 0.15), inset -10px -10px 15px rgba(255, 255, 255, 0.3), inset 10px 10px 15px rgba(70, 70, 70, 0.15);
 
 }
+
+
 
 .form {
     position: relative;
@@ -380,5 +382,16 @@ width: 100%;
 font-size: 15px;
 text-align: center;
 margin-top: 15px;
+
+}
+
+/* Edit user */
+
+.div-edit-user{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+border: 1px solid  black;
+padding-top: 20px;
 
 }
