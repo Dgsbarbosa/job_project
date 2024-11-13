@@ -71,3 +71,31 @@ label{
     font-weight: bold;  
 
 }
+ /* border: 1px solid rgb(255, 0, 0);
+      */
+
+.div-arrow{
+    position: fixed;
+    bottom: 40px; 
+    right: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    padding: 5px 0 ;
+    
+}
+.arrow-up{
+    width: 50px;
+    border-radius: 50%;
+    background-color: black;
+    color: white;
+    text-align: center;
+    
+    padding: 10px;
+
+}
+.arrow-up-txt{
+    font-weight: bold;
+}

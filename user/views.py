@@ -57,6 +57,7 @@ def edit_user(request):
         
     }
     return render(request, "user/edit_user.html", context)
+
 def login_view(request):
     
     

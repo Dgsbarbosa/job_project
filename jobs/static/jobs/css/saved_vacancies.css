@@ -1,5 +1,9 @@
 /* border: 1px solid black; */
 
+
+.button-view-all-vacancy div div a input{
+    width: 80%;
+}
 .saved-list, .vacancy-list{
     display: flex;
     justify-content: center;
@@ -41,7 +45,7 @@
 
 .active-vacancies td, .disable-vacancies td{
     text-align: center;
-    background-color: #000fff;
+    background-color: #15ff00;
     color: white;
     padding: 20px;
     font-size: 20px;

@@ -113,7 +113,7 @@
             <tr class="vacancy-list-tr-description ">
 
                 <td class="vacancy-title">
-                    {%if vacancy.is_active == True %}
+                    {%if vacancy.is_active == True  %}
 
                     <a href="{% url 'jobs:view_vacancy' vacancy.id%}">
 
@@ -122,8 +122,19 @@
 
                     {%else%}
                     
+                    {% if vacancy.company.user == request.user %}
 
-                        {{ vacancy.title|capfirst}} [Encerrada]
+                        <a href="{% url 'jobs:view_vacancy' vacancy.id%}">
+
+                            {{ vacancy.title|capfirst}} [Encerrada]
+
+                        </a>
+                    
+                    {%else%}
+
+                    {{ vacancy.title|capfirst}} [Encerrada]
+
+                    {% endif %}
 
                     
                     {% endif%}

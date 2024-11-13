@@ -8,13 +8,28 @@
 <div class="vacancy-list container">
     <table class="">
         <thead>
-            <tr class="tr-button-view-all-vacancy">
-                <td class="button-view-all-vacancy" colspan="4">
+            <tr class="tr-button-view-all-vacancy" class="">
+                <td class="button-view-all-vacancy" colspan="4" class="container">
 
-                    <a href="{% url 'jobs:index' %}">
-                        <input type="text" class="btn btn-outline-primary" value="Ver todas as vagas">
-                    </a>
+                    <div class="row ">
+                        <div class="col-md-4 mb-3">
+                            <a href="{% url 'jobs:index' %}">
+                                <input type="button" class="btn btn-outline-primary" value="Ver todas as vagas">
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <a href="#active-vacancies">
+                                <input type="button" class="btn btn-outline-success" value="Vagas Ativas">
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <a href="#inactive-vacancies">
+                                <input type="button" class="btn btn-outline-danger" value="Vagas Inativas">
+                            </a>
+                        </div>
+                    </div>
                 </td>
+              
 
             </tr>
             <tr>
@@ -30,7 +45,7 @@
                 <td class="vacancies-divise"></td>
             </tr>
             <tr class="active-vacancies ">
-                <td class="" colspan="4">
+                <td class="" id="active-vacancies" colspan="4">
                     Vagas Ativas
                 </td>
             </tr>
@@ -41,8 +56,7 @@
             </tr>
             <tr class="date-vacancy">
                 <td class="" colspan="4">
-                    Empresa: {{ company }}
-                   
+                    Empresa: {{ company }}                   
 
                 </td>
             </tr>
@@ -114,7 +128,7 @@
                 <td class="vacancies-divise"></td>
             </tr>
             <tr class="disable-vacancies">
-                <td class="" colspan="4">
+                <td class="" id="inactive-vacancies" colspan="4">
                     Vagas Inativas
                 </td>
             </tr>
@@ -210,5 +224,7 @@
     </table>
 
 </div>
+
+
 
 {%endblock%}

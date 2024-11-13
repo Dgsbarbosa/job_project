@@ -1,121 +1,70 @@
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", () => {
 
-    // template profiles.html
-    const button_show_worker = document.querySelector("#show-worker-profile");
-    const button_show_company = document.querySelector("#show-company-profile");
+    setupShowProfiles();
+    setupCountryStateCity();
+    setupPhones();
+    setupDeleteCompanyButtons();
+    setupSaveVacancy();
+    setupSelectCountryCompany()
 
-    const div_worker_profile = document.querySelector(".worker-profile");
-    const div_company_profile = document.querySelector(".company-profile");
+})
 
-    const country_select = document.querySelector(".select-country");
+// Tools
+function closeMessage(element) {
+    var alertBox = element.parentElement;
+    alertBox.remove();
+}
 
-
-
-
-    if (button_show_worker && button_show_company && div_worker_profile && div_company_profile) {
-
-
-        button_show_worker.addEventListener("click", function () {
-            div_company_profile.hidden = true;
-            div_worker_profile.hidden = false;
-            if (button_show_company.classList.contains("btn-primary")) {
-                button_show_company.classList.replace("btn-primary", "btn-outline-primary");
-            }
-            if (button_show_worker.classList.contains("btn-outline-primary")) {
-                button_show_worker.classList.replace("btn-outline-primary", "btn-primary");
-            }
-
-        });
-
-        button_show_company.addEventListener("click", function () {
-            // let div_companies = document.querySelectorAll(".company > div");
-            // div_companies.forEach(div => div.hidden = true);
-            div_worker_profile.hidden = true;
-            div_company_profile.hidden = false;
+function setupCountryStateCity() {
+    const country = document.querySelector("#country");
+    const state = document.querySelector("#state");
+    const city = document.querySelector("#city");
+    const selectState = document.querySelector(".select-state");
+    const selectCity = document.querySelector(".select-city");
 
 
-            if (button_show_worker.classList.contains("btn-primary")) {
-                button_show_worker.classList.replace("btn-primary", "btn-outline-primary");
-            }
-            if (button_show_company.classList.contains("btn-outline-primary")) {
-                button_show_company.classList.replace("btn-outline-primary", "btn-primary");
-            }
-
-        });
-    }
-
-
-    const id_country = document.querySelector("#country");
-    if (id_country) {
+    if (country) {
 
         populateCoutriesSelect();
-    }
+        selectState.disabled = true;
+        selectCity.disabled = true;
 
-    button_company = document.querySelectorAll(".button-company");
+        country.addEventListener("change", function () {
+            const countryCodeComplete = this.value;
+            const countryCodeSplit = countryCodeComplete.split(":")
+            const countryCode = countryCodeSplit[0]
 
+            selectState.innerHTML = '<option value="">Selecione um Estado</option>';
+            selectCity.innerHTML = '<option value="">Aguardando Estado</option>';
+            selectCity.disabled = true;
 
+            if (countryCode) {
+                populateStates(countryCode);
 
-    button_company.forEach(button => {
-        const button_id = button.id;
-        button.addEventListener("click", (event) => showCompany(button_id, event))
-    })
+            } else {
+                selectState.disabled = true
+                selectCity.disabled = true
+            }
 
-    const phone1 = document.querySelectorAll("#phone1");
-    const phone2 = document.querySelectorAll("#phone2");
-    var phones = document.querySelectorAll(".phone");
-    phones.forEach(phone => {
-        phone.addEventListener("input", handlePhone)
-    })
+            state.addEventListener("change", function () {
+                const stateCodeComplete = this.value;
+                const stateCodeSplit = stateCodeComplete.split(":");
+                const stateCode = stateCodeSplit[0];
 
+                selectCity.innerHTML = '<option value="">Escolha uma Cidade</option>';
+                selectCity.disabled = false;
 
-    const save_buttons = document.querySelectorAll(".save-toggle");
-
-    save_buttons.forEach(button => {
-        button.addEventListener("click", function () {
-            const vacancy_id = button.getAttribute("data-id");
-            const csrf_token = getCSRFToken();
-
-            fetch(`/save_vacancy/${vacancy_id}`, {
-                method: 'POST',
-                headers: {
-                    "X-CSRFToken": csrf_token,
-                    "Content-Type": "application/json"
+                if (stateCode) {
+                    populateCities(countryCode, stateCode);
                 }
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'saved') {
-                        button.classList.remove('btn-outline-success');
-                        button.classList.add('btn-success');
-                        button.textContent = 'Desmarcar Vaga';
-                    } else {
-                        button.classList.remove('btn-success');
-                        button.classList.add('btn-outline-success');
-                        button.textContent = 'Salvar Vaga';
-                    }
-                    window.location.reload();
-                })
-                .catch(error => console.error('Erro:', error));
+
         })
 
-    });
 
-
-    // Register Vacancy
-    const select_company = document.querySelector("#company");
-    if (select_company) {
-        select_company.addEventListener("click", () => {
-
-            select_company.addEventListener("change", selectCountryVacancy);
-        });
     }
-    // My vacancies
+}
 
-    // Company Profile
-
-    setupDeleteCompanyButtons();
-
-});
 
 function populateCoutriesSelect() {
     fetch("/get_countries/")
@@ -133,7 +82,7 @@ function populateCoutriesSelect() {
             });
         })
         .catch(error => console.log('Error', error));
-}
+};
 
 function populateStates(countryCode) {
     fetch(`/get_states/${countryCode}`)
@@ -163,10 +112,7 @@ function populateStates(countryCode) {
             }
             stateSelect.disabled = false;
         })
-}
-
-
-var phoneCodeChoice = ""
+};
 function populateCities(countryCode, stateCode) {
     fetch(`/get_cities/${countryCode}/${stateCode}`)
         .then(response => response.json())
@@ -198,69 +144,47 @@ function populateCities(countryCode, stateCode) {
         })
 };
 
-
-document.querySelector(".select-country").addEventListener("change", function () {
-
-    const countryCodeComplete = this.value;
-    const countryCodeSplit = countryCodeComplete.split(":")
-    const countryCode = countryCodeSplit[0]
-
-    document.querySelector(".select-state").innerHTML = '<option value="">Selecione um Estado</option>';
-    document.querySelector(".select-city").innerHTML = '<option value="">Aguardando Estado</option>';
-    document.querySelector(".select-city").disabled = true;
-    if (countryCode) {
-
-        populateStates(countryCode);
-
-        // phone1.value = ""
-        // phone2.value = ""
-
-
-        document.querySelector(".select-city").disabled = true;
-        phoneCodeChoice = phoneCountryCode(countryCodeSplit[2])
-
-
-
-
-    } else {
-        document.querySelector(".select-state").disabled = true;
-
-        document.querySelector(".select-city").disabled = true;
-
+function getCSRFToken() {
+    let csrfToken = null;
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'csrftoken') {
+            csrfToken = value;
+            break;
+        }
     }
+    return csrfToken;
 
-
-})
-
-
-
-document.querySelector(".select-state").addEventListener("change", function () {
-
-    const countryCodeComplete = document.querySelector(".select-country").value;
-    const countryCodeSplit = countryCodeComplete.split(":")
-    const countryCode = countryCodeSplit[0]
-
-    const stateCodeComplete = this.value;
-    const stateCodeSplit = stateCodeComplete.split(":");
-    const stateCode = stateCodeSplit[0]
-    const selectCity = document.querySelector(".select-city");
-
-    selectCity.innerHTML = '<option value="">Escolha uma Cidade</option>';
-
-
-    if (stateCode && stateCode) {
-        populateCities(countryCode, stateCode)
-
-    }
-
-
-})
-
-
-function closeMessage(element) {
-    var alertBox = element.parentElement;
-    alertBox.remove();
 }
+// Profiles
+function setupShowProfiles() {
+    const buttonWorker = document.querySelector("#show-worker-profile");
+    const buttonCompanies = document.querySelector("#show-company-profile");
+    const buttonsShowCompany = document.querySelectorAll(".button-company");
+    const workerProfile = document.querySelector(".worker-profile");
+    const companyProfile = document.querySelector(".company-profile");
+
+    if (buttonWorker && buttonCompanies && workerProfile && companyProfile) {
+        buttonWorker.addEventListener("click", () => toogleProfiles(workerProfile, companyProfile, buttonWorker, buttonCompanies));
+        buttonCompanies.addEventListener("click", () => toogleProfiles(companyProfile, workerProfile, buttonCompanies, buttonWorker));
+    }
+
+    if (buttonsShowCompany) {
+        buttonsShowCompany.forEach(button => {
+            const buttonId = button.id;
+            button.addEventListener("click", (event) => showCompany(buttonId, event))
+        })
+    }
+}
+
+function toogleProfiles(showDiv, hideDiv, activeButton, inactiveButton) {
+    showDiv.hidden = false;
+    hideDiv.hidden = true;
+    activeButton.classList.replace("btn-outline-primary", "btn-primary");
+    inactiveButton.classList.replace("btn-primary", "btn-outline-primary");
+}
+
 
 function showCompany(button_id, event = none) {
 
@@ -298,16 +222,86 @@ function showCompany(button_id, event = none) {
 
 }
 
+// Phones
 
-function phoneCountryCode(phoneCode) {
-    var phones = document.querySelectorAll(".phone");
+function setupPhones() {
+    const phone1 = document.querySelector("#phone1");
+    const phone2 = document.querySelector("#phone2");
+    const phones = document.querySelectorAll(".phone");
+    const addPhone1 = document.querySelector("#add-phone1");
+    const addPhone2 = document.querySelector("#add-phone2");
+    const country = document.querySelector("#country");
+    let countryCode = "";
 
-    phones.forEach(phone => {
-        var cleaned = phoneCode.replace(/-.*$/, "").replace(/[^0-9]/g, "");
-        phone.value = `+${cleaned}`;
+    if (country) {
+        country.addEventListener("change", function (event) {
+            const countryComplete = this.value;
+            const countrySplit = countryComplete.split(":");
 
+            countryCode = countrySplit[2];
+
+            phoneCountryCode(countryCode, phone1);
+            phoneCountryCode(countryCode, phone2);
+
+
+        });
+        addPhone1.addEventListener("change", function (event) {
+
+        if (this.checked) {
+
+            phone1.hidden = false;
+            if (countryCode) {
+                phoneCodeChoice = phoneCountryCode(countryCode, phone1);
+            } else {
+                phoneCodeChoice = phoneCountryCode("00", phone1);
+            }
+
+        } else {
+            phone1.hidden = true;
+
+            phone1.value = "";
+        }
 
     })
+
+    addPhone2.addEventListener("change", function (event) {
+        if (this.checked) {
+
+            phone2.hidden = false;
+            if (countryCode) {
+
+                phoneCodeChoice = phoneCountryCode(countryCode, phone2);
+            } else {
+                phoneCodeChoice = phoneCountryCode("00", phone2);
+            }
+
+
+        } else {
+            phone2.hidden = true;
+            phone2.value = "";
+
+        }
+
+    })
+
+    phones.forEach(phone => {
+        phone.addEventListener("input", (event) => handlePhone(event, countryCode));
+    });
+    }
+
+
+
+
+
+
+}
+
+function phoneCountryCode(phoneCode, phoneElement) {
+
+    let cleaned = phoneCode.split('-')[0].replace(/[^0-9]/g, "");
+    phoneElement.value = `+${cleaned}`;
+
+
 }
 
 function phoneCountryCodeCleaned(phoneCode) {
@@ -316,18 +310,20 @@ function phoneCountryCodeCleaned(phoneCode) {
 
     return cleaned
 }
-const handlePhone = (event) => {
 
+function handlePhone(event, countryCode) {
     let input = event.target;
-    input.value = phoneMask(input.value)
+    input.value = phoneMask(input.value, countryCode)
+
+
 }
 
-const phoneMask = (value) => {
+function phoneMask(value, countryCode) {
     if (!value) return "";
-    let phoneCode = document.querySelector(".select-country").value;
 
-    // Extrai o código do país
-    let phoneCodeSplit = phoneCountryCodeCleaned(phoneCode.split(":")[2]);
+
+
+    let phoneCodeSplit = countryCode;
 
     // Remove todos os caracteres não numéricos do valor
     value = value.replace(/\D/g, '');
@@ -356,114 +352,6 @@ const phoneMask = (value) => {
     }
 
     return value;
-}
-
-
-document.querySelector("#add-phone1").addEventListener("change", function (event) {
-
-    if (this.checked) {
-
-        phone1.hidden = false;
-
-        phoneCodeChoice = phoneCountryCode(countryCodeSplit[2])
-
-
-    } else {
-        phone1.hidden = true;
-
-        phone1.value = ""
-
-
-    }
-
-})
-
-document.querySelector("#add-phone2").addEventListener("change", function (event) {
-    if (this.checked) {
-
-        phone2.hidden = false;
-        phoneCodeChoice = phoneCountryCode(countryCodeSplit[2])
-
-
-    } else {
-        phone2.hidden = true;
-        phone2.value = ""
-
-    }
-
-})
-
-function getCSRFToken() {
-    let csrfToken = null;
-    const cookies = document.cookie.split(';');
-    for (let cookie of cookies) {
-        const [name, value] = cookie.trim().split('=');
-        if (name === 'csrftoken') {
-            csrfToken = value;
-            break;
-        }
-    }
-    return csrfToken;
-
-}
-
-
-// Register Vacancy
-function selectCountryVacancy() {
-
-    const select_company = document.querySelector("#company");
-    const selectedOption = select_company.options[select_company.selectedIndex];
-
-    const country = selectedOption.dataset.country;
-    const [countryCode, countryName, countryPhoneCode] = country.split(":");
-
-    const state = selectedOption.dataset.state;
-    const [stateCode, stateName] = state.split(":");
-    const city = selectedOption.dataset.city;
-
-    const select_country = document.querySelector("#country");
-    const option_country = document.createElement("option");
-    option_country.value = country;
-    option_country.innerHTML = countryName;
-    option_country.selected = true;
-    select_country.appendChild(option_country);
-
-    const select_state = document.querySelector("#state");
-    const option_state = document.createElement("option");
-    option_state.value = state;
-    option_state.innerHTML = stateName;
-    option_state.selected = true;
-    select_state.appendChild(option_state);
-
-    const select_city = document.querySelector("#city");
-    const option_city = document.createElement("option");
-    option_city.value = city;
-    option_city.innerHTML = city;
-    option_city.selected = true;
-    select_city.appendChild(option_city);
-
-
-}
-
-
-// My vacancies
-
-function activeVacancy(event) {
-    const button = event.target;
-    const vacancy_id = button.getAttribute('data-id');
-    const csrf_token = getCSRFToken();
-
-    fetch(`/active_vacancy/${vacancy_id}`, {
-        method: "POST",
-        headers: {
-            "X-CSRFToken": csrf_token,
-            "Content-Type": "application/json"
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            window.location.reload();
-        })
 }
 
 function setupDeleteCompanyButtons() {
@@ -526,3 +414,112 @@ function deleteCompany(event) {
     }
 
 }
+
+function activeVacancy(event) {
+    const button = event.target;
+    const vacancy_id = button.getAttribute('data-id');
+    const csrf_token = getCSRFToken();
+
+    fetch(`/active_vacancy/${vacancy_id}`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": csrf_token,
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            window.location.reload();
+        })
+}
+
+function setupSaveVacancy() {
+    const save_buttons = document.querySelectorAll(".save-toggle");
+    save_buttons.forEach(button => {
+        button.addEventListener("click", (event) => SaveVacancy(event));
+    })
+}
+
+async function SaveVacancy(event) {
+    const vacancyButton = event.target
+    const vacancy_id = vacancyButton.getAttribute("data-id");
+    const csrf_token = getCSRFToken();
+
+    try{
+        const response = await fetch(`/save_vacancy/${vacancy_id}`, {
+            method: 'POST',
+            headers: {
+                "X-CSRFToken": csrf_token,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok){
+            throw new Error(`Erro de rede ${response.status}`)
+        }
+
+        const data = await response.json();
+        
+
+        if (data.status === 'saved') {
+            vacancyButton.classList.remove('btn-outline-success');
+            vacancyButton.classList.add('btn-success');
+            vacancyButton.textContent = 'Desmarcar Vaga';
+        } else {
+            vacancyButton.classList.remove('btn-success');
+            vacancyButton.classList.add('btn-outline-success');
+            vacancyButton.textContent = 'Salvar Vaga';
+        }
+        
+
+        window.location.reload();
+
+    }catch (error) {
+        console.error('Erro:', error);
+    }
+    
+}
+
+function setupSelectCountryCompany(){
+    const select_company = document.querySelector("#company");
+    if (select_company) {
+        select_company.addEventListener("click", () => {
+
+            select_company.addEventListener("change", (event) => selectCountryCompany(event));
+        });
+    }
+
+}
+
+function selectCountryCompany(event) { 
+    const select_company = event.target;
+    const selectedOption = select_company.options[select_company.selectedIndex];
+
+    const country = selectedOption.dataset.country;
+    const [countryCode, countryName, countryPhoneCode] = country.split(":");
+
+    const state = selectedOption.dataset.state;
+    const [stateCode, stateName] = state.split(":");
+    const city = selectedOption.dataset.city;
+
+    const select_country = document.querySelector("#country");
+    const option_country = document.createElement("option");
+    option_country.value = country;
+    option_country.innerHTML = countryName;
+    option_country.selected = true;
+    select_country.appendChild(option_country);
+
+    const select_state = document.querySelector("#state");
+    const option_state = document.createElement("option");
+    option_state.value = state;
+    option_state.innerHTML = stateName;
+    option_state.selected = true;
+    select_state.appendChild(option_state);
+
+    const select_city = document.querySelector("#city");
+    const option_city = document.createElement("option");
+    option_city.value = city;
+    option_city.innerHTML = city;
+    option_city.selected = true;
+    select_city.appendChild(option_city);
+ }
