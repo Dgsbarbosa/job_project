@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 // Tools
+
 function closeMessage(element) {
     var alertBox = element.parentElement;
     alertBox.remove();
@@ -23,13 +24,14 @@ function setupCountryStateCity() {
     const selectCity = document.querySelector(".select-city");
 
     const url = document.URL;
-    const is_page_edit_vacancy = url.includes("edit_vacancy");
-
+    const is_page_edit_vacancy = url.includes("edit");
+    let countryCode = "";
 
 
     if (country) {
 
         populateCoutriesSelect();
+
         if (!is_page_edit_vacancy) {
             selectState.disabled = true;
             selectCity.disabled = true;
@@ -38,7 +40,7 @@ function setupCountryStateCity() {
         country.addEventListener("change", function () {
             const countryCodeComplete = this.value;
             const countryCodeSplit = countryCodeComplete.split(":")
-            const countryCode = countryCodeSplit[0]
+            countryCode = countryCodeSplit[0]
 
             selectState.innerHTML = '<option value="">Selecione um Estado</option>';
             selectCity.innerHTML = '<option value="">Aguardando Estado</option>';
@@ -52,25 +54,25 @@ function setupCountryStateCity() {
                 selectCity.disabled = true
             }
 
-            state.addEventListener("change", function () {
-                const stateCodeComplete = this.value;
-                const stateCodeSplit = stateCodeComplete.split(":");
-                const stateCode = stateCodeSplit[0];
 
-                selectCity.innerHTML = '<option value="">Escolha uma Cidade</option>';
-                selectCity.disabled = false;
 
-                if (stateCode) {
-                    populateCities(countryCode, stateCode);
-                }
-            })
+        });
+        state.addEventListener("change", function () {
+            const stateCodeComplete = this.value;
+            const stateCodeSplit = stateCodeComplete.split(":");
+            const stateCode = stateCodeSplit[0];
 
+            selectCity.innerHTML = '<option value="">Escolha uma Cidade</option>';
+            selectCity.disabled = false;
+
+            if (stateCode) {
+                populateCities(countryCode, stateCode);
+            }
         })
 
 
     }
 }
-
 
 function populateCoutriesSelect() {
     fetch("/get_countries/")
@@ -99,15 +101,25 @@ function populateStates(countryCode) {
             const stateSelect = document.querySelector(".select-state");
 
             if (!data || !Array.isArray(data) || data.length === 0) {
-                let option = document.createElement("option");
+                let stateOption = document.createElement("option");
+                let cityOption = document.createElement("option");
                 let countryCodeComplete = document.querySelector(".select-country").value
                 let countryCodeSplit = countryCodeComplete.split(":")
+                const citySelect = document.querySelector(".select-city");
 
                 stateSelect.innerHTML = ""
-                option.value = countryCodeComplete
-                option.textContent = countryCodeSplit[1];
-                stateSelect.appendChild(option);
-                populateCities(countryCode);
+                stateOption.value = countryCodeComplete
+                stateOption.textContent = countryCodeSplit[1];
+
+                citySelect.innerHTML = "";
+                citySelect.disabled = false;
+                cityOption.value = countryCodeComplete
+                cityOption.textContent = countryCodeSplit[1];
+
+                stateSelect.appendChild(stateOption);
+                citySelect.appendChild(cityOption);
+
+
 
             }
             else {
@@ -127,23 +139,23 @@ function populateCities(countryCode, stateCode) {
         .then(response => response.json())
         .then(data => {
             const citySelect = document.querySelector(".select-city");
-            
 
             if (!data || !Array.isArray(data) || data.length === 0) {
+                let option = document.createElement("option");
                 let stateCountryCode = document.querySelector(".select-state").value
                 let stateCountryCodeSplit = stateCountryCode.split(":");
 
-                let option = document.createElement("option");
                 citySelect.innerHTML = "";
                 option.value = stateCountryCodeSplit[1];
                 option.text = stateCountryCodeSplit[1];
                 citySelect.appendChild(option);
+
             } else {
+
                 data.forEach(city => {
                     let option = document.createElement('option')
                     option.value = city.name;
                     option.text = city.name;
-
                     citySelect.appendChild(option);
                 })
 
@@ -242,7 +254,24 @@ function setupPhones() {
     const country = document.querySelector("#country");
     let countryCode = "";
 
+    if (phone1) {
+        if (phone1.value) {
+            phone1.hidden = false;
+        }
+    }
+    if (phone2) {
+        if (phone2.value) {
+            phone2.hidden = false;
+        }
+    }
     if (country) {
+
+        const countryComplete = country.value;
+        const countrySplit = countryComplete.split(":");
+
+        countryCode = countrySplit[2];
+
+
         country.addEventListener("change", function (event) {
             const countryComplete = this.value;
             const countrySplit = countryComplete.split(":");
@@ -254,45 +283,55 @@ function setupPhones() {
 
 
         });
-        addPhone1.addEventListener("change", function (event) {
 
-            if (this.checked) {
+        if (addPhone1) {
+            addPhone1.addEventListener("change", function (event) {
+                const countryComplete = country.value;
+                const countrySplit = countryComplete.split(":");
 
-                phone1.hidden = false;
-                if (countryCode) {
-                    phoneCodeChoice = phoneCountryCode(countryCode, phone1);
+                countryCode = countrySplit[2];
+                if (this.checked) {
+                    phone1.hidden = false;
+                    if (countryCode) {
+                        phoneCodeChoice = phoneCountryCode(countryCode, phone1);
+                    } else {
+                        phoneCodeChoice = phoneCountryCode("00", phone1);
+                    }
+
                 } else {
-                    phoneCodeChoice = phoneCountryCode("00", phone1);
+                    phone1.hidden = true;
+
+                    phone1.value = "";
                 }
 
-            } else {
-                phone1.hidden = true;
+            })
 
-                phone1.value = "";
-            }
+        }
+        if (addPhone2) {
+            addPhone2.addEventListener("change", function (event) {
+                const countryComplete = country.value;
+                const countrySplit = countryComplete.split(":");
 
-        })
+                countryCode = countrySplit[2];
+                if (this.checked) {
 
-        addPhone2.addEventListener("change", function (event) {
-            if (this.checked) {
+                    phone2.hidden = false;
+                    if (countryCode) {
 
-                phone2.hidden = false;
-                if (countryCode) {
+                        phoneCodeChoice = phoneCountryCode(countryCode, phone2);
+                    } else {
+                        phoneCodeChoice = phoneCountryCode("00", phone2);
+                    }
 
-                    phoneCodeChoice = phoneCountryCode(countryCode, phone2);
+
                 } else {
-                    phoneCodeChoice = phoneCountryCode("00", phone2);
+                    phone2.hidden = true;
+                    phone2.value = "";
+
                 }
 
-
-            } else {
-                phone2.hidden = true;
-                phone2.value = "";
-
-            }
-
-        })
-
+            })
+        }
         phones.forEach(phone => {
             phone.addEventListener("input", (event) => handlePhone(event, countryCode));
         });
@@ -330,7 +369,7 @@ function handlePhone(event, countryCode) {
 function phoneMask(value, countryCode) {
     if (!value) return "";
 
-
+    // alert(countryCode)
 
     let phoneCodeSplit = countryCode;
 

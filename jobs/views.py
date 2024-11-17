@@ -40,7 +40,6 @@ def get_states(request, country_code):
         url = f"https://api.countrystatecity.in/v1/countries/{country_code}/states"
         states = fetch_data_from_api(url)
         
-        print(states)
         if states:
             cache = cache or {}
             cache[country_code] = {"states": states}
@@ -56,10 +55,15 @@ def get_cities(request, country_code, state_code):
     """Obtém a lista de cidades para um estado do cache ou da API."""
     cache = load_cache()
     key = f"{country_code}_{state_code}"
+    
+   
     if not cache or is_cache_expired() or "cities" not in cache.get(key, {}):
         url = f"https://api.countrystatecity.in/v1/countries/{country_code}/states/{state_code}/cities"
         cities = fetch_data_from_api(url)
+        
         if cities:
+            
+          
             cache = cache or {}
             cache[key] = {"cities": cities}
             save_cache(cache)
@@ -67,7 +71,7 @@ def get_cities(request, country_code, state_code):
             return JsonResponse({'error': 'API request failed'}, status=500)
     else:
         cities = cache[key]["cities"]
-    
+       
     return JsonResponse(cities, safe=False)
 
 def index(request):
@@ -214,7 +218,7 @@ def register_profile(request):
 
                 candidate_profile.save()
 
-                messages.success(request, "Perfil salvo com sucesso.")
+                messages.success(request, "Perfil de Trabalhador salvo com sucesso.")
 
                 return redirect("jobs:profiles")
             except:
@@ -388,9 +392,17 @@ def profiles(request):
 
     try:
         candidate_profile = CandidateProfile.objects.get(user=request.user)
+        
+        country = candidate_profile.country
+        state = candidate_profile.state
+        
+        country = country.split(":")[1]
+        candidate_profile.country = country
+        state = state.split(":")[1]
+        candidate_profile.state = state
 
     except CandidateProfile.DoesNotExist:
-        messages.warning(request, "Cadastre um perfil")
+        messages.warning(request, "Cadastre um Perfil do Candidato")
         candidate_profile = None
     except:
         messages.error(
@@ -433,13 +445,20 @@ def profiles(request):
             company_profile.country = country
             state = state.split(":")[1]
             company_profile.state = state
-            
+        
     except Exception as error:
         company_profile = None
         print(error)
         messages.error(
-            request, "Não foi possivel carregar os Perfis de Empresas")
-
+            request, "Não foi possivel carregar os Perfis de Empresas.")
+    
+    if count_company_profile == 0:
+        messages.warning(request, "Cadastre um Perfil de Empresa")
+    elif company_profile.is_active == False and count_company_profile > 0:
+        messages.warning(request, "Cadastre ou reative o Perfil de Empresa")
+    
+          
+        
 
     context = {
         'candidate_profile': candidate_profile,
@@ -459,6 +478,17 @@ def edit_profile_candidate(request, candidate_id):
 
     if request.method == "POST":
         form = CandidateProfileForm(request.POST, instance=candidate)
+        
+        phone1_value = form['phone1'].value()
+        if phone1_value and len(phone1_value) < 7:  # Garantir que phone1 não é None
+            # Atualizar o valor do campo no dicionário POST
+            request.POST = request.POST.copy()  # Tornar mutável
+            request.POST['phone1'] = ""
+        phone2_value = form['phone2'].value()
+        if phone2_value and len(phone2_value) < 7:  # Garantir que phone1 não é None
+            # Atualizar o valor do campo no dicionário POST
+            request.POST = request.POST.copy()  # Tornar mutável
+            request.POST['phone2'] = ""   
 
         if form.is_valid():
 
@@ -470,7 +500,7 @@ def edit_profile_candidate(request, candidate_id):
                 candidate_profile.city = request.POST['city']
 
                 candidate_profile.save()
-                messages.success(request, "O perfil foi alterado com sucesso")
+                messages.success(request, "O Perfil de Trabalhador foi alterado com sucesso")
 
                 return redirect("jobs:profiles")
 
@@ -496,6 +526,8 @@ def edit_profile_candidate(request, candidate_id):
 def edit_company(request, company_id):
 
     company = CompanyProfile.objects.get(pk=company_id)
+    company_active = company.is_active
+    
 
     try:
         company_country_split = company.country.split(":")[1]
@@ -509,13 +541,21 @@ def edit_company(request, company_id):
     if request.method == "POST":
 
         form = CompanyProfileForm(request.POST, instance=company)
-
+                 
+        resume_company = request.POST['resume_company'] 
+        resume_company = resume_company.strip() 
+        
+                
         if form.is_valid():
             try:
+                
                 company_profile = form.save(commit=False)
                 company_profile.country = request.POST['country']
                 company_profile.state = request.POST['state']
                 company_profile.city = request.POST['city']
+                company_profile.is_active = company_active
+                
+                
 
                 company_profile.save()
                 messages.success(request, f"Empresa atualizada com sucesso")
@@ -524,7 +564,10 @@ def edit_company(request, company_id):
             except Exception as err:
                 messages.error(
                     request, f"Não foi possivel atualizar a empresa. Tente novamente ")
-
+        else:
+            messages.error(request,"Erro no formulario")
+            print(form.errors)
+    
     form = CompanyProfileForm(instance=company)
 
     context = {
@@ -711,7 +754,6 @@ def active_company(request,company_id):
         companies_active_count = CompanyProfile.objects.filter(user=request.user,is_active=True).count()
         
         if companies_active_count < 1:
-            print(companies_active_count)
             company.is_active = True
             
         else:

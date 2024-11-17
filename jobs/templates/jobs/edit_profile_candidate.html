@@ -54,6 +54,58 @@
                 </div>
             </div>
 
+            <div class="contact form-information row">
+
+                <div class="col-md-4">
+                    <label for="{{ form.phone1.id_for_label }}">Telefone 1:</label>
+
+                    {{ form.phone1 }}
+
+                    {% if not form.phone1.value %}
+                    <div class=" add-phone d-flex flex-row">
+
+
+                        <input type="checkbox" name="add-phone1" id="add-phone1" value="" >
+
+
+                        <label for="add-phone1">Adicionar</label>
+
+
+                    </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-4 form-contact-phone" id="">
+                    <label for="{{ form.phone2.id_for_label }}">Telefone 2:</label>
+
+                    {{ form.phone2 }}
+
+                    {% if not form.phone2.value %}
+
+                    <div class=" add-phone d-flex flex-row">
+
+
+                        <input type="checkbox" name="add-phone2" id="add-phone2" value="">
+
+
+
+                        <label for="add-phone2">Adicionar</label>
+
+
+                    </div>
+                    {% endif %}
+
+                </div>
+                <div class="col-md-12">
+                    <label for="{{ form.email.id_for_label }}">Email:</label>
+
+                    {{ form.email }}
+
+                </div>
+
+            </div>
+
 
 
             <div class="row">

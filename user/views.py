@@ -1,3 +1,4 @@
+from time import sleep
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
@@ -105,6 +106,7 @@ def login_view(request):
 
 def logout_view(request):
     
+    sleep(1)
     logout(request)
 
     return  HttpResponseRedirect(reverse("jobs:index"))

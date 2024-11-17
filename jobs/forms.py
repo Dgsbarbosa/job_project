@@ -34,6 +34,12 @@ class CandidateProfileForm(ModelForm):
     class Meta:
         model = CandidateProfile
         exclude = ["id","user","city","state","country","created_at"]
+        widgets = {
+            'phone1': forms.TextInput(attrs={"class":"phone","placeholder":"(33) 3333-3333","id":"phone1","hidden":True}),
+            'phone2': forms.TextInput(attrs={"class":"phone","placeholder":"(99)9 9999-9999","id":"phone2",'hidden':True}),
+            'email': forms.TextInput(attrs={"placeholder":"exemplo@exemplo.com","required":True}),
+            
+        }
         
 class CompanyProfileForm(ModelForm):
     class Meta:

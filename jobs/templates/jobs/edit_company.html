@@ -50,8 +50,7 @@
 
             <div class="profile-item col-md-12 ">
                 <h6>Resumo da Empresa: </h6>
-                <textarea class="" readonly>{{ company.resume_company|linebreaksbr|capfirst }} 
-    
+                <textarea class="" name="resume_company">{{ company.resume_company|linebreaksbr|capfirst }}
                 </textarea>
             </div>
 
@@ -60,7 +59,7 @@
 
             <div class="col-md-6">
                 <a href="javascript:history.back()">
-                    <input type="text" class="btn btn-outline-primary btn-back" value="Voltar">
+                    <input type="button" class="btn btn-outline-primary btn-back" value="Voltar">
                 </a>
             </div>
             <div class="col-md-6">
