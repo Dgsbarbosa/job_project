@@ -20,6 +20,14 @@ class VacanciesForm(ModelForm):
             'show_company': forms.CheckboxInput(attrs={"label":"Mostrar a empresa?"})
             
         }
+        error_messages = {
+            "city":{
+                'required':'Por favor, informe a cidade.'
+            },
+            'state':{
+                'required':'Por favor, informe o estado.'
+            }
+        }
   
 
 class CandidateProfileForm(ModelForm):

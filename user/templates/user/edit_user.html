@@ -3,18 +3,7 @@
 {% block body %}
 
 
-{% if messages %}
-<div class="messages">
-    {% for message in messages%}
 
-    <div class="alert alert-danger" role="alert">
-        <div class="message">{{ message }}</div>
-        <div class="close-alert" onclick="closeMessage(this)">x</div>
-    </div>
-
-    {% endfor %}
-</div>
-{% endif %}
 
 
 <div class="div-edit-user container">       
@@ -29,7 +18,7 @@
 
                         <label>
                             <span>Nome</span>
-                            <input type="text" name="name" required />
+                            {{ form.first_name }}
                         </label>
                     </div>
 
@@ -37,7 +26,7 @@
 
                         <label>
                             <span>Sobrenome</span>
-                            <input type="text" name="lastname" required />
+                            {{ form.last_name }}
                         </label>
                     </div>
 
@@ -48,60 +37,19 @@
                     <div class=" div-email col-md-12">
                         <label>
                             <span>Email</span>
-                            <input type="email" name="email" autocomplete="email" required />
+                            {{ form.email }}
                         </label>
                     </div>
                 </div>
 
-                <div class="div-password row">
+           
 
-                    <div class="col-md-6">
+                <div class="div-button-back row">                    
+                    
 
-                        <label>
-                            <span>Senha</span>
-
-                            <div class="password-container">
-                                <input type="password" class="password" name="password" autocomplete="new-password"
-                                    required />
-                                <i class="fa-regular fa-eye toggle-password"></i>
-                                <i class="fa-regular fa-eye-slash toggle-password-slash" hidden></i>
-                            </div>
-
-
-                        </label>
-                    </div>
-
-                    <div class="col-md-6">
-
-                        <label>
-                            <span>Confirme a Senha</span>
-                            <div class="password-container">
-                                <input type="password" class="password2" name="password2" autocomplete="new-password"
-                                    required />
-                                <i class="fa-regular fa-eye toggle-password"></i>
-                                <i class="fa-regular fa-eye-slash toggle-password-slash" hidden></i>
-                            </div>
-                        </label>
-                    </div>
-
-                    <div class="col-md-12 password-descript">
-                        <small class="text-muted ">
-                            A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, letras minúsculas,
-                            números e caracteres especiais. <br>Exemplo: <strong>Exemplo@123</strong>
-                        </small>
-                    </div>
-
-                </div>
-
-                <div class="div-button-back row">
                     <div class="col-md-4 ">
-                        <a href="{% url 'jobs:index' %}" class="" style="text-decoration: none;">
-                            <input type="button" class=" submit btn-back"  value="Pagina Inicial">
-                        </a>
-                    </div>
-                    <div class="col-md-4 ">
-                        <a href="javascript:history.back()" class="">
-                            <input type="button" class=" submit btn-back" value="Voltar">
+                        <a href="{% url 'user:password_reset' %}" class="">
+                            <input type="button" class=" submit btn-back" value="Alterar Senha">
                         </a>
                     </div>
 

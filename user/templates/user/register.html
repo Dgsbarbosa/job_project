@@ -38,20 +38,10 @@
                     <i class="fa-regular fa-eye-slash toggle-password-slash" hidden></i>
                 </div>
             </label>
-            <p class="forgot-pass">Esqueceu a senha? <a href="" class="text-muted">Redefinir Senha</a></p>
+            <p class="forgot-pass">Esqueceu a senha? <a href="{% url 'user:password_reset' %}" class="text-muted">Redefinir Senha</a></p>
             
-            <button type="submit" class="submit">Entrar</button>
-
-            <div class="col-md-4 ">
-                <a href="javascript:history.back()" class="" style="text-decoration: none;">
-                    <input type="button" class=" submit btn-back"  value="Voltar">
-                </a>
-            </div>
-            <div class="col-md-4 ">
-                <a href="{% url 'jobs:index' %}" class="" style="text-decoration: none;">
-                    <input type="button" class=" submit btn-back"  value="Pagina Inicial">
-                </a>
-            </div>
+            <button type="submit" class="submit">Entrar</button>          
+          
 
         </form>
 

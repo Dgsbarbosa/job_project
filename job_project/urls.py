@@ -22,4 +22,6 @@ urlpatterns = [
     path("auth/",include("user.urls")),
     path("",include("jobs.urls")),
     
+    
+    
 ]

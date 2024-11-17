@@ -1,0 +1,76 @@
+{% extends "user/layout.html" %}
+
+{% block body %}
+
+
+
+
+
+<div class="div-edit-user container">
+
+    <div class="form edit">
+        <h2>Sua conta</h2>
+        <form action="{% url 'user:edit_user' %}" method="POST" class="container">
+            {% csrf_token %}
+
+            <div class="name row">
+                <div class="col-md-6">
+
+                    <label>
+                        <span>Nome</span>
+                        <input type="text" name="name" value="{{ user.first_name }}" readonly />
+                    </label>
+                </div>
+
+                <div class="col-md-6">
+
+                    <label>
+                        <span>Sobrenome</span>
+                        <input type="text" name="lastname" value="{{ user.last_name }}" readonly />
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="  row">
+
+                <div class=" div-email col-md-12">
+                    <label>
+                        <span>Email</span>
+                        <input type="email" name="email" autocomplete="email" value="{{ user.email }}" readonly />
+                    </label>
+                </div>
+            </div>
+
+
+
+            <div class="div-button-back row">
+               
+               
+                <div class="col-md-4 ">
+                    <a href="{% url 'user:password_reset' %}" class="">
+                        <input type="button" class=" submit btn-back" value="Alterar Senha">
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a href="{% url 'user:edit_user' %}">
+
+                        <input type="button" class=" submit btn-back" value="Editar">
+                    </a>
+
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+
+
+</div>
+
+
+
+
+
+{%endblock%}

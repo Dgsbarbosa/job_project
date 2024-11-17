@@ -22,12 +22,18 @@ function setupCountryStateCity() {
     const selectState = document.querySelector(".select-state");
     const selectCity = document.querySelector(".select-city");
 
+    const url = document.URL;
+    const is_page_edit_vacancy = url.includes("edit_vacancy");
+
+
 
     if (country) {
 
         populateCoutriesSelect();
-        selectState.disabled = true;
-        selectCity.disabled = true;
+        if (!is_page_edit_vacancy) {
+            selectState.disabled = true;
+            selectCity.disabled = true;
+        }
 
         country.addEventListener("change", function () {
             const countryCodeComplete = this.value;
@@ -78,7 +84,8 @@ function populateCoutriesSelect() {
                 option.value = `${country.iso2}:${country.name}:${country.phonecode}`;
                 option.text = country.name;
 
-                countrySelect.appendChild(option)
+                countrySelect.appendChild(option);
+
             });
         })
         .catch(error => console.log('Error', error));
@@ -91,15 +98,17 @@ function populateStates(countryCode) {
 
             const stateSelect = document.querySelector(".select-state");
 
-            if (data.length === 0) {
+            if (!data || !Array.isArray(data) || data.length === 0) {
                 let option = document.createElement("option");
                 let countryCodeComplete = document.querySelector(".select-country").value
                 let countryCodeSplit = countryCodeComplete.split(":")
 
-
+                stateSelect.innerHTML = ""
                 option.value = countryCodeComplete
                 option.textContent = countryCodeSplit[1];
                 stateSelect.appendChild(option);
+                populateCities(countryCode);
+
             }
             else {
                 data.forEach(state => {
@@ -118,14 +127,14 @@ function populateCities(countryCode, stateCode) {
         .then(response => response.json())
         .then(data => {
             const citySelect = document.querySelector(".select-city");
-            citySelect.innerHTML = "";
+            
 
-            if (data.length === 0) {
+            if (!data || !Array.isArray(data) || data.length === 0) {
                 let stateCountryCode = document.querySelector(".select-state").value
                 let stateCountryCodeSplit = stateCountryCode.split(":");
 
                 let option = document.createElement("option");
-
+                citySelect.innerHTML = "";
                 option.value = stateCountryCodeSplit[1];
                 option.text = stateCountryCodeSplit[1];
                 citySelect.appendChild(option);
@@ -247,46 +256,46 @@ function setupPhones() {
         });
         addPhone1.addEventListener("change", function (event) {
 
-        if (this.checked) {
+            if (this.checked) {
 
-            phone1.hidden = false;
-            if (countryCode) {
-                phoneCodeChoice = phoneCountryCode(countryCode, phone1);
+                phone1.hidden = false;
+                if (countryCode) {
+                    phoneCodeChoice = phoneCountryCode(countryCode, phone1);
+                } else {
+                    phoneCodeChoice = phoneCountryCode("00", phone1);
+                }
+
             } else {
-                phoneCodeChoice = phoneCountryCode("00", phone1);
+                phone1.hidden = true;
+
+                phone1.value = "";
             }
 
-        } else {
-            phone1.hidden = true;
+        })
 
-            phone1.value = "";
-        }
+        addPhone2.addEventListener("change", function (event) {
+            if (this.checked) {
 
-    })
+                phone2.hidden = false;
+                if (countryCode) {
 
-    addPhone2.addEventListener("change", function (event) {
-        if (this.checked) {
+                    phoneCodeChoice = phoneCountryCode(countryCode, phone2);
+                } else {
+                    phoneCodeChoice = phoneCountryCode("00", phone2);
+                }
 
-            phone2.hidden = false;
-            if (countryCode) {
 
-                phoneCodeChoice = phoneCountryCode(countryCode, phone2);
             } else {
-                phoneCodeChoice = phoneCountryCode("00", phone2);
+                phone2.hidden = true;
+                phone2.value = "";
+
             }
 
+        })
 
-        } else {
-            phone2.hidden = true;
-            phone2.value = "";
-
-        }
-
-    })
-
-    phones.forEach(phone => {
-        phone.addEventListener("input", (event) => handlePhone(event, countryCode));
-    });
+        phones.forEach(phone => {
+            phone.addEventListener("input", (event) => handlePhone(event, countryCode));
+        });
     }
 
 
@@ -445,7 +454,7 @@ async function SaveVacancy(event) {
     const vacancy_id = vacancyButton.getAttribute("data-id");
     const csrf_token = getCSRFToken();
 
-    try{
+    try {
         const response = await fetch(`/save_vacancy/${vacancy_id}`, {
             method: 'POST',
             headers: {
@@ -454,12 +463,12 @@ async function SaveVacancy(event) {
             }
         });
 
-        if (!response.ok){
+        if (!response.ok) {
             throw new Error(`Erro de rede ${response.status}`)
         }
 
         const data = await response.json();
-        
+
 
         if (data.status === 'saved') {
             vacancyButton.classList.remove('btn-outline-success');
@@ -470,17 +479,17 @@ async function SaveVacancy(event) {
             vacancyButton.classList.add('btn-outline-success');
             vacancyButton.textContent = 'Salvar Vaga';
         }
-        
+
 
         window.location.reload();
 
-    }catch (error) {
+    } catch (error) {
         console.error('Erro:', error);
     }
-    
+
 }
 
-function setupSelectCountryCompany(){
+function setupSelectCountryCompany() {
     const select_company = document.querySelector("#company");
     if (select_company) {
         select_company.addEventListener("click", () => {
@@ -491,7 +500,7 @@ function setupSelectCountryCompany(){
 
 }
 
-function selectCountryCompany(event) { 
+function selectCountryCompany(event) {
     const select_company = event.target;
     const selectedOption = select_company.options[select_company.selectedIndex];
 
@@ -515,6 +524,7 @@ function selectCountryCompany(event) {
     option_state.innerHTML = stateName;
     option_state.selected = true;
     select_state.appendChild(option_state);
+    select_state.disabled = false;
 
     const select_city = document.querySelector("#city");
     const option_city = document.createElement("option");
@@ -522,4 +532,5 @@ function selectCountryCompany(event) {
     option_city.innerHTML = city;
     option_city.selected = true;
     select_city.appendChild(option_city);
- }
+    select_city.disabled = false;
+}

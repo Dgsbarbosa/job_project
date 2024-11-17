@@ -9,58 +9,70 @@ from django.http import JsonResponse
 from django.conf import settings
 from django.contrib import messages
 from collections import OrderedDict, defaultdict
-from . import utils
+from .utils import load_cache, save_cache, is_cache_expired, fetch_data_from_api
+
 from user.models import CustomUser
+import os
 
 
 # Create your views here.
 
 
 def get_countries(request):
-
-    url = "https://api.countrystatecity.in/v1/countries"
-
-    headers = {
-        'X-CSCAPI-KEY': settings.COUNTRYSTATECITY_API_KEY
-    }
-
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        data = response.json()
-
-        return JsonResponse(data, safe=False)
+    """Obtém a lista de países do cache ou da API."""
+    if is_cache_expired():
+        # Atualizar cache
+        data = fetch_data_from_api("https://api.countrystatecity.in/v1/countries")
+        if data:
+            save_cache({"countries": data})
+        else:
+            return JsonResponse({'error': 'API request failed'}, status=500)
     else:
-        return JsonResponse({'error': 'API request failed'}, status=500)
-
+        # Carregar do cache
+        data = load_cache().get("countries", [])
+    
+    return JsonResponse(data, safe=False)
 
 def get_states(request, country_code):
-    url = f"https://api.countrystatecity.in/v1/countries/{country_code}/states"
-
-    headers = {
-        'X-CSCAPI-KEY': settings.COUNTRYSTATECITY_API_KEY
-    }
-
-    response = requests.request("GET", url, headers=headers)
-    data = response.json()
-
-    return JsonResponse(data, safe=False)
-
+    """Obtém a lista de estados para um país do cache ou da API."""
+    cache = load_cache()
+    if not cache or is_cache_expired() or "states" not in cache.get(country_code, {}):
+        url = f"https://api.countrystatecity.in/v1/countries/{country_code}/states"
+        states = fetch_data_from_api(url)
+        
+        print(states)
+        if states:
+            cache = cache or {}
+            cache[country_code] = {"states": states}
+            save_cache(cache)
+        else:
+            return JsonResponse({'error': 'API request failed'}, status=500)
+    else:
+        states = cache[country_code]["states"]
+    
+    return JsonResponse(states, safe=False)
 
 def get_cities(request, country_code, state_code):
-    url = f"https://api.countrystatecity.in/v1/countries/{country_code}/states/{state_code}/cities"
-
-    headers = {
-        'X-CSCAPI-KEY': settings.COUNTRYSTATECITY_API_KEY
-    }
-
-    response = requests.request("GET", url, headers=headers)
-    data = response.json()
-
-    return JsonResponse(data, safe=False)
-
+    """Obtém a lista de cidades para um estado do cache ou da API."""
+    cache = load_cache()
+    key = f"{country_code}_{state_code}"
+    if not cache or is_cache_expired() or "cities" not in cache.get(key, {}):
+        url = f"https://api.countrystatecity.in/v1/countries/{country_code}/states/{state_code}/cities"
+        cities = fetch_data_from_api(url)
+        if cities:
+            cache = cache or {}
+            cache[key] = {"cities": cities}
+            save_cache(cache)
+        else:
+            return JsonResponse({'error': 'API request failed'}, status=500)
+    else:
+        cities = cache[key]["cities"]
+    
+    return JsonResponse(cities, safe=False)
 
 def index(request):
 
+    
     vacancies_grouped_by_date = defaultdict(list)
 
     return_search = ""
@@ -267,7 +279,8 @@ def register_company(request):
 def register_vacancy(request):
     
     companies = CompanyProfile.objects.filter(user=request.user)
-    
+    companies_active = CompanyProfile.objects.filter(user=request.user,is_active=True, is_deleted=False).order_by("-is_active")
+    companies_deactive = CompanyProfile.objects.filter(user=request.user,is_active=False, is_deleted=False).order_by("-is_active")
     if request.method == 'POST':
         form = VacanciesForm(request.POST)
 
@@ -296,6 +309,16 @@ def register_vacancy(request):
                 print("Error:", err)
                 messages.error(
                     request, "Não foi possivel cadastrar a vaga. Tente novemente")
+                
+        else:
+           errors = form.errors
+
+           if errors:
+            for field, error_list in errors.items():
+                for error in error_list:
+                    print(f"Erro no campo {field}: {error}")
+                    messages.error(request,f"Erro no campo {field}: {error}")
+                        
     else:
         companies_active = CompanyProfile.objects.filter(user=request.user,is_active=True, is_deleted=False).order_by("-is_active")
         companies_deactive = CompanyProfile.objects.filter(user=request.user,is_active=False, is_deleted=False).order_by("-is_active")

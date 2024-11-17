@@ -1,5 +1,6 @@
   
 /* border: 1px solid  black; */
+
 *,
 *:before,
 *:after {
@@ -62,7 +63,7 @@ button, .btn-back {
     width: 900px;
     min-height:650px;    
     height: auto;
-    margin: 50px 100px 0px 100px;
+    margin: 10px 100px 0px 100px;
     background: #fff;
     display: inline-block;
     box-shadow: -10px -10px 15px rgba(255, 255, 255, 0.3), 10px 10px 15px rgba(70, 70, 70, 0.15), inset -10px -10px 15px rgba(255, 255, 255, 0.3), inset 10px 10px 15px rgba(70, 70, 70, 0.15);
@@ -285,6 +286,7 @@ input {
     padding-bottom: 5px;
     font-size: 16px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+   
     text-align: center;
 }
 
@@ -298,8 +300,9 @@ input {
 .submit {
     margin-top: 40px;
     margin-bottom: 20px;
-    background: #d4af7a;
+    background: #002fff;
     text-transform: uppercase;
+    padding-top: 5px;
 }
 
 .fb-btn {
@@ -373,6 +376,10 @@ input {
 margin-top: 30px;
 
 }
+
+.div-email input{
+    text-transform: lowercase;
+}
 .div-email label{
 width: 100%;
 }
@@ -385,13 +392,50 @@ margin-top: 15px;
 
 }
 
+.div-home > div{
+    /* border: 1px solid  black; */
+    display: flex;
+    justify-content: center;
+}
+
 /* Edit user */
 
 .div-edit-user{
     display: flex;
     justify-content: center;
     align-items: center;
-border: 1px solid  black;
 padding-top: 20px;
 
+}
+
+
+
+/*  Reset Password */
+/* border: 1px solid  black; */
+
+
+.div-reset-password > div{
+    padding-top: 0;
+    text-align: center;
+}
+
+.div-reset-password h2{
+    margin-bottom: 40px;
+}
+
+.div-reset-password input{
+    text-transform: lowercase;
+}
+.form-reset-password{
+
+}
+
+.div-button-reset-password{
+    width: 100%;
+
+}
+
+
+.div-button-reset-password a{
+    text-decoration: none;
 }

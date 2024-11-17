@@ -64,7 +64,7 @@
                             {% if user.is_authenticated %}
                             <div class="name-user-nav">
                                 <span class="text-muted">Conectado como</span>
-                                <a href="{% url 'user:edit_user' %}">
+                                <a href="{% url 'user:view_user' %}">
                                     <span>{{user.first_name|capfirst }} {{user.last_name|capfirst }}</span>
                                 </a>
                             </div>
@@ -137,7 +137,7 @@
 
         </div>
         <div class="arrow-up-txt">
-            Top
+            Topo
         </div>
 
     </div>

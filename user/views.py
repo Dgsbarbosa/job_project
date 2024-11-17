@@ -48,15 +48,33 @@ def register(request):
 
 def edit_user(request):
     user = request.user
+
     if request.method == "POST":
-        print("post")
-        
-    form = CustomUserForm()
-    print(form)
+        form = CustomUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Usuário alterado com sucesso")
+            
+            return redirect("user:view_user")
+        else:
+            messages.error(request, "Algo deu errado! Tente novamente")
+            pass
+    form = CustomUserForm(instance=user)
+    
     context ={
-        
+        "form":form
     }
     return render(request, "user/edit_user.html", context)
+
+def view_user(request):
+
+    user = request.user
+    context ={
+        "user":user
+    }
+    
+    return render(request, "user/view_user.html", context)
+
 
 def login_view(request):
     
