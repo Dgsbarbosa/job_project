@@ -74,12 +74,6 @@ O projeto incorpora:
    - Abra o navegador e vá para `http://127.0.0.1:8000`.
 
 ## **Informações Adicionais**
-- **Usuário Admin**:
-  - Email: admin@example.com
-  - Senha: `admin123` (troque no ambiente de produção)
+- 
 - **Testes**:
   - Scripts para testes podem ser criados usando o módulo `unittest` ou `pytest`.
-
----
-
-Caso tenha outras informações que deseja adicionar ou personalizar, posso adaptar este arquivo para suas necessidades!
