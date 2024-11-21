@@ -26,7 +26,8 @@ def get_countries(request):
         if data:
             save_cache({"countries": data})
         else:
-            return JsonResponse({'error': 'API request failed'}, status=500)
+            data = load_cache().get("countries", [])
+            
     else:
         # Carregar do cache
         data = load_cache().get("countries", [])
@@ -45,14 +46,17 @@ def get_states(request, country_code):
             cache[country_code] = {"states": states}
             save_cache(cache)
         else:
-            return JsonResponse({'error': 'API request failed'}, status=500)
+            try:
+                states = cache[country_code]["states"]
+            except:
+                 return JsonResponse({'error': 'Dont states'}, status=500)
     else:
         states = cache[country_code]["states"]
     
     return JsonResponse(states, safe=False)
 
 def get_cities(request, country_code, state_code):
-    """Obtém a lista de cidades para um estado do cache ou da API."""
+  
     cache = load_cache()
     key = f"{country_code}_{state_code}"
     
@@ -68,7 +72,10 @@ def get_cities(request, country_code, state_code):
             cache[key] = {"cities": cities}
             save_cache(cache)
         else:
-            return JsonResponse({'error': 'API request failed'}, status=500)
+            try:
+                cities = cache[key]["cities"]
+            except:
+                 return JsonResponse({'error': 'API request failed'}, status=500)
     else:
         cities = cache[key]["cities"]
        
@@ -196,6 +203,9 @@ def view_vacancy(request, vacancy_id):
     }
     return render(request, "jobs/view_vacancy.html", context)
 
+def about_us(request):
+    
+    return render(request, "jobs/about_us.html")
 
 @login_required(login_url="auth/register")
 def register_profile(request):
@@ -409,8 +419,7 @@ def profiles(request):
             request, f"Não foi possivel carregar o Perfil do Candidato")
 
     try:
-        count_company_profile = CompanyProfile.objects.filter(
-            user=request.user, is_deleted=False).count()
+        count_company_profile = CompanyProfile.objects.filter(user=request.user, is_deleted=False).count()
 
         if count_company_profile > 1:
             company_profile = CompanyProfile.objects.filter(user=request.user, is_active=True,is_deleted=False)
@@ -446,16 +455,29 @@ def profiles(request):
             state = state.split(":")[1]
             company_profile.state = state
         
+   
+        
     except Exception as error:
         company_profile = None
         print(error)
-        messages.error(
-            request, "Não foi possivel carregar os Perfis de Empresas.")
+        messages.error(request, "Não foi possivel carregar os Perfis de Empresas.")
+    
     
     if count_company_profile == 0:
         messages.warning(request, "Cadastre um Perfil de Empresa")
-    elif company_profile.is_active == False and count_company_profile > 0:
-        messages.warning(request, "Cadastre ou reative o Perfil de Empresa")
+    elif count_company_profile > 0:
+        
+        count_company_profile_inactive = 0
+        
+        for company in company_profile:
+            if company.is_active == False:
+                count_company_profile_inactive += 1
+                
+        if count_company_profile - company_profile_inactive.count() == 0:
+            
+            print("todas desativadas")
+            messages.warning(request, "Cadastre ou reative o Perfil de Empresa")
+                
     
           
         
@@ -644,7 +666,7 @@ def my_vacancies(request):
     return render(request,"jobs/my_vacancies.html", context)
 
 
-@login_required(login_url="auth/register")
+@login_required(login_url="/auth/register")
 @require_POST
 def save_vacancy(request, vacancy_id):
     

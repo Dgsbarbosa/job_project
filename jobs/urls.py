@@ -3,7 +3,8 @@ from . import views
 
 app_name = 'jobs'
 urlpatterns = [
-    path("",views.index, name="index"),
+    path("index",views.index, name="index"),
+    path("", views.about_us, name="about_us"),
     
     path("view_vacancy/<int:vacancy_id>",views.view_vacancy,name="view_vacancy"),    
     path("register_vacancy", views.register_vacancy, name='register_vacancy'),

@@ -15,7 +15,7 @@
 
 <body>
 
-    <div id="ads-top">
+    <div id="ads-top" hidden>
 
     </div>
 
@@ -43,10 +43,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'jobs:register_vacancy' %}">Cadastrar Vaga</a>
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link " href="#">Sobre</a>
-
-                            </li>
+                            
 
                             {% if request.user.is_authenticated %}
                             <li class="nav-item">
@@ -59,6 +56,10 @@
                                 <a class="nav-link " href="{% url 'jobs:saved_vacancies' %}">Vagas Salvas</a>
                             </li>
                             {% endif %}
+                            <li class="nav-item ">
+                                <a class="nav-link " href="{% url 'jobs:about_us' %}">Sobre</a>
+
+                            </li>
                         </ul>
                         <div class="nav-buttons">
                             {% if user.is_authenticated %}

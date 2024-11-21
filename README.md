@@ -23,7 +23,7 @@ O projeto incorpora:
 
 ### **Apps Criados**
 
-#### **2. App: user**
+#### **1. App: user**
 
 ##### Estrutura:
 - **`admin.py`**: Configurações do admin para gerenciar perfis de usuários.
