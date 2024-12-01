@@ -369,34 +369,51 @@ function handlePhone(event, countryCode) {
 function phoneMask(value, countryCode) {
     if (!value) return "";
 
-    // alert(countryCode)
+    console.log(countryCode);
+    
+    // Defina um código de país padrão
+    const defaultCountryCode = "00";
+    countryCode = countryCode || defaultCountryCode;
 
-    let phoneCodeSplit = countryCode;
+    countryCode = countryCode.split("-")[0];
+    countryCode = countryCode.replace(/\D/g, '');
+
+    // if countryCode.length()
+    // if (countryCode.length > 3){
+    //     countryCode = countryCode.substring(0,3);
+    // }
+    
+    console.log(countryCode);
+
 
     // Remove todos os caracteres não numéricos do valor
     value = value.replace(/\D/g, '');
 
     // Adiciona o código de país se ele não estiver presente no início
-    if (!value.startsWith(phoneCodeSplit)) {
-        value = `${phoneCodeSplit}${value}`;
+    if (!value.startsWith(countryCode)) {
+        value = `${countryCode}${value}`;
     }
 
-    // Formatação inicial: +ddi(ddd)
+    // Adiciona o "+" para o formato internacional
     value = `+${value}`;
-    value = value.replace(new RegExp(`(\\+${phoneCodeSplit})(\\d{2})(\\d)`), "$1($2) $3");
 
-    // Limitar ao formato de 8 ou 9 dígitos finais
+    // Formatação inicial: +ddi(ddd)
+    const regexCountryAndAreaCode = new RegExp(`(\\+${countryCode})(\\d{2})(\\d)`);
+    value = value.replace(regexCountryAndAreaCode, "$1($2) $3");
+
+    // Formatação do número final: 8 ou 9 dígitos
     if (value.match(/\d{9}$/)) {
-        // Formato com 9 dígitos (9 9999-9999)
+        // Formato com 9 dígitos
         value = value.replace(/(\d{1})(\d{4})(\d{4})$/, "$1 $2-$3");
     } else {
-        // Formato com 8 dígitos (9999-9999)
+        // Formato com 8 dígitos
         value = value.replace(/(\d{4})(\d{4})$/, "$1-$2");
     }
 
-    // Limite o comprimento para evitar qualquer caractere extra
-    if (value.length > `+${phoneCodeSplit} (00) 0 0000-0000`.length) {
-        value = value.slice(0, `+${phoneCodeSplit} (00) 0 0000-0000`.length);
+    // Limite o comprimento final com base no formato mais longo possível
+    const maxLength = `+${countryCode} (00) 0 0000-0000`.length;
+    if (value.length > maxLength) {
+        value = value.slice(0, maxLength);
     }
 
     return value;

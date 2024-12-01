@@ -17,7 +17,6 @@ import os
 
 # Create your views here.
 
-
 def get_countries(request):
     """Obtém a lista de países do cache ou da API."""
     if is_cache_expired():
@@ -462,10 +461,11 @@ def profiles(request):
         print(error)
         messages.error(request, "Não foi possivel carregar os Perfis de Empresas.")
     
+    print(company_profile, count_company_profile)
     
     if count_company_profile == 0:
         messages.warning(request, "Cadastre um Perfil de Empresa")
-    elif count_company_profile > 0:
+    elif count_company_profile > 1:
         
         count_company_profile_inactive = 0
         

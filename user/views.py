@@ -22,17 +22,17 @@ def register(request):
         
         check_email = utils.check_email(email)   
             
-        # check_password_messages = utils.check_password(password, password2)
+        check_password_messages = utils.check_password(password, password2)
         
         if check_email:
             messages.error(request,"O email ja esta cadastrado")
             return redirect("user:register")
         
-        # if check_password_messages:
-        #     for password_message in check_password_messages: 
-        #         messages.error(request, password_message)
+        if check_password_messages:
+            for password_message in check_password_messages: 
+                messages.error(request, password_message)
                 
-        #     return redirect(reverse("user:register"))
+            return redirect(reverse("user:register"))
         
         user = CustomUser.objects.create_user(first_name=first_name, last_name=lastname, email=email)
         user.set_password(password)

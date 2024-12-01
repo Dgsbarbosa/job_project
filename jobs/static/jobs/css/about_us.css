@@ -20,3 +20,18 @@
 .card-about-us h1{
     font-weight: bold;
 }
+
+.footer{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+}
+
+.footer footer{
+
+}
+.footer footer p{
+    padding: 0;
+    margin: 0;
+}
