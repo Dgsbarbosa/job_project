@@ -32,7 +32,7 @@ class CompanyProfile(Contact,Location):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name="companies")    
     company_name = models.CharField(max_length=150)
     resume_company = models.TextField()
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     

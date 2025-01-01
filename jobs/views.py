@@ -266,6 +266,7 @@ def register_company(request):
                 company_profile.country = request.POST['country']
                 company_profile.state = request.POST['state']
                 company_profile.city = request.POST['city']
+                company_profile.is_active = True
 
                 company_profile.save()
 
@@ -476,11 +477,8 @@ def profiles(request):
         if count_company_profile - company_profile_inactive.count() == 0:
             
             print("todas desativadas")
-            messages.warning(request, "Cadastre ou reative o Perfil de Empresa")
-                
+            messages.warning(request, "Cadastre ou reative o Perfil de Empresa")     
     
-          
-        
 
     context = {
         'candidate_profile': candidate_profile,
