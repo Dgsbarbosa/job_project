@@ -119,4 +119,3 @@ python manage.py runserver
 7. **Access the application**:
 - Open the browser and go to `http://127.0.0.1:8000`.
 
-## **Additional Information
