@@ -1,128 +1,122 @@
+# Final Project - Harvard CS50W
 
-# Projeto Final - Harvard CS50W
+## **Project Description**
 
-## **Descrição do Projeto**
+This project is a job vacancy management platform that allows candidates and companies to interact efficiently. Companies can register vacancies, manage them, open and close vacancies, and candidates can create personalized profiles, save vacancies of interest, and apply.
 
-Este projeto é uma plataforma de gestão de vagas de emprego que permite a candidatos e empresas interagirem de forma eficiente. Empresas podem cadastrar vagas, gerenciá-las,podem abrir e fechar as vagas., e candidatos podem criar perfis personalizados, salvar vagas de interesse, e se candidatar. 
-A aplicação oferece funcionalidades de filtragem por localização (país, estado, cidade) e tipo de contrato, com foco em usabilidade e escalabilidade.
+The application offers filtering features by location (country, state, city) and type of contract, with a focus on usability and scalability.
 
 ## **Distinctiveness and Complexity**
 
 ### **Distinctiveness**
-Este projeto aborda uma solução prática e real no mercado de trabalho, integrando gestão de perfis, cadastro de vagas e interações personalizadas entre candidatos e empresas. Diferencia-se pelo uso de APIs externas (como CountryStateCity) para gerenciamento de localizações em tempo real, um nível elevado de interatividade com o usuário e a aplicação de padrões modernos de desenvolvimento web com Django.
+This project addresses a practical and real solution in the job market, integrating profile management, job registration and personalized interactions between candidates and companies. It stands out for its use of external APIs (such as CountryStateCity) for real-time location management, a high level of user interactivity and the application of modern web development standards with Django.
 
 ### **Complexity**
-O projeto incorpora:
-- **Integração de APIs**: Consumo de uma API externa para preencher automaticamente os dados de localização, garantindo uma experiência otimizada para o usuário.
-- **Modelos Relacionais Avançados**: Uso de herança em modelos para simplificar a reutilização de campos comuns, como `Contact` e `Location`.
-- **Filtragem e Agrupamento Dinâmicos**: Vagas são agrupadas por data e empresa, otimizando a apresentação de informações para os usuários.
-- **Autenticação e Permissões**: As ações críticas (como salvar vagas e gerenciar perfis) exigem autenticação e implementam níveis de permissão diferenciados.
-- **Interface Dinâmica**: Interatividade aprimorada com mensagens contextuais e formulários que se adaptam às condições específicas, como visibilidade dinâmica de campos.
+The project incorporates:
+- **API Integration**: Consumption of an external API to automatically fill in location data, ensuring an optimized user experience.
+- **Advanced Relational Models**: Use of inheritance in models to simplify the reuse of common fields, such as `Contact` and `Location`.
+- **Dynamic Filtering and Grouping**: Jobs are grouped by date and company, optimizing the presentation of information to users.
+- **Authentication and Permissions**: Critical actions (such as saving jobs and managing profiles) require authentication and implement differentiated permission levels.
+- **Dynamic Interface**: Enhanced interactivity with contextual messages and forms that adapt to specific conditions, such as dynamic field visibility.
 
-## **Estrutura do Projeto**
+## **Project Structure**
 
-### **Apps Criados**
+### **Apps Created**
 
 #### **1. App: user**
 
-##### Estrutura:
-- **`admin.py`**: Configurações do admin para gerenciar perfis de usuários.
-- **`apps.py`**: Configuração do app Django.
-- **`forms.py`**: Formulários para autenticação e edição de perfis.
-- **`models.py`**: Modelos de usuários e perfis personalizados.
-- **`tests.py`**: Testes para validação de funcionalidades.
-- **`urls.py`**: Rotas específicas para autenticação, edição e visualização de perfis.
-- **`utils.py`**: Funções auxiliares, como validação de dados e envio de e-mails de confirmação.
-- **`views.py`**: Gerenciamento de usuários, incluindo:
-  - Registro de novos usuários.
-  - Login e logout.
-  - Edição de perfis de candidatos e empresas.
-- **`templates/`**: Contém páginas HTML para registro, login, logout, e edição de perfis.
+##### Structure:
+- **`admin.py`**: Admin settings for managing user profiles.
+- **`apps.py`**: Django app configuration.
+- **`forms.py`**: Forms for authentication and editing profiles.
+- **`models.py`**: User models and custom profiles.
+- **`tests.py`**: Tests for validating functionality.
+- **`urls.py`**: Specific routes for authentication, editing, and viewing profiles.
+- **`utils.py`**: Auxiliary functions, such as data validation and sending confirmation emails.
+- **`views.py`**: User management, including:
+- Registering new users.
+- Logging in and out.
+- Editing candidate and company profiles.
+- **`templates/`**: Contains HTML pages for registering, logging in, logging out, and editing profiles.
 
-##### Funcionalidades:
-- Registro de candidatos e empresas.
-- Login e logout.
-- Edição de perfis de usuário.
-- Redefinição de senha com validação de e-mail.
+##### Features:
+- Candidate and company registration.
+- Login and logout.
+- Editing user profiles.
+- Password reset with email validation.
 
 ---
-
 #### **2. App: job**
-Este app gerencia o cadastro de vagas e interações entre empresas e candidatos.
+This app manages job registration and interactions between companies and candidates.
 
-##### Estrutura:
-   - **`admin.py`**: Configurações para gerenciar vagas e perfis de empresas.
-   - **`apps.py`**: Configuração do app Django.
-   - **`forms.py`**: Formulários para criação e edição de vagas.
-   - **`models.py`**: Modelos para vagas, empresas e candidaturas.
-   - **`tests.py`**: Testes para validação de funcionalidades.
-   - **`urls.py`**: Rotas específicas para visualização e gerenciamento de vagas.
-   - **`views.py`**: Gerenciamento de vagas, incluindo:
-   - Cadastro e edição de vagas.
-   - Filtragem por localização e tipo de contrato.
-   - Exibição dinâmica de vagas agrupadas por data e empresa.
-   - **`templates/`**: Contém páginas HTML para cadastro, edição e exibição de vagas.
+##### Structure:
+- **`admin.py`**: Settings for managing job vacancies and company profiles.
+- **`apps.py`**: Django app configuration.
+- **`forms.py`**: Forms for creating and editing job vacancies.
+- **`models.py`**: Models for job vacancies, companies and applications.
+- **`tests.py`**: Tests for validating features.
+- **`urls.py`**: Specific routes for viewing and managing job vacancies.
+- **`views.py`**: Job management, including:
+- Registering and editing job vacancies. - Filtering by location and contract type.
+- Dynamic display of vacancies grouped by date and company.
+- **`templates/`**: Contains HTML pages for registering, editing and displaying vacancies.
 
+- **`requirements.txt`**: List of required packages:
+- Includes dependencies such as `Django`, `requests` and `python-decouple`.
 
-   - **`requirements.txt`**: Lista de pacotes necessários:
-   - Inclui dependências como `Django`, `requests` e `python-decouple`.
+### **Future Features**
 
-### **Funcionalidades Futuras**
+1. **Version 2**
+- Register resume
+- Compatible vacancies
 
-   1. **Versão 2**
-   - Cadastrar curriculo
-   - Vagas compativeis
+2. **Version 3**
+- Courses and Certifications
+- Blog
 
-   2. **Versão 3**
-   - Cursos e Certificações
-   - Blog
+3. **Version 4**
+- Login with Facebook, Google, LinkedIn
+- Resume generator
 
-   3. **Versão 4**
-   - Login com facebook, google, linkedin
-   - Gerador de curriculo
+## **How ​​to Run the Application**
 
-## **Como Executar o Aplicativo**
+1. **Clone the repository**:
+```bash
+git clone <REPOSITORY_URL>
+cd <PROJECT_DIRECTORY>
+```
 
-   1. **Clone o repositório**:
-      ```bash
-      git clone <URL_DO_REPOSITORIO>
-      cd <DIRETORIO_DO_PROJETO>
-      ```
+2. **Create a virtual environment**:
+```bash
+python -m venv venv
+source venv/bin/activate # On Unix systems
+venv\Scripts\activate # On Windows systems
+```
 
-   2. **Crie um ambiente virtual**:
-      ```bash
-      python -m venv venv
-      source venv/bin/activate  # Em sistemas Unix
-      venv\Scripts\activate  # Em sistemas Windows
-      ```
+3. **Install the dependencies**:
+```bash
+pip install -r requirements.txt
+```
 
-   3. **Instale as dependências**:
-      ```bash
-      pip install -r requirements.txt
-      ```
+4. **Configuration of the API key**:
+- Create a `.env` file in the root of the project with the following variable:
+```
+DJANGO_SECRET_KEY=YOUR_SECRET_KEY
+COUNTRYSTATECITY_API_KEY=API_KEY
+DEBUG=True
+```
 
-   4. **Configuração da chave da API**:
-      - Crie um arquivo `.env` na raiz do projeto com a seguinte variável:
-         ```
-         DJANGO_SECRET_KEY=SUA_CHAVE_SECRETA
-         COUNTRYSTATECITY_API_KEY=CHAVE_DA_API
-         DEBUG=True
-         ```
+5. **Apply the database migrations**:
+```bash
+python manage.py migrate
+```
 
-   5. **Aplique as migrações do banco de dados**:
-      ```bash
-      python manage.py migrate
-      ```
+6. **Run the local server**:
+```bash
+python manage.py runserver
+```
 
-   6. **Execute o servidor local**:
-      ```bash
-      python manage.py runserver
-      ```
+7. **Access the application**:
+- Open the browser and go to `http://127.0.0.1:8000`.
 
-   7. **Acesse a aplicação**:
-      - Abra o navegador e vá para `http://127.0.0.1:8000`.
-
-## **Informações Adicionais**
-
-- **Testes**:
-  - Scripts para testes podem ser criados usando o módulo `unittest` ou `pytest`.
+## **Additional Information
