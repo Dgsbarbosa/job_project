@@ -1,121 +1,129 @@
-# Final Project - Harvard CS50W
+Final Project - CS50 Web
 
-## **Project Description**
+Job Vacancy Management Platform
 
-This project is a job vacancy management platform that allows candidates and companies to interact efficiently. Companies can register vacancies, manage them, open and close vacancies, and candidates can create personalized profiles, save vacancies of interest, and apply.
+Overview
+This project is a job vacancy management platform that connects candidates and companies efficiently. Companies can create and manage job vacancies, while candidates can build personalized profiles, save jobs, and apply for open positions. The platform includes dynamic filtering by location (country, state, city) and contract type, ensuring a smooth user experience.
+Distinctiveness & Complexity
+Distinctiveness
+This project stands out due to its real-world applicability and advanced features beyond a simple CRUD application. Unlike basic job board implementations, this platform:
+•	Implements dynamic job filtering using API-based location data.
+•	Uses authentication with different permission levels to separate candidates and companies.
+•	Introduces model inheritance to efficiently differentiate between user roles.
+•	Incorporates an intuitive user experience, with dynamically generated forms and real-time feedback.
+Complexity
+The project involves multiple technical challenges:
+•	API Integration: Fetches and auto-fills location data dynamically from the CountryStateCity API, reducing manual input errors.
+•	Advanced Database Models: Uses model inheritance to create a structured database where candidates and companies share attributes but have distinct functionalities.
+•	Dynamic UI Elements: Forms and elements adjust based on user roles, ensuring companies and candidates have unique experiences.
+•	Authentication & Authorization: Implements Django's authentication system with additional permission levels to restrict actions like job posting or application viewing.
+•	Job Filtering & Grouping: Optimized job vacancy presentation through search parameters and date-based sorting.
+By combining these features, the project provides a robust and scalable solution that mimics real-world job market operations.
+________________________________________
 
-The application offers filtering features by location (country, state, city) and type of contract, with a focus on usability and scalability.
+Project Structure
 
-## **Distinctiveness and Complexity**
+Applications
 
-### **Distinctiveness**
-This project addresses a practical and real solution in the job market, integrating profile management, job registration and personalized interactions between candidates and companies. It stands out for its use of external APIs (such as CountryStateCity) for real-time location management, a high level of user interactivity and the application of modern web development standards with Django.
+1. User Management (user app)
 
-### **Complexity**
-The project incorporates:
-- **API Integration**: Consumption of an external API to automatically fill in location data, ensuring an optimized user experience.
-- **Advanced Relational Models**: Use of inheritance in models to simplify the reuse of common fields, such as `Contact` and `Location`.
-- **Dynamic Filtering and Grouping**: Jobs are grouped by date and company, optimizing the presentation of information to users.
-- **Authentication and Permissions**: Critical actions (such as saving jobs and managing profiles) require authentication and implement differentiated permission levels.
-- **Dynamic Interface**: Enhanced interactivity with contextual messages and forms that adapt to specific conditions, such as dynamic field visibility.
+Handles user authentication, profile management, and permissions.
 
-## **Project Structure**
+Key Files:
+•	models.py – Defines user profiles, implementing model inheritance to differentiate candidates and companies.
+•	views.py – Manages user authentication, login/logout, and profile editing logic.
+•	forms.py – Handles user registration and profile editing, ensuring form validation.
+•	urls.py – Routes for login, registration, and profile management.
+•	templates/user/ – Contains authentication-related pages.
+•	static/user/ – Stylesheets and JavaScript files for frontend interactions.
 
-### **Apps Created**
+Features:
+•	Candidate & Company registration with role-based profiles.
+•	Profile editing with validation and real-time form feedback.
+•	Password recovery via email using Django's built-in authentication tools.
+________________________________________
 
-#### **1. App: user**
+2. Job Management (jobs app)
 
-##### Structure:
-- **`admin.py`**: Admin settings for managing user profiles.
-- **`apps.py`**: Django app configuration.
-- **`forms.py`**: Forms for authentication and editing profiles.
-- **`models.py`**: User models and custom profiles.
-- **`tests.py`**: Tests for validating functionality.
-- **`urls.py`**: Specific routes for authentication, editing, and viewing profiles.
-- **`utils.py`**: Auxiliary functions, such as data validation and sending confirmation emails.
-- **`views.py`**: User management, including:
-- Registering new users.
-- Logging in and out.
-- Editing candidate and company profiles.
-- **`templates/`**: Contains HTML pages for registering, logging in, logging out, and editing profiles.
+Handles job postings, applications, and filtering features.
 
-##### Features:
-- Candidate and company registration.
-- Login and logout.
-- Editing user profiles.
-- Password reset with email validation.
+Key Files:
+•	models.py – Defines job postings, applications, and companies, utilizing ForeignKey relationships for structured data handling.
+•	views.py – Implements logic for job creation, editing, filtering, and application processing.
+•	forms.py – Contains forms for posting jobs and submitting applications.
+•	urls.py – Routes for job listings, job details, and application processing.
+•	templates/jobs/ – Contains job-related HTML pages, ensuring a responsive layout.
+•	static/jobs/ – Includes JavaScript and CSS files for dynamic job search and filtering.
 
----
-#### **2. App: job**
-This app manages job registration and interactions between companies and candidates.
+Features:
+•	Job vacancy creation & management, restricted to company users.
+•	Filtering system allowing users to search jobs by location and contract type.
+•	Grouping vacancies by company and posting date for better organization.
+________________________________________
+Installation & Setup
+1. Clone the Repository
 
-##### Structure:
-- **`admin.py`**: Settings for managing job vacancies and company profiles.
-- **`apps.py`**: Django app configuration.
-- **`forms.py`**: Forms for creating and editing job vacancies.
-- **`models.py`**: Models for job vacancies, companies and applications.
-- **`tests.py`**: Tests for validating features.
-- **`urls.py`**: Specific routes for viewing and managing job vacancies.
-- **`views.py`**: Job management, including:
-- Registering and editing job vacancies. - Filtering by location and contract type.
-- Dynamic display of vacancies grouped by date and company.
-- **`templates/`**: Contains HTML pages for registering, editing and displaying vacancies.
-
-- **`requirements.txt`**: List of required packages:
-- Includes dependencies such as `Django`, `requests` and `python-decouple`.
-
-### **Future Features**
-
-1. **Version 2**
-- Register resume
-- Compatible vacancies
-
-2. **Version 3**
-- Courses and Certifications
-- Blog
-
-3. **Version 4**
-- Login with Facebook, Google, LinkedIn
-- Resume generator
-
-## **How ​​to Run the Application**
-
-1. **Clone the repository**:
-```bash
 git clone <REPOSITORY_URL>
+
 cd <PROJECT_DIRECTORY>
-```
 
-2. **Create a virtual environment**:
-```bash
+2. Set Up Virtual Environment
+
 python -m venv venv
-source venv/bin/activate # On Unix systems
-venv\Scripts\activate # On Windows systems
-```
 
-3. **Install the dependencies**:
-```bash
+source venv/bin/activate  # Mac/Linux
+
+venv\Scripts\activate     # Windows
+
+3. Install Dependencies
+
 pip install -r requirements.txt
-```
 
-4. **Configuration of the API key**:
-- Create a `.env` file in the root of the project with the following variable:
-```
-DJANGO_SECRET_KEY=YOUR_SECRET_KEY
-COUNTRYSTATECITY_API_KEY=API_KEY
+4. Configure Environment Variables
+
+Create a .env file and add:
+
+DJANGO_SECRET_KEY=your_secret_key
+
+COUNTRYSTATECITY_API_KEY=your_api_key
+
 DEBUG=True
-```
 
-5. **Apply the database migrations**:
-```bash
+5. Apply Migrations
+
 python manage.py migrate
-```
 
-6. **Run the local server**:
-```bash
+6. Run the Development Server
+
 python manage.py runserver
-```
 
-7. **Access the application**:
-- Open the browser and go to `http://127.0.0.1:8000`.
+7. Access the Application
+
+Open http://127.0.0.1:8000 in your browser.
+________________________________________
+
+Future Enhancements
+
+Version 2
+
+•	Resume Upload & Parsing for automated CV analysis.
+•	Job Compatibility Suggestions based on user profiles and experience.
+
+Version 3
+
+•	Online Courses & Certifications for skill improvement.
+•	Career Blog with industry insights and job search tips.
+
+Version 4
+
+•	OAuth Login (Google, LinkedIn, Facebook) for seamless authentication.
+•	AI-Based Resume Generator to help candidates build effective CVs.
+________________________________________
+
+Technologies Used
+
+•	Backend: Django, SQLite
+•	Frontend: HTML, CSS, JavaScript
+•	APIs: CountryStateCity API for location-based job filtering.
+•	Authentication: Django Authentication System with custom role-based permissions.
 
